@@ -53,7 +53,7 @@
 }
 
 .add-btn {
-    background-color: #10b981;
+    background-color: #8ce043;
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -67,7 +67,7 @@
 }
 
 .add-btn:hover {
-    background-color: #059669;
+    background-color: #61cf01;
 }
 
 /* Filters Section */
@@ -260,13 +260,13 @@
 }
 
 .btn-upgrade {
-    background-color: #10b981;
+    background-color: #8ce043;
     color: white;
     border: none;
 }
 
 .btn-upgrade:hover {
-    background-color: #059669;
+    background-color: #8ce043;
 }
 
 .btn-outline {
@@ -459,7 +459,7 @@
 }
 
 .btn-create {
-    background: #10b981;
+    background: #8ce043;
     color: white;
     border: none;
     padding: 0.6rem 1.5rem;
