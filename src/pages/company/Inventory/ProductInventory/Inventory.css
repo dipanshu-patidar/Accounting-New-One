@@ -101,7 +101,7 @@
 }
 
 .btn-inline-add {
-    background-color: #2dd4bf;
+    background-color: #8ce043;
     color: white;
     border: none;
     padding: 6px 12px;
@@ -113,7 +113,7 @@
 }
 
 .btn-inline-add:hover {
-    background-color: #14b8a6;
+    background-color: #8ce043;
 }
 
 .input-with-action {
@@ -205,7 +205,7 @@
 }
 
 .btn-submit {
-    background: #2dd4bf;
+    background: #8ce043;
     color: white;
     border: none;
     padding: 10px 24px;

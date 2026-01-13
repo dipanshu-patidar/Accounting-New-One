@@ -86,11 +86,11 @@ const Inventory = () => {
                                 <th>SKU</th>
                                 <th>SALE PRICE</th>
                                 <th>PURCHASE PRICE</th>
-                                <th>TAX</th>
+                                {/* <th>TAX</th> */}
                                 <th>CATEGORY</th>
                                 <th>UNIT</th>
                                 <th>QUANTITY</th>
-                                <th>TYPE</th>
+                                {/* <th>TYPE</th> */}
                                 <th>ACTION</th>
                             </tr>
                         </thead>
@@ -101,19 +101,19 @@ const Inventory = () => {
                                     <td>{p.sku}</td>
                                     <td>{p.salePrice}</td>
                                     <td>{p.purchasePrice}</td>
-                                    <td>
+                                    {/* <td>
                                         {p.tax.split(' ').map(t => (
                                             <div key={t} className="tax-tag">{t}</div>
                                         ))}
-                                    </td>
+                                    </td> */}
                                     <td>{p.category}</td>
                                     <td>{p.unit}</td>
                                     <td>{p.quantity}</td>
-                                    <td>
+                                    {/* <td>
                                         <span className={`type-badge ${p.type.toLowerCase()}`}>
                                             {p.type}
                                         </span>
-                                    </td>
+                                    </td> */}
                                     <td>
                                         <div className="action-buttons">
                                             <button className="action-btn btn-edit" data-tooltip="Edit" onClick={() => handleEdit(p)}>
@@ -180,7 +180,7 @@ const Inventory = () => {
                                         <select className="form-input">
                                             <option>Select Category</option>
                                         </select>
-                                        <button className="btn-inline-add" onClick={() => setShowCategoryModal(true)}>+ Add New</button>
+                                        <button className="btn-inline-add" onClick={() => setShowCategoryModal(true)}><Plus size={16} /></button>
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -316,7 +316,7 @@ const Inventory = () => {
                                         <select className="form-input" defaultValue={selectedProduct?.category}>
                                             <option>{selectedProduct?.category}</option>
                                         </select>
-                                        <button className="btn-inline-add" onClick={() => setShowCategoryModal(true)}>+ Add New</button>
+                                        <button className="btn-inline-add" onClick={() => setShowCategoryModal(true)}> <Plus size={16} /></button>
                                     </div>
                                 </div>
                                 <div className="form-group">
