@@ -25,11 +25,11 @@ const Navbar = ({ toggleSidebar }) => {
 
             <div className="navbar-right">
                 {/* Quick Add Button */}
-                <button className="icon-btn-outlined">
+                {/* <button className="icon-btn-outlined">
                     <Plus size={18} />
-                </button>
+                </button> */}
 
-                <div className="divider"></div>
+                {/* <div className="divider"></div> */}
 
                 <button className="icon-btn">
                     <Globe size={18} />
@@ -37,10 +37,10 @@ const Navbar = ({ toggleSidebar }) => {
                     <ChevronDown size={14} />
                 </button>
 
-                <button className="icon-btn notification-btn">
+                {/* <button className="icon-btn notification-btn">
                     <Bell size={18} />
                     <span className="badge"></span>
-                </button>
+                </button> */}
 
                 <div className="user-profile-container">
                     <div

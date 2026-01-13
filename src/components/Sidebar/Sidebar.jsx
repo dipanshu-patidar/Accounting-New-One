@@ -7,6 +7,7 @@ import {
     Calculator, Receipt, UserCog
 } from 'lucide-react';
 import './Sidebar.css';
+import Logo from '../../assets/Images/image.png';
 
 const Sidebar = ({ isOpen, role = 'superadmin' }) => {
     const location = useLocation();
@@ -179,7 +180,8 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
         <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
             <div className="sidebar-header">
                 <div className="logo">
-                    <span className="logo-main">ACCOUNT</span><span className="logo-accent">GO</span>
+                    {/* <img src={Logo} alt="" /> */}
+                    <span className="logo-main">Zirak</span><span className="logo-accent"> Books</span>
                 </div>
             </div>
             <nav className="sidebar-nav">
