@@ -27,6 +27,8 @@ import CreateVoucher from './pages/company/Voucher/CreateVoucher';
 import Expense from './pages/company/Accounts/Expense/Expense';
 import Income from './pages/company/Accounts/Income/Income';
 import ContraVoucher from './pages/company/Accounts/ContraVoucher/ContraVoucher';
+import UserList from './pages/company/Users/UserList';
+import RoleList from './pages/company/Users/RoleList';
 import CustomerDetail from './pages/company/Customers/CustomerDetail';
 
 function App() {
@@ -67,6 +69,8 @@ function App() {
           <Route path="voucher/expenses" element={<Expense />} />
           <Route path="voucher/income" element={<Income />} />
           <Route path="voucher/contra" element={<ContraVoucher />} />
+          <Route path="users/list" element={<UserList />} />
+          <Route path="users/roles" element={<RoleList />} />
           {/* Add other sub-routes here later */}
         </Route>
       </Routes>
