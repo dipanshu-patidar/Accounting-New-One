@@ -11,6 +11,15 @@ import Plans from './pages/superadmin/Plans/Plans';
 import RequestPlan from './pages/superadmin/RequestPlan/RequestPlan';
 import Payments from './pages/superadmin/Payments/Payments';
 import ManagePasswords from './pages/superadmin/ManagePasswords/ManagePasswords';
+import CompanyDashboard from './pages/company/Dashboard/CompanyDashboard';
+import ChartOfAccounts from './pages/company/ChartOfAccounts/ChartOfAccounts';
+import Customers from './pages/company/Customers/Customers';
+import Vendors from './pages/company/Vendors/Vendors';
+import VendorDetail from './pages/company/Vendors/VendorDetail';
+import Transactions from './pages/company/Accounts/Transactions/Transactions';
+import Warehouse from './pages/company/Inventory/Warehouse';
+import UOM from './pages/company/Inventory/UOM/UOM';
+import CustomerDetail from './pages/company/Customers/CustomerDetail';
 
 function App() {
   return (
@@ -33,7 +42,15 @@ function App() {
 
         {/* Company Dashboard Routes */}
         <Route path="/company/*" element={<SuperAdminLayout />}>
-          <Route path="dashboard" element={<div className="p-6"><h1>Company Admin Dashboard</h1></div>} />
+          <Route path="dashboard" element={<CompanyDashboard />} />
+          <Route path="accounts/charts" element={<ChartOfAccounts />} />
+          <Route path="accounts/customers" element={<Customers />} />
+          <Route path="accounts/customers/:id" element={<CustomerDetail />} />
+          <Route path="accounts/vendors" element={<Vendors />} />
+          <Route path="accounts/vendors/:id" element={<VendorDetail />} />
+          <Route path="accounts/transactions" element={<Transactions />} />
+          <Route path="inventory/warehouse" element={<Warehouse />} />
+          <Route path="inventory/uom" element={<UOM />} />
           {/* Add other sub-routes here later */}
         </Route>
       </Routes>
