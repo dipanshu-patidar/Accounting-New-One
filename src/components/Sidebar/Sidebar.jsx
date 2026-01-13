@@ -184,16 +184,22 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
 
     return (
         <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
-            <div className="sidebar-header">
-                <div className="logo">
-                    <span className="logo-main">Z<span className="logo-text-extra">irak</span></span>
-                    <span className="logo-accent"> Books</span>
-                </div>
+            <div className="logo">
+                <span className="logo-short">Z<span className="logo-accent">B</span></span>
+
+                <span className="logo-full">
+                    <span className="logo-main">
+                        Zirak <span className="logo-accent">Books</span>
+                    </span>
+                </span>
             </div>
+
+
             <nav className="sidebar-nav">
                 {renderMenu(menuItems[role] || [])}
             </nav>
         </aside>
+
     );
 };
 
