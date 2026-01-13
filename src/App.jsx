@@ -8,6 +8,8 @@ import { Toaster } from 'react-hot-toast';
 import './index.css';
 
 import Plans from './pages/superadmin/Plans/Plans';
+import RequestPlan from './pages/superadmin/RequestPlan/RequestPlan';
+import Payments from './pages/superadmin/Payments/Payments';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="dashboard" element={<SuperAdminDashboard />} />
           <Route path="company" element={<Company />} />
           <Route path="plan" element={<Plans />} />
+          <Route path="plan-requests" element={<RequestPlan />} />
+          <Route path="payments" element={<Payments />} />
           {/* Add other sub-routes here later */}
         </Route>
 
