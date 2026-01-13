@@ -1,5 +1,4 @@
-/* Reusing base styles from StockTransfer.css */
-@import '../StockTransfer/StockTransfer.css';
+@import '/src/pages/company/Inventory/StockTransfer/StockTransfer.css';
 
 .adjustment-page {
     padding: 1.5rem;

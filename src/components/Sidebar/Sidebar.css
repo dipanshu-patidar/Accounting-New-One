@@ -8,82 +8,121 @@
     border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
     padding: 1.5rem 1rem;
-    /* Added padding around the whole nav area for spacing */
 }
 
-.sidebar.closed {
-    transform: translateX(-100%);
+.sidebar.collapsed {
+    width: 80px;
+    padding: 1.5rem 0.75rem;
 }
 
 .sidebar-header {
-    height: 30px;
+    height: 40px;
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
     margin-bottom: 2rem;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar.collapsed .logo {
+    justify-content: center;
 }
 
 .logo-main {
     font-weight: 800;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: var(--text-main);
     letter-spacing: -1px;
 }
 
 .logo-accent {
     font-weight: 800;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #8ce043;
+}
+
+.sidebar.collapsed .logo-text-extra,
+.sidebar.collapsed .logo-accent {
+    display: none;
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    /* Gap between menu items */
 }
 
 .menu-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem;
+    padding: 0.6rem;
     color: var(--text-main);
     text-decoration: none;
     transition: all 0.2s;
     cursor: pointer;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     border-radius: 12px;
-    /* Rounded pill shape */
-    margin-bottom: 2px;
+    white-space: nowrap;
+}
+
+.sidebar.open .menu-item {
+    padding: 0.6rem 1rem;
 }
 
 .icon-label {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .menu-icon-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    /* Square with rounded corners for icon bg */
-    background-color: #f1f5f9;
-    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    color: #64748b;
     transition: all 0.2s;
 }
 
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 0.6rem 0;
+}
+
+.sidebar.collapsed .icon-label {
+    gap: 0;
+}
+
+.menu-text {
+    flex: 1;
+    transition: opacity 0.2s;
+}
+
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .chevron-wrapper,
+.sidebar.collapsed .submenu {
+    display: none;
+}
+
 .menu-item:hover {
-    background-color: #f8fafc;
+    background-color: #f1f5f9;
 }
 
 .menu-item:hover .menu-icon-wrapper {
@@ -91,49 +130,51 @@
     color: var(--text-main);
 }
 
-/* Active State - Solid Pill matching Image 1 structure but Blue Color as requested */
+/* Active State */
 .menu-item.active,
 .menu-item.active-parent {
     background-color: #8ce043;
-    /* Requested Active Color */
     color: white;
-    box-shadow: 0 4px 6px -1px rgba(96, 245, 82, 0.3);
+    box-shadow: 0 4px 12px rgba(140, 224, 67, 0.25);
 }
 
 .menu-item.active .menu-icon-wrapper,
 .menu-item.active-parent .menu-icon-wrapper {
     background-color: rgba(255, 255, 255, 0.2);
-    /* Semi-transparent white bg for icon */
+    color: white;
+}
+
+.menu-item.active .menu-text,
+.menu-item.active-parent .menu-text {
     color: white;
 }
 
 /* Submenu Styles */
 .submenu {
-    margin-left: 1rem;
+    margin-left: 1.5rem;
     margin-top: 0.25rem;
-    padding-left: 1rem;
-    border-left: 1px solid var(--border);
+    padding-left: 0.75rem;
+    border-left: 1px solid #edf2f7;
 }
 
 .submenu-item {
     display: block;
     padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    color: var(--text-muted);
+    font-size: 0.85rem;
+    color: #64748b;
     text-decoration: none;
-    transition: color 0.2s;
-    border-radius: 6px;
+    transition: all 0.2s;
+    border-radius: 8px;
     margin-bottom: 2px;
 }
 
 .submenu-item:hover {
-    color: black;
-    background-color: #d8ffb4;
+    color: #1e293b;
+    background-color: #f1f5f9;
 }
 
 .submenu-item.active {
     color: #8ce043;
     font-weight: 600;
-    background-color: rgba(128, 245, 82, 0.05);
-    /* Light blue bg for active submenu item */
+    background-color: #f0fdf4;
 }

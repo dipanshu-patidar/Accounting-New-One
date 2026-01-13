@@ -1,0 +1,158 @@
+@import '/src/pages/company/Inventory/InventoryAdjustment/InventoryAdjustment.css';
+
+.contra-page {
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.contra-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.contra-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.contra-table th {
+    text-align: left;
+    padding: 12px 15px;
+    background-color: #f8f9fa;
+    color: #4b5563;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 2px solid #edf2f7;
+    white-space: nowrap;
+}
+
+.contra-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.85rem;
+    color: #374151;
+}
+
+.voucher-no {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.acc-from {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.acc-to {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.amount-cell {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.status-badge.completed {
+    background-color: #ecfdf5;
+    color: #10b981;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Modal Styles */
+.contra-modal {
+    max-width: 750px !important;
+}
+
+.file-input-wrapper-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 4px;
+    background-color: #f8fafc;
+}
+
+.btn-file {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.file-status {
+    font-size: 0.75rem;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-cancel-dark {
+    background-color: #64748b;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* View Styles */
+.view-header-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border-radius: 8px;
+}
+
+.view-payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.view-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
+.view-group p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.amount-text {
+    color: #2563eb !important;
+}
+
+.view-narration-box {
+    background-color: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    min-height: 80px;
+    font-size: 0.9rem;
+    color: #475569;
+}
