@@ -23,6 +23,10 @@ import Inventory from './pages/company/Inventory/ProductInventory/Inventory';
 import Services from './pages/company/Inventory/Services/Services';
 import StockTransfer from './pages/company/Inventory/StockTransfer/StockTransfer';
 import InventoryAdjustment from './pages/company/Inventory/InventoryAdjustment/InventoryAdjustment';
+import CreateVoucher from './pages/company/Voucher/CreateVoucher';
+import Expense from './pages/company/Accounts/Expense/Expense';
+import Income from './pages/company/Accounts/Income/Income';
+import ContraVoucher from './pages/company/Accounts/ContraVoucher/ContraVoucher';
 import CustomerDetail from './pages/company/Customers/CustomerDetail';
 
 function App() {
@@ -59,6 +63,10 @@ function App() {
           <Route path="inventory/services" element={<Services />} />
           <Route path="inventory/transfer" element={<StockTransfer />} />
           <Route path="inventory/adjustment" element={<InventoryAdjustment />} />
+          <Route path="voucher/create" element={<CreateVoucher />} />
+          <Route path="voucher/expenses" element={<Expense />} />
+          <Route path="voucher/income" element={<Income />} />
+          <Route path="voucher/contra" element={<ContraVoucher />} />
           {/* Add other sub-routes here later */}
         </Route>
       </Routes>

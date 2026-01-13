@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
-    LayoutDashboard, Building2, Ticket, CreditCard, Key,
+    Home, Building2, Ticket, CreditCard, Key,
     Users, ShoppingCart, Truck, FileText, ClipboardList,
     BarChart3, Settings, ChevronDown, ChevronRight, Box,
     Calculator, Receipt, UserCog
@@ -22,7 +22,7 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
 
     const menuItems = {
         superadmin: [
-            { path: '/superadmin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+            { path: '/superadmin/dashboard', label: 'Dashboard', icon: Home },
             { path: '/superadmin/company', label: 'Company', icon: Building2 },
             { path: '/superadmin/plan', label: 'Plans & Pricing', icon: Ticket },
             { path: '/superadmin/plan-requests', label: 'Request Plan', icon: ClipboardList },
@@ -30,7 +30,7 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
             { path: '/superadmin/passwords', label: 'Manage Passwords', icon: Key },
         ],
         company: [
-            { path: '/company/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+            { path: '/company/dashboard', label: 'Dashboard', icon: Home },
             {
                 label: 'Accounts',
                 icon: Calculator,
@@ -139,10 +139,14 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                             onClick={() => toggleGroup(item.label)}
                         >
                             <div className="icon-label">
-                                <item.icon size={20} />
-                                <span>{item.label}</span>
+                                <div className="menu-icon-wrapper">
+                                    <item.icon size={18} />
+                                </div>
+                                <span className="menu-text">{item.label}</span>
                             </div>
-                            {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                            <div className="chevron-wrapper">
+                                {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                            </div>
                         </div>
                         {isExpanded && (
                             <div className="submenu">
@@ -168,8 +172,10 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                     className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
                 >
                     <div className="icon-label">
-                        <item.icon size={20} />
-                        <span>{item.label}</span>
+                        <div className="menu-icon-wrapper">
+                            <item.icon size={18} />
+                        </div>
+                        <span className="menu-text">{item.label}</span>
                     </div>
                 </NavLink>
             );
@@ -177,11 +183,11 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
     };
 
     return (
-        <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+        <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
             <div className="sidebar-header">
                 <div className="logo">
-                    {/* <img src={Logo} alt="" /> */}
-                    <span className="logo-main">Zirak</span><span className="logo-accent"> Books</span>
+                    <span className="logo-main">Z<span className="logo-text-extra">irak</span></span>
+                    <span className="logo-accent"> Books</span>
                 </div>
             </div>
             <nav className="sidebar-nav">

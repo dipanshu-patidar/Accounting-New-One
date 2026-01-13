@@ -1,5 +1,5 @@
 /* Reusing base styles from Customers.css */
-@import '../../Customers/Customers.css';
+@import '/src/pages/company/Customers/Customers.css';
 
 .stock-transfer-page {
     padding: 1.5rem;

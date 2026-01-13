@@ -16,12 +16,10 @@
 
 .main-content.sidebar-open {
     margin-left: 260px;
-    /* Width of sidebar */
 }
 
 .main-content.sidebar-closed {
-    margin-left: 0;
-    /* Or collapsed width if we have mini-sidebar */
+    margin-left: 80px;
 }
 
 .page-content {
