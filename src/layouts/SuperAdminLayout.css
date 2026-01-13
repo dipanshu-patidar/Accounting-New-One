@@ -1,6 +1,7 @@
 .layout-container {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
     background-color: var(--background);
 }
 
@@ -9,7 +10,8 @@
     display: flex;
     flex-direction: column;
     transition: margin-left 0.3s ease;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .main-content.sidebar-open {
