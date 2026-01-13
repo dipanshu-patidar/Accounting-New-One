@@ -26,7 +26,7 @@
 }
 
 .btn-add-plan {
-    background-color: #10b981;
+    background-color: #8ce043;
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
@@ -40,7 +40,7 @@
 }
 
 .btn-add-plan:hover {
-    background-color: #059669;
+    background-color: #61cf01;
 }
 
 /* Card Container */
@@ -142,11 +142,11 @@
 }
 
 .bg-pro {
-    background-color: #10b981;
+    background-color: #8ce043;
 }
 
 .status-badge {
-    background-color: #10b981;
+    background-color: #8ce043;
     color: white;
     padding: 2px 8px;
     border-radius: 4px;
@@ -236,9 +236,9 @@
 }
 
 .page-btn.active {
-    background-color: #10b981;
+    background-color: #8ce043;
     color: white;
-    border-color: #10b981;
+    border-color: #8ce043;
 }
 
 .page-btn:disabled {
@@ -371,7 +371,7 @@
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #10b981;
+    border-color: #8ce043;
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
@@ -405,7 +405,7 @@
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: #10b981;
+    accent-color: #8ce043;
 }
 
 .price-input-wrapper {
@@ -453,8 +453,8 @@
 }
 
 .add-btn-small:hover {
-    border-color: #10b981;
-    color: #10b981;
+    border-color: #8ce043;
+    color: #8ce043;
 }
 
 .remove-btn-small:hover {
@@ -485,7 +485,7 @@
 .submit-btn {
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
-    background-color: #10b981;
+    background-color: #8ce043;
     /* Teal for primary action */
     color: white;
     font-weight: 600;
