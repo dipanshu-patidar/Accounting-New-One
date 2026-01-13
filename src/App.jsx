@@ -19,6 +19,7 @@ import VendorDetail from './pages/company/Vendors/VendorDetail';
 import Transactions from './pages/company/Accounts/Transactions/Transactions';
 import Warehouse from './pages/company/Inventory/Warehouse';
 import UOM from './pages/company/Inventory/UOM/UOM';
+import Inventory from './pages/company/Inventory/ProductInventory/Inventory';
 import CustomerDetail from './pages/company/Customers/CustomerDetail';
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
           <Route path="accounts/transactions" element={<Transactions />} />
           <Route path="inventory/warehouse" element={<Warehouse />} />
           <Route path="inventory/uom" element={<UOM />} />
+          <Route path="inventory/products" element={<Inventory />} />
           {/* Add other sub-routes here later */}
         </Route>
       </Routes>
