@@ -46,7 +46,7 @@
 
 .type-badge.add-stock {
     background-color: #ecfdf5;
-    color: #10b981;
+    color: #8ce043;
 }
 
 .type-badge.remove-stock {
@@ -83,7 +83,7 @@
 .radio-label input[type="radio"] {
     width: 16px;
     height: 16px;
-    accent-color: #10b981;
+    accent-color: #8ce043;
 }
 
 .print-btn {

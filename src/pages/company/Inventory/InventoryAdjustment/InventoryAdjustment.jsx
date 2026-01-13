@@ -254,7 +254,7 @@ const InventoryAdjustment = () => {
                         </div>
                         <div className="modal-footer">
                             <button className="btn-cancel" onClick={() => { setShowAddModal(false); setShowEditModal(false); }}>Cancel</button>
-                            <button className="btn-submit" style={{ backgroundColor: '#10b981' }}>Save Adjustment</button>
+                            <button className="btn-submit" style={{ backgroundColor: '#8ce043' }}>Save Adjustment</button>
                         </div>
                     </div>
                 </div>
