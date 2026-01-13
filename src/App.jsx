@@ -10,6 +10,7 @@ import './index.css';
 import Plans from './pages/superadmin/Plans/Plans';
 import RequestPlan from './pages/superadmin/RequestPlan/RequestPlan';
 import Payments from './pages/superadmin/Payments/Payments';
+import ManagePasswords from './pages/superadmin/ManagePasswords/ManagePasswords';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="plan" element={<Plans />} />
           <Route path="plan-requests" element={<RequestPlan />} />
           <Route path="payments" element={<Payments />} />
+          <Route path="passwords" element={<ManagePasswords />} />
           {/* Add other sub-routes here later */}
         </Route>
 
