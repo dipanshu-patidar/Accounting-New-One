@@ -42,7 +42,7 @@ const Login = () => {
         <div className="login-container">
             <div className="login-card">
                 <div className="login-header">
-                    <h1 className="logo-text">ACCOUNT<span className="accent">GO</span></h1>
+                    <h1 className="logo-text accent">Zirak Books</h1>
                     <p className="login-subtext">Welcome back! Please sign in to continue.</p>
                 </div>
 
@@ -94,10 +94,6 @@ const Login = () => {
                         {!loading && <ArrowRight size={18} />}
                     </button>
                 </form>
-
-                <div className="demo-credentials">
-                    <p><strong>Demo Mode:</strong> Just click Sign In to enter.</p>
-                </div>
             </div>
         </div>
     );

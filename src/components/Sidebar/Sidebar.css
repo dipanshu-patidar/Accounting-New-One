@@ -20,7 +20,7 @@
 }
 
 .sidebar-header {
-    height: 60px;
+    height: 30px;
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
@@ -29,14 +29,14 @@
 
 .logo-main {
     font-weight: 800;
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: var(--text-main);
     letter-spacing: -1px;
 }
 
 .logo-accent {
     font-weight: 800;
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: #8ce043;
 }
 
@@ -94,10 +94,10 @@
 /* Active State - Solid Pill matching Image 1 structure but Blue Color as requested */
 .menu-item.active,
 .menu-item.active-parent {
-    background-color: #5286f5;
+    background-color: #8ce043;
     /* Requested Active Color */
     color: white;
-    box-shadow: 0 4px 6px -1px rgba(82, 134, 245, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(96, 245, 82, 0.3);
 }
 
 .menu-item.active .menu-icon-wrapper,
@@ -127,13 +127,13 @@
 }
 
 .submenu-item:hover {
-    color: var(--primary);
-    background-color: #f0f9ff;
+    color: black;
+    background-color: #d8ffb4;
 }
 
 .submenu-item.active {
-    color: #5286f5;
+    color: #8ce043;
     font-weight: 600;
-    background-color: rgba(82, 134, 245, 0.05);
+    background-color: rgba(128, 245, 82, 0.05);
     /* Light blue bg for active submenu item */
 }
