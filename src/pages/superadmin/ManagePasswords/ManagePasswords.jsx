@@ -3,7 +3,6 @@ import { Key } from 'lucide-react';
 import './ManagePasswords.css';
 
 const ManagePasswords = () => {
-    // Mock Data - Empty by default as per image 1, but ready structure
     const [requests, setRequests] = useState([]);
 
     return (
@@ -11,7 +10,6 @@ const ManagePasswords = () => {
             <div className="page-header">
                 <div className="page-title">
                     <h1>Manage Passwords</h1>
-                    <p className="sub-title">Review and manage password change requests</p>
                 </div>
             </div>
 
