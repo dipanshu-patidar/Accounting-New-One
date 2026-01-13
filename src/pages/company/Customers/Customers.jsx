@@ -160,10 +160,10 @@ const Customers = () => {
                                     <td>
                                         <div className="action-buttons">
                                             <button className="action-btn btn-view" data-tooltip="View" onClick={() => navigate(`/company/accounts/customers/${cust.id}`)}>
-                                                <Eye size={16} />
+                                                <Eye size={18} />
                                             </button>
                                             <button className="action-btn btn-edit" data-tooltip="Edit" onClick={() => handleEdit(cust)}>
-                                                <Pencil size={16} />
+                                                <Pencil size={18} />
                                             </button>
                                             <button className="action-btn btn-delete" data-tooltip="Delete" onClick={() => handleDelete(cust)}>
                                                 <Trash2 size={16} />
