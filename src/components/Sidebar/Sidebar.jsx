@@ -24,7 +24,7 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
         superadmin: [
             { path: '/superadmin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
             { path: '/superadmin/company', label: 'Company', icon: Building2 },
-            { path: '/superadmin/plans', label: 'Plans & Pricing', icon: Ticket },
+            { path: '/superadmin/plan', label: 'Plans & Pricing', icon: Ticket },
             { path: '/superadmin/plan-requests', label: 'Request Plan', icon: ClipboardList },
             { path: '/superadmin/payments', label: 'Payments', icon: CreditCard },
             { path: '/superadmin/passwords', label: 'Manage Passwords', icon: Key },
