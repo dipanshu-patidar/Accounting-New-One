@@ -20,6 +20,9 @@ import Transactions from './pages/company/Accounts/Transactions/Transactions';
 import Warehouse from './pages/company/Inventory/Warehouse';
 import UOM from './pages/company/Inventory/UOM/UOM';
 import Inventory from './pages/company/Inventory/ProductInventory/Inventory';
+import Services from './pages/company/Inventory/Services/Services';
+import StockTransfer from './pages/company/Inventory/StockTransfer/StockTransfer';
+import InventoryAdjustment from './pages/company/Inventory/InventoryAdjustment/InventoryAdjustment';
 import CustomerDetail from './pages/company/Customers/CustomerDetail';
 
 function App() {
@@ -53,6 +56,9 @@ function App() {
           <Route path="inventory/warehouse" element={<Warehouse />} />
           <Route path="inventory/uom" element={<UOM />} />
           <Route path="inventory/products" element={<Inventory />} />
+          <Route path="inventory/services" element={<Services />} />
+          <Route path="inventory/transfer" element={<StockTransfer />} />
+          <Route path="inventory/adjustment" element={<InventoryAdjustment />} />
           {/* Add other sub-routes here later */}
         </Route>
       </Routes>
