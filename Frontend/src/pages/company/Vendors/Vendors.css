@@ -1,0 +1,7 @@
+/* Reusing styles from Customers.css for consistency */
+@import '../Customers/Customers.css';
+
+.voucher-badge {
+    border: 1px solid #8ce043;
+    color: #8ce043;
+}
