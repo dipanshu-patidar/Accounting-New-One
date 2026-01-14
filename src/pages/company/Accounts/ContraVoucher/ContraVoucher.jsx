@@ -262,7 +262,7 @@ const ContraVoucher = () => {
                             </button>
                         </div>
                         <div className="modal-body text-center py-4">
-                            <Trash2 size={48} color="#ef4444" className="mx-auto mb-3" />
+                            <Trash2 size={48} color="#ef4444" className="text-center mx-auto mb-3" />
                             <p className="text-gray-600">Are you sure you want to delete contra voucher <strong>{selectedVoucher?.voucherNo}</strong>?</p>
                         </div>
                         <div className="modal-footer">
