@@ -3,20 +3,65 @@ import {
     Search, Plus, Pencil, Trash2, X, ChevronDown,
     FileText, ShoppingCart, Truck, Receipt, CreditCard,
     CheckCircle2, Clock, ArrowRight, Download, Send, Printer,
-    Link, FileSearch
+    Eye, Copy, ArrowLeft, AlertTriangle
 } from 'lucide-react';
 import './Invoice.css';
 
 const Invoice = () => {
-    const [showAddModal, setShowAddModal] = useState(false);
-    const [creationMode, setCreationMode] = useState('direct'); // 'direct', 'from_quote', 'from_order'
-    const [showSourceSelect, setShowSourceSelect] = useState(false);
-    const [selectedSource, setSelectedSource] = useState(null);
+    // --- State Management ---
+    const [invoices, setInvoices] = useState([
+        { id: 1, invoiceNo: '#INVO00001', customer: 'Keir', issueDate: 'Apr 8, 2025', dueDate: 'Jun 12, 2025', amount: 56.50, status: 'Partially Paid' },
+        { id: 2, invoiceNo: '#INVO00002', customer: 'Ida F. Mullen', issueDate: 'Apr 8, 2025', dueDate: 'Apr 17, 2025', amount: 454.93, status: 'Partially Paid' },
+        { id: 3, invoiceNo: '#INVO00003', customer: 'Keir', issueDate: 'Apr 8, 2025', dueDate: 'Apr 30, 2025', amount: 40200.00, status: 'Partially Paid' },
+        { id: 4, invoiceNo: '#INVO00004', customer: 'Keir', issueDate: 'Apr 8, 2025', dueDate: 'May 14, 2025', amount: 95.50, status: 'Sent' },
+    ]);
 
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    // View Request State
+    const [viewMode, setViewMode] = useState(false);
+    const [selectedInvoice, setSelectedInvoice] = useState(null);
+    const [invoiceToDelete, setInvoiceToDelete] = useState(null);
+
+    // Header & Meta
+    const [companyDetails, setCompanyDetails] = useState({
+        name: 'Zirak Books',
+        address: '123 Business Avenue, Suite 404',
+        email: 'info@zirakbooks.com',
+        phone: '123-456-7890'
+    });
+
+    const [invoiceMeta, setInvoiceMeta] = useState({
+        manualNo: '',
+        date: new Date().toISOString().split('T')[0],
+        dueDate: ''
+    });
+
+    // Customer
     const [customer, setCustomer] = useState('');
-    const [items, setItems] = useState([{ id: 1, name: '', qty: 1, rate: 0, tax: 0, total: 0 }]);
-    const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().split('T')[0]);
-    const [dueDate, setDueDate] = useState('');
+    const [customerDetails, setCustomerDetails] = useState({
+        address: '',
+        email: '',
+        phone: ''
+    });
+
+    // Items
+    const [items, setItems] = useState([
+        { id: 1, name: '', warehouse: '', qty: 1, rate: 0, tax: 0, discount: 0, total: 0 }
+    ]);
+
+    // Footer
+    const [bankDetails, setBankDetails] = useState({
+        bankName: 'HDFC Bank',
+        accNo: '50200012345678',
+        holderName: 'Zirak Trading Pvt Ltd',
+        ifsc: 'HDFC0000456'
+    });
+
+    const [notes, setNotes] = useState('');
+    const [terms, setTerms] = useState('"Payment is due within 15 days.",\n"Late payments are subject to interest."');
 
     const salesProcess = [
         { id: 'quotation', label: 'Quotation', icon: FileText, status: 'completed' },
@@ -26,34 +71,8 @@ const Invoice = () => {
         { id: 'payment', label: 'Payment', icon: CreditCard, status: 'pending' },
     ];
 
-    const sampleQuotes = [
-        { id: 'QUO-2024-001', customer: 'Acme Corp', date: '2024-01-10', items: [{ id: 101, name: 'Web Dev Package', qty: 1, rate: 3000, tax: 18, total: 3540 }] }
-    ];
-
-    const sampleOrders = [
-        { id: 'SO-2024-001', customer: 'Global Tech', date: '2024-01-15', items: [{ id: 103, name: 'Cloud Server', qty: 12, rate: 200, tax: 5, total: 2520 }] }
-    ];
-
-    const handleCreationModeToggle = (mode) => {
-        setCreationMode(mode);
-        if (mode !== 'direct') {
-            setShowSourceSelect(true);
-        } else {
-            setSelectedSource(null);
-            setCustomer('');
-            setItems([{ id: 1, name: '', qty: 1, rate: 0, tax: 0, total: 0 }]);
-        }
-    };
-
-    const handleSelectSource = (source) => {
-        setSelectedSource(source);
-        setCustomer(source.customer);
-        setItems(source.items.map(item => ({ ...item })));
-        setShowSourceSelect(false);
-    };
-
     const addItem = () => {
-        setItems([...items, { id: Date.now(), name: '', qty: 1, rate: 0, tax: 0, total: 0 }]);
+        setItems([...items, { id: Date.now(), name: '', warehouse: '', qty: 1, rate: 0, tax: 0, discount: 0, total: 0 }]);
     };
 
     const removeItem = (id) => {
@@ -66,10 +85,17 @@ const Invoice = () => {
         setItems(items.map(item => {
             if (item.id === id) {
                 const updatedItem = { ...item, [field]: value };
-                if (field === 'qty' || field === 'rate' || field === 'tax') {
-                    const subtotal = updatedItem.qty * (parseFloat(updatedItem.rate) || 0);
-                    const taxAmount = (subtotal * (parseFloat(updatedItem.tax) || 0)) / 100;
-                    updatedItem.total = subtotal + taxAmount;
+                if (['qty', 'rate', 'tax', 'discount'].includes(field)) {
+                    const qty = parseFloat(updatedItem.qty) || 0;
+                    const rate = parseFloat(updatedItem.rate) || 0;
+                    const tax = parseFloat(updatedItem.tax) || 0;
+                    const discount = parseFloat(updatedItem.discount) || 0;
+
+                    const subtotal = qty * rate;
+                    const taxable = subtotal - discount;
+                    const taxAmount = (taxable * tax) / 100;
+
+                    updatedItem.total = taxable + taxAmount;
                 }
                 return updatedItem;
             }
@@ -77,25 +103,341 @@ const Invoice = () => {
         }));
     };
 
-    const calculateGrandTotal = () => {
-        return items.reduce((sum, item) => sum + item.total, 0);
+    const calculateTotals = () => {
+        return items.reduce((acc, item) => {
+            const qty = parseFloat(item.qty) || 0;
+            const rate = parseFloat(item.rate) || 0;
+            const discount = parseFloat(item.discount) || 0;
+            const subtotal = qty * rate;
+
+            acc.subTotal += subtotal;
+            acc.discount += discount;
+            acc.total += item.total;
+            acc.tax += (item.total - (subtotal - discount));
+            return acc;
+        }, { subTotal: 0, tax: 0, discount: 0, total: 0 });
     };
 
+    const totals = calculateTotals();
+
+    // Helper to get status class
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'Partially Paid': return 'partial';
+            case 'Paid': return 'paid';
+            case 'Sent': return 'sent';
+            case 'Overdue': return 'overdue';
+            default: return 'pending';
+        }
+    };
+
+    // --- Actions Handlers ---
+
+    const handleView = (invoice) => {
+        const fullDetails = {
+            ...invoice,
+            billedTo: {
+                name: 'Keir',
+                address: '198, Bombay Talkies Compd, Himanshurai Road, Malad (west)',
+                city: 'Mumbai, Maharashtra 400064',
+                country: 'India',
+                phone: '+02228806140',
+                taxNo: '560',
+                gstNo: 'GS1456'
+            },
+            shippedTo: {
+                name: 'Keir',
+                address: '198, Bombay Talkies Compd, Himanshurai Road, Malad (west)',
+                city: 'Mumbai, Maharashtra 400064',
+                country: 'India',
+                phone: '+02228806140',
+                taxNo: '560'
+            },
+            items: [
+                { id: 1, name: 'Bicycle parts', qty: 1, unit: 'Inch', rate: 150.00, discount: 0.00, tax: 16.50, description: '-', total: 150.00 }
+            ],
+            subTotal: 150.00,
+            discountTotal: 0.00,
+            cgst: 8.25,
+            sgst: 8.25,
+            totalAmount: 166.50,
+            paidAmount: 100.00,
+            creditNote: 10.00,
+            dueAmount: 56.50
+        };
+        setSelectedInvoice(fullDetails);
+        setViewMode(true);
+    };
+
+    const handleDelete = (invoice) => {
+        setInvoiceToDelete(invoice);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = () => {
+        if (invoiceToDelete) {
+            setInvoices(invoices.filter(inv => inv.id !== invoiceToDelete.id));
+            setShowDeleteModal(false);
+            setInvoiceToDelete(null);
+            if (viewMode) setViewMode(false); // Close full view if deleted
+        }
+    };
+
+    const handleEdit = (invoice) => {
+        // Pre-fill logic would go here. For now, populating with sample data
+        setCustomer(invoice.customer);
+        setInvoiceMeta({ ...invoiceMeta, manualNo: invoice.invoiceNo });
+        setShowEditModal(true);
+    };
+
+    const handlePrint = () => {
+        window.print();
+    };
+
+    // --- RENDER FULL PAGE VIEW IF IN VIEW MODE ---
+    if (viewMode && selectedInvoice) {
+        return (
+            <div className="invoice-full-page-view">
+                <div className="view-page-header no-print">
+                    <button className="btn-back" onClick={() => setViewMode(false)}>
+                        <ArrowLeft size={18} /> Back to Invoices
+                    </button>
+                    <div className="view-actions">
+                        <button className="btn-print" onClick={handlePrint}>
+                            <Printer size={18} /> Print
+                        </button>
+                    </div>
+                </div>
+
+                <div className="view-content-wrapper printable-area">
+                    {/* Header */}
+                    <div className="view-doc-header">
+                        <div className="doc-title-row">
+                            <h1 className="doc-main-title">Invoice</h1>
+                            <span className="doc-number">{selectedInvoice.invoiceNo}</span>
+                        </div>
+                        <div className="view-dates-row">
+                            <div className="date-group">
+                                <span className="date-label">Issue Date:</span>
+                                <span className="date-val">{selectedInvoice.issueDate}</span>
+                            </div>
+                            <div className="date-group">
+                                <span className="date-label">Due Date:</span>
+                                <span className="date-val">{selectedInvoice.dueDate}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Addresses */}
+                    <div className="view-address-grid">
+                        <div className="addr-col">
+                            <h4 className="addr-title">Billed To:</h4>
+                            <p className="addr-name">{selectedInvoice.billedTo.name}</p>
+                            <p className="addr-text">{selectedInvoice.billedTo.address}</p>
+                            <p className="addr-text">{selectedInvoice.billedTo.city}</p>
+                            <p className="addr-text">{selectedInvoice.billedTo.country}</p>
+                            <p className="addr-text mt-2">{selectedInvoice.billedTo.phone}</p>
+                            <p className="addr-text">Tax Number: {selectedInvoice.billedTo.taxNo}</p>
+                            <p className="addr-text">GST Number : {selectedInvoice.billedTo.gstNo}</p>
+                        </div>
+                        <div className="addr-col">
+                            <h4 className="addr-title">Shipped To:</h4>
+                            <p className="addr-name">{selectedInvoice.shippedTo.name}</p>
+                            <p className="addr-text">{selectedInvoice.shippedTo.address}</p>
+                            <p className="addr-text">{selectedInvoice.shippedTo.city}</p>
+                            <p className="addr-text">{selectedInvoice.shippedTo.country}</p>
+                            <p className="addr-text mt-2">{selectedInvoice.shippedTo.phone}</p>
+                            <p className="addr-text">Tax Number: {selectedInvoice.shippedTo.taxNo}</p>
+                        </div>
+                        <div className="qr-col">
+                            <div className="qr-placeholder">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=InvoiceDemo" alt="QR Code" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Status */}
+                    <div className="view-status-row">
+                        <span className="view-status-label">Status :</span>
+                        <span className={`status-pill ${getStatusClass(selectedInvoice.status)}`}>{selectedInvoice.status}</span>
+                    </div>
+
+                    {/* Product Summary */}
+                    <h3 className="product-summary-title">Product Summary</h3>
+                    <p className="product-summary-subtitle">All items here cannot be deleted.</p>
+
+                    {/* Table */}
+                    <div className="view-table-container">
+                        <table className="view-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Rate</th>
+                                    <th>Discount</th>
+                                    <th>Tax</th>
+                                    <th>Description</th>
+                                    <th className="text-right">
+                                        Price
+                                        <span className="sub-header-red">before tax & discount</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {selectedInvoice.items.map((item, idx) => (
+                                    <tr key={idx}>
+                                        <td>{idx + 1}</td>
+                                        <td className="font-medium text-blue-600">{item.name}</td>
+                                        <td>{item.qty} ({item.unit})</td>
+                                        <td>${item.rate.toFixed(2)}</td>
+                                        <td>${item.discount.toFixed(2)}</td>
+                                        <td>
+                                            <div className="tax-breakdown">
+                                                <div className="tax-row"><span>CGST (5.5%)</span> <span>${(item.tax / 2).toFixed(2)}</span></div>
+                                                <div className="tax-row"><span>SGST (5.5%)</span> <span>${(item.tax / 2).toFixed(2)}</span></div>
+                                            </div>
+                                        </td>
+                                        <td>{item.description}</td>
+                                        <td className="text-right font-medium">${item.total.toFixed(2)}</td>
+                                    </tr>
+                                ))}
+                                <tr className="view-table-total-row">
+                                    <td colSpan="2" className="font-bold">Total</td>
+                                    <td className="font-bold">1</td>
+                                    <td className="font-bold">$150.00</td>
+                                    <td className="font-bold">$0.00</td>
+                                    <td className="font-bold">$16.50</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Footer Totals */}
+                    <div className="view-footer-totals">
+                        <div className="vf-row"><span>Sub Total</span> <span>${selectedInvoice.subTotal.toFixed(2)}</span></div>
+                        <div className="vf-row"><span>Discount</span> <span>${selectedInvoice.discountTotal.toFixed(2)}</span></div>
+                        <div className="vf-row"><span>CGST</span> <span>${selectedInvoice.cgst.toFixed(2)}</span></div>
+                        <div className="vf-row"><span>SGST</span> <span>${selectedInvoice.sgst.toFixed(2)}</span></div>
+                        <div className="vf-row total"><span>Total</span> <span>${selectedInvoice.totalAmount.toFixed(2)}</span></div>
+                        <div className="vf-row"><span>Paid</span> <span>${selectedInvoice.paidAmount.toFixed(2)}</span></div>
+                        <div className="vf-row"><span>Credit Note</span> <span>${selectedInvoice.creditNote.toFixed(2)}</span></div>
+                        <div className="vf-row due"><span>Due</span> <span>${selectedInvoice.dueAmount.toFixed(2)}</span></div>
+                    </div>
+                </div>
+
+                {/* Edit Modal Logic - reusing the component rendering below but conditionally */}
+                {showEditModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content invoice-form-modal">
+                            <div className="modal-header-simple">
+                                <h2 className="text-xl font-bold text-gray-800">Edit Invoice</h2>
+                                <button className="close-btn-simple" onClick={() => setShowEditModal(false)}>
+                                    <X size={24} />
+                                </button>
+                            </div>
+                            <div className="modal-body-scrollable">
+                                <div className="form-section-grid">
+                                    <div className="company-section">
+                                        <div className="logo-upload-box"><h1 className="company-logo-text">BOOK</h1></div>
+                                        <div className="company-inputs">
+                                            <input type="text" className="full-width-input user-editable" value={companyDetails.name} onChange={(e) => setCompanyDetails({ ...companyDetails, name: e.target.value })} />
+                                            <input type="text" className="full-width-input user-editable" value={companyDetails.address} onChange={(e) => setCompanyDetails({ ...companyDetails, address: e.target.value })} />
+                                            <input type="text" className="full-width-input user-editable" value={companyDetails.email} onChange={(e) => setCompanyDetails({ ...companyDetails, email: e.target.value })} />
+                                            <input type="text" className="full-width-input user-editable" value={companyDetails.phone} onChange={(e) => setCompanyDetails({ ...companyDetails, phone: e.target.value })} />
+                                        </div>
+                                    </div>
+                                    <div className="meta-section">
+                                        <div className="meta-row"><label>Invoice No.</label><input type="text" value={invoiceMeta.manualNo || "INV-001"} disabled className="meta-input disabled" /></div>
+                                        {/* ... meta rows usually distinct ... */}
+                                    </div>
+                                </div>
+                                <hr className="divider" />
+                                <div className="customer-section">
+                                    <div className="form-group mb-2">
+                                        <label className="form-label-sm">Bill To</label>
+                                        <select className="form-select-large" value={customer} onChange={(e) => setCustomer(e.target.value)}>
+                                            <option value="">Select Customer...</option>
+                                            <option value={customer || "Default"}>{customer || "Acme Corp"}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                {/* Items Table - Simplified reuse */}
+                                <div className="items-section-new">
+                                    <button className="btn-add-row" onClick={addItem}>
+                                        <Plus size={14} /> Add Line Item
+                                    </button>
+                                    <div className="table-responsive">
+                                        <table className="new-items-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style={{ width: '25%' }}>ITEM DETAIL</th>
+                                                    <th style={{ width: '15%' }}>WAREHOUSE</th>
+                                                    <th style={{ width: '10%' }}>QTY</th>
+                                                    <th style={{ width: '12%' }}>RATE</th>
+                                                    <th style={{ width: '10%' }}>TAX %</th>
+                                                    <th style={{ width: '10%' }}>DISC.</th>
+                                                    <th style={{ width: '12%' }}>AMOUNT</th>
+                                                    <th style={{ width: '6%' }}></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {/* Reuse items state */}
+                                                {items.map(item => (
+                                                    <tr key={item.id}>
+                                                        <td><input type="text" value={item.name} onChange={(e) => updateItem(item.id, 'name', e.target.value)} /></td>
+                                                        {/* ... just placeholders for functional demo ... */}
+                                                        <td colSpan="7" className="text-center text-gray-400">... (Editable Items) ...</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer-simple">
+                                <button className="btn-plain" onClick={() => setShowEditModal(false)}>Cancel</button>
+                                <button className="btn-primary-green" onClick={() => setShowEditModal(false)}>Update Invoice</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Delete Confirmation Modal */}
+                {showDeleteModal && (
+                    <div className="modal-overlay">
+                        <div className="confirmation-modal">
+                            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: '#ef4444' }}>
+                                <AlertTriangle size={48} />
+                            </div>
+                            <h3>Delete Invoice?</h3>
+                            <p>Are you sure you want to delete this invoice? This action cannot be undone.</p>
+                            <div className="confirmation-actions">
+                                <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                                <button className="btn-delete-confirm" onClick={confirmDelete}>Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    // --- DEFAULT RENDER (LIST) ---
     return (
         <div className="invoice-page">
             <div className="page-header">
-                <div className="header-left">
-                    <h1 className="page-title">Invoice</h1>
-                    <p className="page-subtitle">Create and send invoices to customers</p>
+                <div>
+                    <h1 className="page-title">Invoices</h1>
+                    <p className="page-subtitle">Manage billing and payments</p>
                 </div>
-                <div className="header-actions">
-                    <button className="btn-add" onClick={() => setShowAddModal(true)}>
-                        <Plus size={18} className="mr-2" /> New Invoice
-                    </button>
-                </div>
+                <button className="btn-add" onClick={() => setShowAddModal(true)}>
+                    <Plus size={18} className="mr-2" /> CREATE INVOICE
+                </button>
             </div>
 
-            {/* Sales Process Tracker */}
             <div className="process-tracker-card">
                 <div className="tracker-wrapper">
                     {salesProcess.map((step, index) => (
@@ -119,285 +461,317 @@ const Invoice = () => {
             </div>
 
             <div className="table-card mt-6">
-                <div className="table-controls">
-                    <div className="search-control">
-                        <Search size={18} className="search-icon" />
-                        <input type="text" placeholder="Search invoices..." className="search-input" />
-                    </div>
-                </div>
-
                 <div className="table-container">
                     <table className="invoice-table">
                         <thead>
                             <tr>
-                                <th>INVOICE #</th>
+                                <th>INVOICE</th>
                                 <th>CUSTOMER</th>
-                                <th>DATE</th>
+                                <th>ISSUE DATE</th>
                                 <th>DUE DATE</th>
-                                <th>AMOUNT</th>
+                                <th>AMOUNT DUE</th>
                                 <th>STATUS</th>
                                 <th className="text-right">ACTION</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="font-bold text-blue-600">INV-2024-001</td>
-                                <td>Acme Corp</td>
-                                <td>Jan 20, 2024</td>
-                                <td>Feb 20, 2024</td>
-                                <td className="font-bold">$4,720.00</td>
-                                <td><span className="status-pill due">Unpaid</span></td>
-                                <td className="text-right">
-                                    <div className="action-buttons">
-                                        <button className="btn-icon-edit"><Pencil size={16} /></button>
-                                        <button className="btn-icon-delete"><Trash2 size={16} /></button>
-                                    </div>
-                                </td>
-                            </tr>
+                            {invoices.map(inv => (
+                                <tr key={inv.id}>
+                                    <td>
+                                        <span className="invoice-badge cursor-pointer" onClick={() => handleView(inv)}>{inv.invoiceNo}</span>
+                                    </td>
+                                    <td className="font-medium">{inv.customer}</td>
+                                    <td>{inv.issueDate}</td>
+                                    <td>
+                                        <span className="text-red-highlight">{inv.dueDate}</span>
+                                    </td>
+                                    <td>
+                                        <span className="text-amount-bold">${inv.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                    </td>
+                                    <td>
+                                        <span className={`status-pill ${getStatusClass(inv.status)}`}>
+                                            {inv.status}
+                                        </span>
+                                    </td>
+                                    <td className="text-right">
+                                        <div className="action-buttons">
+                                            <button className="btn-icon-view" title="View" onClick={() => handleView(inv)}><Eye size={16} /></button>
+                                            <button className="btn-action-header edit" title="Edit Invoice" onClick={() => handleEdit(inv)}>
+                                                <Pencil size={18} />
+                                            </button>
+                                            <button className="btn-action-header delete" title="Delete Invoice" onClick={() => handleDelete(inv)}>
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            {/* Create Invoice Modal */}
+            {/* Premium Create Modal */}
             {showAddModal && (
                 <div className="modal-overlay">
-                    <div className="modal-content invoice-modal">
-                        <div className="modal-header">
-                            <div>
-                                <h2 className="modal-title">Create New Invoice</h2>
-                                <p className="modal-subtitle">Generate official invoice for payment</p>
-                            </div>
-                            <button className="close-btn" onClick={() => setShowAddModal(false)}>
-                                <X size={20} />
+                    <div className="modal-content invoice-form-modal">
+                        <div className="modal-header-simple">
+                            <h2 className="text-xl font-bold text-gray-800">New Invoice</h2>
+                            <button className="close-btn-simple" onClick={() => setShowAddModal(false)}>
+                                <X size={24} />
                             </button>
                         </div>
-
-                        <div className="modal-body">
-                            {/* Mode Selection */}
-                            <div className="creation-type-selector mb-6">
-                                <button
-                                    className={`mode-btn ${creationMode === 'direct' ? 'active' : ''}`}
-                                    onClick={() => handleCreationModeToggle('direct')}
-                                >
-                                    Direct
-                                </button>
-                                <button
-                                    className={`mode-btn ${creationMode === 'from_quote' ? 'active' : ''}`}
-                                    onClick={() => handleCreationModeToggle('from_quote')}
-                                >
-                                    From Quote
-                                </button>
-                                <button
-                                    className={`mode-btn ${creationMode === 'from_order' ? 'active' : ''}`}
-                                    onClick={() => handleCreationModeToggle('from_order')}
-                                >
-                                    From Order
-                                </button>
+                        <div className="modal-body-scrollable">
+                            {/* ... (Existing Create Modal Content) ... */}
+                            {/* Top Section */}
+                            <div className="form-section-grid">
+                                <div className="company-section">
+                                    <div className="logo-upload-box">
+                                        <h1 className="company-logo-text">BOOK</h1>
+                                    </div>
+                                    <div className="company-inputs">
+                                        <input type="text" className="full-width-input user-editable"
+                                            value={companyDetails.name} onChange={(e) => setCompanyDetails({ ...companyDetails, name: e.target.value })} />
+                                        <input type="text" className="full-width-input user-editable"
+                                            value={companyDetails.address} onChange={(e) => setCompanyDetails({ ...companyDetails, address: e.target.value })} />
+                                        <input type="text" className="full-width-input user-editable"
+                                            value={companyDetails.email} onChange={(e) => setCompanyDetails({ ...companyDetails, email: e.target.value })} />
+                                        <input type="text" className="full-width-input user-editable"
+                                            value={companyDetails.phone} onChange={(e) => setCompanyDetails({ ...companyDetails, phone: e.target.value })} />
+                                    </div>
+                                </div>
+                                <div className="meta-section">
+                                    <div className="meta-row">
+                                        <label>Invoice No.</label>
+                                        <input type="text" value="INV-2024-001" disabled className="meta-input disabled" />
+                                    </div>
+                                    <div className="meta-row">
+                                        <label>Manual Ref</label>
+                                        <input type="text" placeholder="e.g. PO-REF-001"
+                                            value={invoiceMeta.manualNo} onChange={(e) => setInvoiceMeta({ ...invoiceMeta, manualNo: e.target.value })}
+                                            className="meta-input" />
+                                    </div>
+                                    <div className="meta-row">
+                                        <label>Date</label>
+                                        <input type="date"
+                                            value={invoiceMeta.date} onChange={(e) => setInvoiceMeta({ ...invoiceMeta, date: e.target.value })}
+                                            className="meta-input" />
+                                    </div>
+                                    <div className="meta-row">
+                                        <label>Due Date</label>
+                                        <input type="date"
+                                            value={invoiceMeta.dueDate} onChange={(e) => setInvoiceMeta({ ...invoiceMeta, dueDate: e.target.value })}
+                                            className="meta-input" />
+                                    </div>
+                                    <div className="status-indicator" style={{ color: '#ef4444', borderColor: '#ef4444' }}>
+                                        UNPAID
+                                    </div>
+                                </div>
                             </div>
-
-                            {/* Source Selection Lists */}
-                            {showSourceSelect && !selectedSource && (
-                                <div className="source-link-container">
-                                    <h3 className="text-sm font-bold mb-3 text-gray-700">
-                                        Select {creationMode === 'from_quote' ? 'Quotation' : 'Sales Order'}
-                                    </h3>
-                                    <div className="source-grid">
-                                        {(creationMode === 'from_quote' ? sampleQuotes : sampleOrders).map(item => (
-                                            <div key={item.id} className="source-link-card" onClick={() => handleSelectSource(item)}>
-                                                <div className="s-card-header">
-                                                    <span className="s-id">{item.id}</span>
-                                                    <span className="s-date">{item.date}</span>
-                                                </div>
-                                                <div className="s-card-body">
-                                                    <span className="s-customer">{item.customer}</span>
-                                                    <span className="s-items font-bold text-green-600">${item.items.reduce((a, b) => a + b.total, 0)}</span>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                            <hr className="divider" />
+                            {/* Customer Section */}
+                            <div className="customer-section">
+                                <div className="form-group mb-2">
+                                    <label className="form-label-sm">Bill To</label>
+                                    <select className="form-select-large" value={customer} onChange={(e) => setCustomer(e.target.value)}>
+                                        <option value="">Select Customer...</option>
+                                        <option value="Acme Corp">Acme Corp</option>
+                                        <option value="Global Tech">Global Tech</option>
+                                    </select>
                                 </div>
-                            )}
-
-                            <div className="form-container">
-                                {/* Company Info - Read Only */}
-                                <div className="company-info-readonly mb-6">
-                                    <div className="company-brand">
-                                        <div className="logo-placeholder">ZB</div>
-                                        <div className="brand-details">
-                                            <h4>Zirak Books</h4>
-                                            <p>123 Business Avenue, Suite 404</p>
-                                        </div>
-                                    </div>
-                                    <div className="company-meta">
-                                        <p><strong>GSTIN:</strong> 27AAPCM0314L1Z3</p>
-                                        <p><strong>Bank:</strong> HDFC Bank (A/C: ...5562)</p>
-                                    </div>
+                                <div className="customer-details-grid">
+                                    <input type="text" placeholder="Billing Address" className="detail-input"
+                                        value={customerDetails.address} onChange={(e) => setCustomerDetails({ ...customerDetails, address: e.target.value })} />
+                                    <input type="email" placeholder="Email Address" className="detail-input"
+                                        value={customerDetails.email} onChange={(e) => setCustomerDetails({ ...customerDetails, email: e.target.value })} />
+                                    <input type="tel" placeholder="Phone Number" className="detail-input"
+                                        value={customerDetails.phone} onChange={(e) => setCustomerDetails({ ...customerDetails, phone: e.target.value })} />
                                 </div>
-
-                                <div className="form-grid-3">
-                                    <div className="form-group">
-                                        <label className="form-label">Customer Name</label>
-                                        <select
-                                            className="form-input"
-                                            value={customer}
-                                            onChange={(e) => setCustomer(e.target.value)}
-                                            disabled={creationMode !== 'direct'}
-                                        >
-                                            <option value="">Select Customer</option>
-                                            <option value="Acme Corp">Acme Corp</option>
-                                            <option value="Global Tech">Global Tech</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Invoice Date</label>
-                                        <input
-                                            type="date"
-                                            className="form-input"
-                                            value={invoiceDate}
-                                            onChange={(e) => setInvoiceDate(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Due Date</label>
-                                        <input
-                                            type="date"
-                                            className="form-input"
-                                            value={dueDate}
-                                            onChange={(e) => setDueDate(e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-
-                                {selectedSource && (
-                                    <div className="linked-indicator mb-4">
-                                        <Link size={14} /> Linked to <strong>{selectedSource.id}</strong>
-                                        <button className="change-link-btn" onClick={() => setShowSourceSelect(true)}>Change</button>
-                                    </div>
-                                )}
-
-                                {/* Items Table */}
-                                <div className="items-section mt-8">
-                                    <div className="section-header">
-                                        <h3 className="section-title">Invoice Items</h3>
-                                        {creationMode === 'direct' && (
-                                            <button className="btn-add-sm" onClick={addItem}>
-                                                <Plus size={14} /> Add Item
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    <div className="items-table-wrapper">
-                                        <table className="items-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Product / Service</th>
-                                                    <th style={{ width: '100px' }}>Qty</th>
-                                                    <th style={{ width: '140px' }}>Rate</th>
-                                                    <th style={{ width: '100px' }}>Tax (%)</th>
-                                                    <th style={{ width: '140px' }}>Total</th>
-                                                    <th style={{ width: '50px' }}></th>
+                            </div>
+                            {/* Items Table */}
+                            <div className="items-section-new">
+                                <button className="btn-add-row" onClick={addItem}>
+                                    <Plus size={14} /> Add Line Item
+                                </button>
+                                <div className="table-responsive">
+                                    <table className="new-items-table">
+                                        <thead>
+                                            <tr>
+                                                <th style={{ width: '25%' }}>ITEM DETAIL</th>
+                                                <th style={{ width: '15%' }}>WAREHOUSE</th>
+                                                <th style={{ width: '10%' }}>QTY</th>
+                                                <th style={{ width: '12%' }}>RATE</th>
+                                                <th style={{ width: '10%' }}>TAX %</th>
+                                                <th style={{ width: '10%' }}>DISC.</th>
+                                                <th style={{ width: '12%' }}>AMOUNT</th>
+                                                <th style={{ width: '6%' }}></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {items.map(item => (
+                                                <tr key={item.id}>
+                                                    <td>
+                                                        <div className="search-input-wrapper">
+                                                            <input type="text" placeholder="Search Item..."
+                                                                value={item.name} onChange={(e) => updateItem(item.id, 'name', e.target.value)} />
+                                                            <Search size={14} />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" placeholder="Main Warehouse"
+                                                            value={item.warehouse} onChange={(e) => updateItem(item.id, 'warehouse', e.target.value)} />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" className="qty-input" value={item.qty}
+                                                            onChange={(e) => updateItem(item.id, 'qty', e.target.value)} />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" className="rate-input" value={item.rate}
+                                                            onChange={(e) => updateItem(item.id, 'rate', e.target.value)} />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" className="tax-input" value={item.tax}
+                                                            onChange={(e) => updateItem(item.id, 'tax', e.target.value)} />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" className="discount-input" value={item.discount}
+                                                            onChange={(e) => updateItem(item.id, 'discount', e.target.value)} />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" className="amount-input disabled" value={item.total.toFixed(2)} disabled />
+                                                    </td>
+                                                    <td className="text-center">
+                                                        <button className="btn-delete-row" onClick={() => removeItem(item.id)}>
+                                                            <Trash2 size={16} />
+                                                        </button>
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                {items.map((item) => (
-                                                    <tr key={item.id}>
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                className="table-input"
-                                                                placeholder="Enter product/service"
-                                                                value={item.name}
-                                                                onChange={(e) => updateItem(item.id, 'name', e.target.value)}
-                                                                disabled={creationMode !== 'direct'}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="number"
-                                                                className="table-input"
-                                                                value={item.qty}
-                                                                onChange={(e) => updateItem(item.id, 'qty', e.target.value)}
-                                                                disabled={creationMode !== 'direct'}
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <div className="input-with-symbol text-xs">
-                                                                <span>$</span>
-                                                                <input
-                                                                    type="number"
-                                                                    className="table-input"
-                                                                    value={item.rate}
-                                                                    onChange={(e) => updateItem(item.id, 'rate', e.target.value)}
-                                                                    disabled={creationMode !== 'direct'}
-                                                                />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="number"
-                                                                className="table-input"
-                                                                value={item.tax}
-                                                                onChange={(e) => updateItem(item.id, 'tax', e.target.value)}
-                                                                disabled={creationMode !== 'direct'}
-                                                            />
-                                                        </td>
-                                                        <td className="font-bold text-gray-700">
-                                                            ${item.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                                                        </td>
-                                                        <td>
-                                                            {creationMode === 'direct' && (
-                                                                <button className="btn-remove" onClick={() => removeItem(item.id)}>
-                                                                    <Trash2 size={14} />
-                                                                </button>
-                                                            )}
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {/* Totals Section */}
+                            <div className="totals-layout">
+                                <div className="totals-spacer"></div>
+                                <div className="totals-box">
+                                    <div className="t-row">
+                                        <span>Sub Total:</span>
+                                        <span>${totals.subTotal.toFixed(2)}</span>
+                                    </div>
+                                    <div className="t-row">
+                                        <span>Discount:</span>
+                                        <span className="text-red-500">-${totals.discount.toFixed(2)}</span>
+                                    </div>
+                                    <div className="t-row">
+                                        <span>Tax Total:</span>
+                                        <span>${totals.tax.toFixed(2)}</span>
+                                    </div>
+                                    <div className="t-row total">
+                                        <span>Grand Total:</span>
+                                        <span>${totals.total.toFixed(2)}</span>
                                     </div>
                                 </div>
+                            </div>
+                            {/* Footer Grid */}
+                            <div className="form-footer-grid">
+                                <div className="bank-terms-col">
+                                    <label className="section-label">Bank Details</label>
+                                    <div className="bank-details-box">
+                                        <input type="text" className="bank-input" placeholder="Bank Name" value={bankDetails.bankName} onChange={(e) => setBankDetails({ ...bankDetails, bankName: e.target.value })} />
+                                        <input type="text" className="bank-input" placeholder="Account No" value={bankDetails.accNo} onChange={(e) => setBankDetails({ ...bankDetails, accNo: e.target.value })} />
+                                        <input type="text" className="bank-input" placeholder="Account Holder" value={bankDetails.holderName} onChange={(e) => setBankDetails({ ...bankDetails, holderName: e.target.value })} />
+                                        <input type="text" className="bank-input" placeholder="IFSC / Swift" value={bankDetails.ifsc} onChange={(e) => setBankDetails({ ...bankDetails, ifsc: e.target.value })} />
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="section-label">Attachments</label>
+                                        <div className="attachments-row">
+                                            <button className="btn-upload-small">
+                                                <span className="icon">📷</span> Photos
+                                            </button>
+                                            <button className="btn-upload-small">
+                                                <span className="icon">📎</span> Files
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="notes-col">
+                                    <label className="section-label">Notes</label>
+                                    <textarea className="notes-area" value={notes} onChange={(e) => setNotes(e.target.value)}></textarea>
+                                </div>
+                            </div>
+                            <div className="terms-section mt-4">
+                                <label className="section-label">Terms & Conditions</label>
+                                <textarea className="terms-area" value={terms} onChange={(e) => setTerms(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="modal-footer-simple">
+                            <button className="btn-plain" onClick={() => setShowAddModal(false)}>Cancel</button>
+                            <button className="btn-primary-green">Generate Invoice</button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                                {/* Summary */}
-                                <div className="order-summary mt-8">
-                                    <div className="summary-col">
-                                        <div className="form-group">
-                                            <label className="form-label">Payment Terms</label>
-                                            <textarea className="form-textarea" placeholder="Net 30, etc..."></textarea>
-                                        </div>
+            {/* Edit Modal (Duplicated Structure) */}
+            {showEditModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content invoice-form-modal">
+                        <div className="modal-header-simple">
+                            <h2 className="text-xl font-bold text-gray-800">Edit Invoice</h2>
+                            <button className="close-btn-simple" onClick={() => setShowEditModal(false)}>
+                                <X size={24} />
+                            </button>
+                        </div>
+                        <div className="modal-body-scrollable">
+                            {/* Content Duplicated for Display Purpose - In real app, refactor to component */}
+                            {/* For this specific task request (open edit modal), reusing layout */}
+                            <div className="form-section-grid">
+                                <div className="company-section">
+                                    <div className="logo-upload-box"><h1 className="company-logo-text">BOOK</h1></div>
+                                    <div className="company-inputs">
+                                        <input type="text" className="full-width-input user-editable" value={companyDetails.name} onChange={(e) => setCompanyDetails({ ...companyDetails, name: e.target.value })} />
+                                        <input type="text" className="full-width-input user-editable" value={companyDetails.address} onChange={(e) => setCompanyDetails({ ...companyDetails, address: e.target.value })} />
+                                        {/*...*/}
                                     </div>
-                                    <div className="summary-col-calc">
-                                        <div className="calc-row">
-                                            <span>Sub Total</span>
-                                            <span>${(calculateGrandTotal() * 0.82).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-                                        </div>
-                                        <div className="calc-row">
-                                            <span>Tax Total (18%)</span>
-                                            <span>${(calculateGrandTotal() * 0.18).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-                                        </div>
-                                        <div className="calc-row grand-total mt-4">
-                                            <span>Grand Total</span>
-                                            <span>${calculateGrandTotal().toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-                                        </div>
-                                    </div>
+                                </div>
+                                <div className="meta-section">
+                                    <div className="meta-row"><label>Invoice No.</label><input type="text" value={invoiceMeta.manualNo} disabled className="meta-input disabled" /></div>
+                                    {/*...*/}
+                                </div>
+                            </div>
+                            {/* Customer Section */}
+                            <div className="customer-section">
+                                <div className="form-group mb-2"><label className="form-label-sm">Bill To</label><select className="form-select-large" value={customer} onChange={(e) => setCustomer(e.target.value)}><option value="">Select Customer...</option><option value="Acme Corp">Acme Corp</option></select></div>
+                            </div>
+                            {/* Items Section */}
+                            <div className="items-section-new">
+                                <button className="btn-add-row" onClick={addItem}><Plus size={14} /> Add Line Item</button>
+                                <div className="table-responsive">
+                                    <table className="new-items-table"><thead><tr><th style={{ width: '25%' }}>ITEM DETAIL</th><th>...</th></tr></thead><tbody>{items.map(item => (<tr key={item.id}><td><input type="text" value={item.name} /></td><td>...</td></tr>))}</tbody></table>
                                 </div>
                             </div>
                         </div>
+                        <div className="modal-footer-simple">
+                            <button className="btn-plain" onClick={() => setShowEditModal(false)}>Cancel</button>
+                            <button className="btn-primary-green" onClick={() => setShowEditModal(false)}>Update Invoice</button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                        <div className="modal-footer">
-                            <div className="footer-left">
-                                <button className="btn-secondary">
-                                    <Printer size={16} /> Print
-                                </button>
-                                <button className="btn-secondary ml-2">
-                                    <Send size={16} /> Send
-                                </button>
-                            </div>
-                            <div className="footer-right">
-                                <button className="btn-cancel" onClick={() => setShowAddModal(false)}>Cancel</button>
-                                <button className="btn-submit" style={{ backgroundColor: '#8ce043' }}>Create Invoice</button>
-                            </div>
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="modal-overlay">
+                    <div className="confirmation-modal">
+                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: '#ef4444' }}>
+                            <AlertTriangle size={48} />
+                        </div>
+                        <h3>Delete Invoice?</h3>
+                        <p>Are you sure you want to delete this invoice? This action cannot be undone.</p>
+                        <div className="confirmation-actions">
+                            <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                            <button className="btn-delete-confirm" onClick={confirmDelete}>Delete</button>
                         </div>
                     </div>
                 </div>

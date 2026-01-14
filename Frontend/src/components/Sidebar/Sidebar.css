@@ -212,10 +212,15 @@
    SUBMENU
 ================================ */
 .submenu {
+    display: none;
     margin-left: 1.5rem;
     margin-top: 0.25rem;
     padding-left: 0.75rem;
     border-left: 1px solid #edf2f7;
+}
+
+.submenu.expanded {
+    display: block;
 }
 
 .submenu-item {
