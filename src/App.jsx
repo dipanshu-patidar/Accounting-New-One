@@ -53,6 +53,7 @@ import CompanySettings from './pages/company/Settings/CompanySettings/CompanySet
 import PasswordRequests from './pages/company/Settings/PasswordRequests/PasswordRequests';
 import ProfileSettings from './pages/company/Settings/ProfileSettings/ProfileSettings';
 import BankTransfer from './pages/company/Banking/BankTransfer/BankTransfer';
+import PurchaseReturn from './pages/company/Purchase/PurchaseReturn/PurchaseReturn';
 
 function App() {
     return (
@@ -117,6 +118,10 @@ function App() {
                     <Route path="settings/password-requests" element={<PasswordRequests />} />
                     <Route path="settings/profile" element={<ProfileSettings />} />
                     <Route path="bank-transfer" element={<BankTransfer />} />
+
+                    {/* Purchase Module */}
+                    <Route path="purchases/return" element={<PurchaseReturn />} />
+
                     {/* Add other sub-routes here later */}
                 </Route>
             </Routes>
