@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Search, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Search, Eye, X } from 'lucide-react';
 import './Transactions.css';
 
 const Transactions = () => {
     const [entriesPerPage, setEntriesPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const transactions = [
         {
@@ -44,6 +46,16 @@ const Transactions = () => {
             note: 'Initial deposit'
         }
     ];
+
+    const handleView = (txn) => {
+        setSelectedTransaction(txn);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedTransaction(null);
+    };
 
     return (
         <div className="transactions-page">
@@ -114,14 +126,12 @@ const Transactions = () => {
                                     <td className="note-cell">{txn.note}</td>
                                     <td>
                                         <div className="action-buttons">
-                                            <button className="action-btn btn-view" data-tooltip="View">
+                                            <button
+                                                className="action-btn btn-view"
+                                                data-tooltip="View"
+                                                onClick={() => handleView(txn)}
+                                            >
                                                 <Eye size={16} />
-                                            </button>
-                                            <button className="action-btn btn-edit" data-tooltip="Edit">
-                                                <Pencil size={16} />
-                                            </button>
-                                            <button className="action-btn btn-delete" data-tooltip="Delete">
-                                                <Trash2 size={16} />
                                             </button>
                                         </div>
                                     </td>
@@ -140,6 +150,63 @@ const Transactions = () => {
                     </div>
                 </div>
             </div>
+
+            {/* View Modal */}
+            {isModalOpen && selectedTransaction && (
+                <div className="modal-overlay">
+                    <div className="transaction-modal-content">
+                        <div className="modal-header">
+                            <h2>Transaction Details</h2>
+                            <button className="close-btn" onClick={closeModal}>
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="detail-row">
+                                <span className="detail-label">Transaction ID:</span>
+                                <span className="detail-value">{selectedTransaction.transactionId}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Date:</span>
+                                <span className="detail-value">{selectedTransaction.date}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Voucher Type:</span>
+                                <span className="detail-value">{selectedTransaction.voucherType}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Voucher No:</span>
+                                <span className="detail-value">{selectedTransaction.voucherNo}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Amount:</span>
+                                <span className={`detail-value ${selectedTransaction.balanceType === 'Debit' ? 'text-success' : 'text-danger'}`}>
+                                    ${selectedTransaction.amount}
+                                </span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Balance Type:</span>
+                                <span className="detail-value">{selectedTransaction.balanceType}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">From/To:</span>
+                                <span className="detail-value">{selectedTransaction.fromTo}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Account Type:</span>
+                                <span className="detail-value">{selectedTransaction.accountType}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Note:</span>
+                                <span className="detail-value">{selectedTransaction.note}</span>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn-close" onClick={closeModal}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

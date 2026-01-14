@@ -60,7 +60,13 @@ const Navbar = ({ toggleSidebar }) => {
 
                     {isProfileOpen && (
                         <div className="profile-dropdown">
-                            <div className="dropdown-item">
+                            <div
+                                className="dropdown-item"
+                                onClick={() => {
+                                    setIsProfileOpen(false);
+                                    navigate('/company/settings/profile');
+                                }}
+                            >
                                 <User size={16} />
                                 <span>My Profile</span>
                             </div>

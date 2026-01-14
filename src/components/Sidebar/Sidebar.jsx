@@ -7,7 +7,6 @@ import {
     Calculator, Receipt, UserCog
 } from 'lucide-react';
 import './Sidebar.css';
-import Logo from '../../assets/Images/image.png';
 
 const Sidebar = ({ isOpen, role = 'superadmin' }) => {
     const location = useLocation();
@@ -38,7 +37,7 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                     { path: '/company/accounts/charts', label: 'Charts of Accounts' },
                     { path: '/company/accounts/customers', label: 'Customers/Debtors' },
                     { path: '/company/accounts/vendors', label: 'Vendors/Creditors' },
-                    { path: '/company/accounts/transactions', label: 'All Transaction' },
+                    { path: '/company/bank-transfer', label: 'Bank Transfer' },
                 ]
             },
             {
@@ -96,7 +95,7 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                     { path: '/company/reports/purchase', label: 'Purchase Report' },
                     { path: '/company/reports/pos', label: 'POS Report' },
                     { path: '/company/reports/tax', label: 'Tax Report' },
-                    { path: '/company/reports/inventory', label: 'Inventory Summary' },
+                    { path: '/company/reports/inventory-summary', label: 'Inventory Summary' },
                     { path: '/company/reports/balance-sheet', label: 'Balance Sheet' },
                     { path: '/company/reports/cash-flow', label: 'Cash Flow' },
                     { path: '/company/reports/profit-loss', label: 'Profit & Loss' },
@@ -105,6 +104,7 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                     { path: '/company/reports/journal', label: 'Journal Entries' },
                     { path: '/company/reports/ledger', label: 'Ledger' },
                     { path: '/company/reports/trial-balance', label: 'Trial Balance' },
+                    { path: '/company/accounts/transactions', label: 'All Transaction' },
                 ]
             },
             {
@@ -140,7 +140,8 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                         >
                             <div className="icon-label">
                                 <div className="menu-icon-wrapper">
-                                    <item.icon size={18} />
+                                    {/* Handle missing icon just in case */}
+                                    {item.icon && <item.icon size={18} />}
                                 </div>
                                 <span className="menu-text">{item.label}</span>
                             </div>
@@ -148,19 +149,18 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                                 {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                             </div>
                         </div>
-                        {isExpanded && (
-                            <div className="submenu">
-                                {item.subItems.map((sub, subIndex) => (
-                                    <NavLink
-                                        key={subIndex}
-                                        to={sub.path}
-                                        className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}
-                                    >
-                                        {sub.label}
-                                    </NavLink>
-                                ))}
-                            </div>
-                        )}
+
+                        <div className={`submenu ${isExpanded ? 'expanded' : ''}`}>
+                            {item.subItems.map((sub, subIndex) => (
+                                <NavLink
+                                    key={subIndex}
+                                    to={sub.path}
+                                    className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}
+                                >
+                                    {sub.label}
+                                </NavLink>
+                            ))}
+                        </div>
                     </div>
                 );
             }
@@ -171,19 +171,17 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                     to={item.path}
                     className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
                 >
-                    <div className="icon-label">
-                        <div className="menu-icon-wrapper">
-                            <item.icon size={18} />
-                        </div>
-                        <span className="menu-text">{item.label}</span>
+                    <div className="menu-icon-wrapper">
+                        {item.icon && <item.icon size={18} />}
                     </div>
+                    <span className="menu-text">{item.label}</span>
                 </NavLink>
             );
         });
     };
 
     return (
-        <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
+        <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
             <div className="logo">
                 <span className="logo-short">Z<span className="logo-accent">B</span></span>
 
@@ -194,12 +192,10 @@ const Sidebar = ({ isOpen, role = 'superadmin' }) => {
                 </span>
             </div>
 
-
-            <nav className="sidebar-nav">
-                {renderMenu(menuItems[role] || [])}
-            </nav>
-        </aside>
-
+            <div className="sidebar-menu">
+                {renderMenu(menuItems[role])}
+            </div>
+        </div>
     );
 };
 

@@ -12,6 +12,12 @@ const Payment = () => {
     const [showInvoiceSelect, setShowInvoiceSelect] = useState(false);
     const [selectedInvoice, setSelectedInvoice] = useState(null);
 
+    // Edit & Delete State
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+
     // Payment Data
     const [customer, setCustomer] = useState('');
     const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split('T')[0]);
@@ -39,13 +45,50 @@ const Payment = () => {
         setShowInvoiceSelect(false);
     };
 
-    const handleOpenModal = () => {
-        // Reset or initialize
-        setShowInvoiceSelect(true);
+    const resetForm = () => {
+        setIsEditMode(false);
+        setEditId(null);
         setSelectedInvoice(null);
         setCustomer('');
         setAmountReceived(0);
+        setPaymentDate(new Date().toISOString().split('T')[0]);
+        setPaymentMode('Bank Transfer');
+        setReference('');
+        setShowInvoiceSelect(false);
+    };
+
+    const handleOpenModal = () => {
+        resetForm();
+        setShowInvoiceSelect(true); // Default to showing invoice select for new payment
         setShowAddModal(true);
+    };
+
+    const handleEdit = (paymentId) => {
+        resetForm();
+        setIsEditMode(true);
+        setEditId(paymentId);
+
+        // Simulate fetching details
+        setSelectedInvoice({ id: 'INV-2024-001', customer: 'Acme Corp', date: '2024-01-20', amount: 4720, balance: 4720 }); // Mock linked invoice
+        setCustomer('Acme Corp');
+        setAmountReceived(4720);
+        setPaymentDate('2024-01-25');
+        setPaymentMode('Bank Transfer');
+        setReference('TRN-EDIT-12345');
+        setShowInvoiceSelect(false); // Don't show selection list initially in edit mode
+
+        setShowAddModal(true);
+    };
+
+    const handleDeleteClick = (id) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = () => {
+        console.log(`Deleting payment ${deleteId}`);
+        setShowDeleteModal(false);
+        setDeleteId(null);
     };
 
     return (
@@ -116,8 +159,8 @@ const Payment = () => {
                                 <td className="font-bold text-green-600">$4,720.00</td>
                                 <td className="text-right">
                                     <div className="action-buttons">
-                                        <button className="btn-icon-edit"><Pencil size={16} /></button>
-                                        <button className="btn-icon-delete"><Trash2 size={16} /></button>
+                                        <button className="btn-action-header edit" onClick={() => handleEdit('PAY-2024-001')}><Pencil size={16} /></button>
+                                        <button className="btn-action-header delete" onClick={() => handleDeleteClick('PAY-2024-001')}><Trash2 size={16} /></button>
                                     </div>
                                 </td>
                             </tr>
@@ -132,8 +175,8 @@ const Payment = () => {
                     <div className="modal-content payment-modal">
                         <div className="modal-header">
                             <div>
-                                <h2 className="modal-title">Record Payment</h2>
-                                <p className="modal-subtitle">Log payment against an invoice</p>
+                                <h2 className="modal-title">{isEditMode ? 'Edit Payment' : 'Record Payment'}</h2>
+                                <p className="modal-subtitle">{isEditMode ? 'Update payment details' : 'Log payment against an invoice'}</p>
                             </div>
                             <button className="close-btn" onClick={() => setShowAddModal(false)}>
                                 <X size={20} />
@@ -265,8 +308,33 @@ const Payment = () => {
                             </div>
                             <div className="footer-right">
                                 <button className="btn-cancel" onClick={() => setShowAddModal(false)}>Cancel</button>
-                                <button className="btn-submit" style={{ backgroundColor: '#8ce043' }} disabled={!selectedInvoice}>Save Payment</button>
+                                <button className="btn-submit" style={{ backgroundColor: '#8ce043' }} disabled={!selectedInvoice}>
+                                    {isEditMode ? 'Update Payment' : 'Save Payment'}
+                                </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="modal-overlay">
+                    <div className="delete-modal-content">
+                        <div className="delete-modal-header">
+                            <h2 className="text-lg font-bold text-red-600">Delete Payment?</h2>
+                            <button className="close-btn-simple" onClick={() => setShowDeleteModal(false)}>
+                                <X size={24} />
+                            </button>
+                        </div>
+                        <div className="delete-modal-body">
+                            <p className="text-gray-600">
+                                Are you sure you want to delete this Payment Record? This will revert the Invoice balance.
+                            </p>
+                        </div>
+                        <div className="delete-modal-footer">
+                            <button className="btn-plain" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                            <button className="btn-delete-confirm" onClick={confirmDelete}>Delete</button>
                         </div>
                     </div>
                 </div>
