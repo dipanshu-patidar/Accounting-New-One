@@ -61,6 +61,12 @@ const UserList = () => {
         <div className="user-list-page">
             <div className="page-header">
                 <h1 className="page-title">Users</h1>
+
+                <div className="add-icon-wrapper" onClick={() => setShowAddModal(true)}>
+                        <Plus size={24} color="white" fill="white" strokeWidth={3} />
+                    </div>
+
+
             </div>
 
             <div className="user-grid">
