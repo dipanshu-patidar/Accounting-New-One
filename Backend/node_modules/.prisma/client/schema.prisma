@@ -12,6 +12,7 @@ model User {
   name      String
   email     String   @unique
   password  String
+  avatar    String?  @db.LongText
   role      Role     @default(USER)
   companyId Int?
   company   Company? @relation(fields: [companyId], references: [id])

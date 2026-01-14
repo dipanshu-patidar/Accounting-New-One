@@ -7,6 +7,7 @@ const planRoutes = require('./src/routes/planRoutes');
 const planRequestRoutes = require('./src/routes/planRequestRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
 const dashboardRoutes = require('./src/routes/dashboardRoutes');
+const profileRoutes = require('./src/routes/profileRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +23,7 @@ app.use('/api/plans', planRoutes);
 app.use('/api/plan-requests', planRequestRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/superadmin/dashboard', dashboardRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Health Check
 app.get('/', (req, res) => {

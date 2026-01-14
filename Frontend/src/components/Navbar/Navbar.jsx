@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, Globe, Bell, Plus, ChevronDown, LogOut, User } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
+import { Menu, Globe, Bell, Plus, ChevronDown, LogOut, User as UserIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import './Navbar.css';
 
 const Navbar = ({ toggleSidebar }) => {
+    const { currentUser, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
     const handleLogout = () => {
-        localStorage.removeItem('userRole');
+        logout();
         toast.success('Logged out successfully');
         navigate('/login');
     };
@@ -47,13 +49,21 @@ const Navbar = ({ toggleSidebar }) => {
                         className="user-profile"
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
                     >
-                        <img
-                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
-                            alt="User"
-                            className="avatar"
-                        />
+                        {currentUser?.avatar ? (
+                            <img
+                                src={currentUser.avatar}
+                                alt="User"
+                                className="avatar"
+                            />
+                        ) : (
+                            <img
+                                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+                                alt="User"
+                                className="avatar"
+                            />
+                        )}
                         <div className="user-info">
-                            <span className="user-name">Hi, WorkDo!</span>
+                            <span className="user-name">Hi, {currentUser?.name || 'User'}!</span>
                             <ChevronDown size={14} className="text-muted" />
                         </div>
                     </div>
@@ -67,7 +77,7 @@ const Navbar = ({ toggleSidebar }) => {
                                     navigate('/company/settings/profile');
                                 }}
                             >
-                                <User size={16} />
+                                <UserIcon size={16} />
                                 <span>My Profile</span>
                             </div>
                             <div className="dropdown-divider"></div>
