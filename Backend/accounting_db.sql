@@ -1,0 +1,96 @@
+-- Create Database
+CREATE DATABASE IF NOT EXISTS accounting_db;
+USE accounting_db;
+
+-- Table: Plan
+CREATE TABLE IF NOT EXISTS Plan (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    basePrice FLOAT DEFAULT 0,
+    currency VARCHAR(10) DEFAULT 'USD',
+    invoiceLimit VARCHAR(50) DEFAULT '0',
+    additionalInvoicePrice FLOAT DEFAULT 0,
+    userLimit VARCHAR(50) DEFAULT '0',
+    storageCapacity VARCHAR(50) DEFAULT '0',
+    billingCycle VARCHAR(50) DEFAULT 'Monthly',
+    status VARCHAR(20) DEFAULT 'Active',
+    modules TEXT,
+    totalPrice FLOAT DEFAULT 0,
+    descriptions TEXT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Table: Company
+CREATE TABLE IF NOT EXISTS Company (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    logo LONGTEXT,
+    startDate DATETIME,
+    endDate DATETIME,
+    planName VARCHAR(100),
+    planId INT,
+    planType VARCHAR(100),
+    phone VARCHAR(20),
+    address TEXT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (planId) REFERENCES Plan(id) ON DELETE SET NULL
+);
+
+-- Table: User
+CREATE TABLE IF NOT EXISTS User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('SUPERADMIN', 'ADMIN', 'COMPANY', 'USER') DEFAULT 'USER',
+    companyId INT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (companyId) REFERENCES Company(id) ON DELETE CASCADE
+);
+
+-- Table: PlanRequest
+CREATE TABLE IF NOT EXISTS PlanRequest (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    companyName VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    planId INT,
+    planName VARCHAR(100),
+    billingCycle VARCHAR(50) DEFAULT 'Monthly',
+    startDate DATETIME NOT NULL,
+    status VARCHAR(20) DEFAULT 'Pending',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (planId) REFERENCES Plan(id) ON DELETE SET NULL
+);
+
+-- Table: Payment
+CREATE TABLE IF NOT EXISTS Payment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    transactionId VARCHAR(255) NOT NULL UNIQUE,
+    date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    customer VARCHAR(255) NOT NULL,
+    paymentMethod VARCHAR(100) NOT NULL,
+    amount FLOAT NOT NULL,
+    status VARCHAR(20) DEFAULT 'Pending',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Table: DashboardAnnouncement
+CREATE TABLE IF NOT EXISTS DashboardAnnouncement (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    status VARCHAR(20) DEFAULT 'Active',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Insert Default Super Admin
+-- Password is '123'
+INSERT IGNORE INTO User (name, email, password, role) 
+VALUES ('Super Admin', 'superadmin@gmail.com', '$2y$10$R9h/lSu6pU5P.UqLqRjCxeS9pG7N1p7U6p7U6p7U6p7U6p7U6p7U6', 'SUPERADMIN');
