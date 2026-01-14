@@ -29,6 +29,11 @@ import Income from './pages/company/Accounts/Income/Income';
 import ContraVoucher from './pages/company/Accounts/ContraVoucher/ContraVoucher';
 import UserList from './pages/company/Users/UserList';
 import RoleList from './pages/company/Users/RoleList';
+import Quotation from './pages/company/Sales/Quotation/Quotation';
+import SalesOrder from './pages/company/Sales/SalesOrder/SalesOrder';
+import DeliveryChallan from './pages/company/Sales/DeliveryChallan/DeliveryChallan';
+import Invoice from './pages/company/Sales/Invoice/Invoice';
+import Payment from './pages/company/Sales/Payment/Payment';
 import CustomerDetail from './pages/company/Customers/CustomerDetail';
 
 function App() {
@@ -65,6 +70,11 @@ function App() {
           <Route path="inventory/services" element={<Services />} />
           <Route path="inventory/transfer" element={<StockTransfer />} />
           <Route path="inventory/adjustment" element={<InventoryAdjustment />} />
+          <Route path="sales/quotation" element={<Quotation />} />
+          <Route path="sales/order" element={<SalesOrder />} />
+          <Route path="sales/challan" element={<DeliveryChallan />} />
+          <Route path="sales/invoice" element={<Invoice />} />
+          <Route path="sales/payment" element={<Payment />} />
           <Route path="voucher/create" element={<CreateVoucher />} />
           <Route path="voucher/expenses" element={<Expense />} />
           <Route path="voucher/income" element={<Income />} />
