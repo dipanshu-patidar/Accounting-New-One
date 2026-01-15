@@ -19,6 +19,7 @@ import {
     Legend
 } from 'recharts';
 import './CompanyDashboard.css';
+
 import GetCompanyId from '../../../api/GetCompanyId';
 
 const CompanyDashboard = () => {

@@ -1,13 +1,233 @@
-/* Importing CustomerDetail styles for consistency */
-@import '../Customers/CustomerDetail.css';
-
-.vendor-detail-page {
+.VendorDetail-vendor-detail-page {
     padding: 1.5rem;
     background-color: #f8f9fa;
     min-height: 100vh;
 }
 
-.voucher-badge-small {
+.VendorDetail-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.VendorDetail-header-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.VendorDetail-page-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.VendorDetail-header-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.VendorDetail-btn-action {
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.VendorDetail-btn-back {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    padding: 0.6rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.VendorDetail-bg-green {
+    background-color: #8ce043;
+}
+
+.VendorDetail-info-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.VendorDetail-info-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.VendorDetail-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 0.75rem;
+}
+
+.VendorDetail-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.VendorDetail-info-text {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0;
+}
+
+.VendorDetail-info-subtext {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+.VendorDetail-company-info-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.VendorDetail-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.VendorDetail-metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.VendorDetail-metric-item label {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.VendorDetail-metric-item p {
+    font-size: 0.9rem;
+    color: #374151;
+    margin: 0;
+}
+
+.VendorDetail-text-bold {
+    font-weight: 700;
+}
+
+.VendorDetail-text-red {
+    color: #f44336;
+}
+
+.VendorDetail-text-green {
+    color: #8ce043;
+}
+
+.VendorDetail-detail-section {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.VendorDetail-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 1.5rem;
+}
+
+.VendorDetail-bills-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.VendorDetail-controls-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.VendorDetail-entries-control {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.VendorDetail-entries-select {
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+}
+
+.VendorDetail-entries-text {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.VendorDetail-search-control {
+    width: 250px;
+}
+
+.VendorDetail-search-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.VendorDetail-table-responsive {
+    overflow-x: auto;
+}
+
+.VendorDetail-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.VendorDetail-detail-table th {
+    text-align: left;
+    padding: 1rem;
+    background-color: #f8fafc;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.VendorDetail-detail-table td {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.85rem;
+    color: #4b5563;
+}
+
+.VendorDetail-voucher-badge-small {
     border: 1px solid #8ce043;
     color: #8ce043;
     padding: 2px 8px;
@@ -17,7 +237,7 @@
     display: inline-block;
 }
 
-.status-badge-modern {
+.VendorDetail-status-badge-modern {
     padding: 4px 12px;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -25,37 +245,20 @@
     color: white;
 }
 
-.status-badge-modern.partially-paid {
+.VendorDetail-status-badge-modern.VendorDetail-partially-paid {
     background-color: #4dd0e1;
 }
 
-.status-badge-modern.sent {
+.VendorDetail-status-badge-modern.VendorDetail-sent {
     background-color: #ffa726;
 }
 
-.bills-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.VendorDetail-table-actions {
+    display: flex;
+    gap: 0.5rem;
 }
 
-.bg-pink {
-    background-color: #f06292;
-    color: white;
-}
-
-.bg-orange {
-    background-color: #ffb74d;
-    color: white;
-}
-
-.bg-gray {
-    background-color: #78909c;
-    color: white;
-}
-
-.table-icon-btn {
+.VendorDetail-table-icon-btn {
     width: 28px;
     height: 28px;
     border-radius: 4px;
@@ -67,23 +270,32 @@
     transition: opacity 0.2s;
 }
 
-.table-icon-btn:hover {
+.VendorDetail-table-icon-btn:hover {
     opacity: 0.8;
 }
 
-.table-actions {
-    display: flex;
-    gap: 0.5rem;
+.VendorDetail-bg-pink {
+    background-color: #f06292;
+    color: white;
 }
 
-.text-bold {
-    font-weight: 700;
+.VendorDetail-bg-orange {
+    background-color: #ffb74d;
+    color: white;
 }
 
-.text-green {
-    color: #8ce043;
+.VendorDetail-bg-gray {
+    background-color: #78909c;
+    color: white;
 }
 
-.text-red {
-    color: #f44336;
+.VendorDetail-bg-cyan {
+    background-color: #00bcd4;
+    color: white;
+}
+
+.VendorDetail-pagination-info {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-top: 1rem;
 }

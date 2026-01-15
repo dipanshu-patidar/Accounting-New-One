@@ -1,17 +1,17 @@
-.plans-page {
+.superplan-page {
     padding: 1.5rem;
     background-color: #f8f9fd;
     min-height: 100%;
 }
 
-.page-header {
+.superplan-page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
 }
 
-.page-title {
+.superplan-page-title {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-main);
@@ -20,12 +20,12 @@
     gap: 0.5rem;
 }
 
-.header-actions {
+.superplan-header-actions {
     display: flex;
     gap: 1rem;
 }
 
-.btn-add-plan {
+.superplan-btn-add-plan {
     background-color: #8ce043;
     color: white;
     border: none;
@@ -39,12 +39,12 @@
     transition: background-color 0.2s;
 }
 
-.btn-add-plan:hover {
+.superplan-btn-add-plan:hover {
     background-color: #61cf01;
 }
 
 /* Card Container */
-.content-card {
+.superplan-content-card {
     background: white;
     border-radius: 12px;
     padding: 1.5rem;
@@ -53,7 +53,7 @@
 }
 
 /* Controls */
-.table-controls {
+.superplan-table-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -62,7 +62,7 @@
     gap: 1rem;
 }
 
-.entries-control {
+.superplan-entries-control {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -70,7 +70,7 @@
     color: var(--text-muted);
 }
 
-.entries-select {
+.superplan-entries-select {
     padding: 0.4rem 0.8rem;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -78,12 +78,12 @@
     cursor: pointer;
 }
 
-.search-control {
+.superplan-search-control {
     position: relative;
     width: 250px;
 }
 
-.search-input {
+.superplan-search-input {
     width: 100%;
     padding: 0.5rem 1rem;
     border: 1px solid var(--border);
@@ -93,17 +93,17 @@
 }
 
 /* Table */
-.table-responsive {
+.superplan-table-responsive {
     overflow-x: auto;
 }
 
-.plans-table {
+.superplan-plans-table {
     width: 100%;
     border-collapse: collapse;
     min-width: 1000px;
 }
 
-.plans-table th {
+.superplan-plans-table th {
     text-align: left;
     padding: 1rem;
     font-size: 0.75rem;
@@ -114,7 +114,7 @@
     white-space: nowrap;
 }
 
-.plans-table td {
+.superplan-plans-table td {
     padding: 1rem;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.9rem;
@@ -122,12 +122,12 @@
     vertical-align: middle;
 }
 
-.plans-table tr:hover {
+.superplan-plans-table tr:hover {
     background-color: #f8fafc;
 }
 
 /* Column Styles */
-.badge-plan {
+.superplan-badge-plan {
     padding: 4px 12px;
     border-radius: 20px;
     color: white;
@@ -137,15 +137,15 @@
     display: inline-block;
 }
 
-.bg-bronze {
+.superplan-bg-bronze {
     background-color: #b45309;
 }
 
-.bg-pro {
+.superplan-bg-pro {
     background-color: #8ce043;
 }
 
-.status-badge {
+.superplan-status-badge {
     background-color: #8ce043;
     color: white;
     padding: 2px 8px;
@@ -154,13 +154,13 @@
     font-weight: 600;
 }
 
-.modules-list {
+.superplan-modules-list {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.module-pill {
+.superplan-module-pill {
     background-color: #64748b;
     color: white;
     padding: 2px 8px;
@@ -170,13 +170,25 @@
     white-space: nowrap;
 }
 
+.superplan-btn-more-modules {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    text-align: left;
+    margin-top: 2px;
+}
+
 /* Actions */
-.actions-cell {
+.superplan-actions-cell {
     display: flex;
     gap: 0.5rem;
 }
 
-.action-icon-btn {
+.superplan-action-icon-btn {
     padding: 6px;
     border-radius: 6px;
     border: none;
@@ -187,23 +199,23 @@
     transition: background 0.2s;
 }
 
-.btn-edit {
+.superplan-btn-edit {
     background-color: #eab308;
     color: white;
 }
 
-.btn-view {
+.superplan-btn-view {
     background-color: #0ea5e9;
     color: white;
 }
 
-.btn-delete {
+.superplan-btn-delete {
     background-color: #ef4444;
     color: white;
 }
 
 /* Pagination */
-.table-footer {
+.superplan-table-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -212,17 +224,17 @@
     border-top: 1px solid var(--border);
 }
 
-.showing-text {
+.superplan-showing-text {
     font-size: 0.9rem;
     color: var(--text-muted);
 }
 
-.pagination {
+.superplan-pagination {
     display: flex;
     gap: 0.5rem;
 }
 
-.page-btn {
+.superplan-page-btn {
     width: 32px;
     height: 32px;
     display: flex;
@@ -235,19 +247,19 @@
     color: var(--text-muted);
 }
 
-.page-btn.active {
+.superplan-page-btn.active {
     background-color: #8ce043;
     color: white;
     border-color: #8ce043;
 }
 
-.page-btn:disabled {
+.superplan-page-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
 /* --- MODAL STYLES --- */
-.modal-overlay {
+.superplan-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -260,7 +272,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.superplan-modal-content {
     background: white;
     border-radius: 12px;
     width: 90%;
@@ -272,12 +284,12 @@
     flex-direction: column;
 }
 
-.modal-content.modal-lg {
+.superplan-modal-content.superplan-modal-lg {
     max-width: 800px;
     /* Wide for the plan form */
 }
 
-.modal-content.modal-sm {
+.superplan-modal-content.superplan-modal-sm {
     max-width: 400px;
 }
 
@@ -293,7 +305,7 @@
     }
 }
 
-.modal-header {
+.superplan-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -301,13 +313,13 @@
     border-bottom: 1px solid #f1f5f9;
 }
 
-.modal-header h3 {
+.superplan-modal-header h3 {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-main);
 }
 
-.close-btn {
+.superplan-close-btn {
     background: none;
     border: none;
     color: var(--text-muted);
@@ -317,48 +329,48 @@
     transition: background 0.2s;
 }
 
-.close-btn:hover {
+.superplan-close-btn:hover {
     background-color: #f1f5f9;
     color: var(--text-main);
 }
 
-.modal-body {
+.superplan-modal-body {
     padding: 1.5rem;
     overflow-y: auto;
 }
 
 /* Form Styles */
-.form-row {
+.superplan-form-row {
     display: flex;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
-.form-row.three-col {
+.superplan-form-row.three-col {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-.form-row.two-col {
+.superplan-form-row.two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-.form-group {
+.superplan-form-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     flex: 1;
 }
 
-.form-group label {
+.superplan-form-group label {
     font-size: 0.85rem;
     font-weight: 600;
     color: #64748b;
 }
 
-.form-group input,
-.form-group select {
+.superplan-form-group input,
+.superplan-form-group select {
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -369,57 +381,57 @@
     width: 100%;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.superplan-form-group input:focus,
+.superplan-form-group select:focus {
     border-color: #8ce043;
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
 /* Modules Section */
-.modules-section {
+.superplan-modules-section {
     border: 1px solid var(--border);
     padding: 1rem;
     border-radius: 8px;
     background-color: #fafbfc;
 }
 
-.modules-grid {
+.superplan-modules-grid {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
 }
 
-.module-item {
+.superplan-module-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.checkbox-wrapper {
+.superplan-checkbox-wrapper {
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
 
-.checkbox-wrapper input[type="checkbox"] {
+.superplan-checkbox-wrapper input[type="checkbox"] {
     width: 18px;
     height: 18px;
     cursor: pointer;
     accent-color: #8ce043;
 }
 
-.price-input-wrapper {
+.superplan-price-input-wrapper {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.price-input-wrapper input {
+.superplan-price-input-wrapper input {
     width: 80px;
 }
 
 /* Total Price Banner */
-.total-price-banner {
+.superplan-total-price-banner {
     background-color: #e0f2fe;
     /* Light blue/cyan */
     padding: 1rem;
@@ -430,18 +442,18 @@
 }
 
 /* Description Section */
-.descriptions-section {
+.superplan-descriptions-section {
     gap: 0.75rem;
 }
 
-.description-row {
+.superplan-description-row {
     display: flex;
     gap: 0.5rem;
     align-items: center;
 }
 
-.add-btn-small,
-.remove-btn-small {
+.superplan-add-btn-small,
+.superplan-remove-btn-small {
     padding: 0.5rem;
     border-radius: 6px;
     border: 1px solid var(--border);
@@ -452,18 +464,18 @@
     justify-content: center;
 }
 
-.add-btn-small:hover {
+.superplan-add-btn-small:hover {
     border-color: #8ce043;
     color: #8ce043;
 }
 
-.remove-btn-small:hover {
+.superplan-remove-btn-small:hover {
     border-color: #ef4444;
     color: #ef4444;
 }
 
 /* Footer */
-.modal-footer {
+.superplan-modal-footer {
     padding: 1rem 1.5rem;
     border-top: 1px solid #f1f5f9;
     display: flex;
@@ -471,7 +483,7 @@
     gap: 1rem;
 }
 
-.cancel-btn {
+.superplan-cancel-btn {
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
     border: 1px solid var(--border);
@@ -482,7 +494,7 @@
     cursor: pointer;
 }
 
-.submit-btn {
+.superplan-submit-btn {
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
     background-color: #8ce043;
@@ -493,11 +505,11 @@
     cursor: pointer;
 }
 
-.submit-btn:hover {
+.superplan-submit-btn:hover {
     background-color: #059669;
 }
 
-.delete-confirm-btn {
+.superplan-delete-confirm-btn {
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
     background-color: #ef4444;

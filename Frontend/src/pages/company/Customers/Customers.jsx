@@ -89,42 +89,42 @@ const Customers = () => {
     };
 
     return (
-        <div className="customers-page">
-            <div className="page-header">
-                <h1 className="page-title">Customers</h1>
-                <button className="btn-add" onClick={() => setShowAddModal(true)}>
+        <div className="Customers-customers-page">
+            <div className="Customers-page-header">
+                <h1 className="Customers-page-title">Customers</h1>
+                <button className="Customers-btn-add" onClick={() => setShowAddModal(true)}>
                     <Plus size={18} />
                     Add New Customer
                 </button>
             </div>
 
-            <div className="customers-card">
-                <div className="controls-row">
-                    <div className="entries-control">
+            <div className="Customers-customers-card">
+                <div className="Customers-controls-row">
+                    <div className="Customers-entries-control">
                         <select
                             value={entriesPerPage}
                             onChange={(e) => setEntriesPerPage(Number(e.target.value))}
-                            className="entries-select"
+                            className="Customers-entries-select"
                         >
                             <option value={10}>10</option>
                             <option value={25}>25</option>
                             <option value={50}>50</option>
                         </select>
-                        <span className="entries-text">entries per page</span>
+                        <span className="Customers-entries-text">entries per page</span>
                     </div>
-                    <div className="search-control">
+                    <div className="Customers-search-control">
                         <input
                             type="text"
                             placeholder="Search..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="search-input"
+                            className="Customers-search-input"
                         />
                     </div>
                 </div>
 
-                <div className="table-container">
-                    <table className="customers-table">
+                <div className="Customers-table-container">
+                    <table className="Customers-customers-table">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -144,7 +144,7 @@ const Customers = () => {
                                 <tr key={cust.id}>
                                     <td>{index + 1}</td>
                                     <td>
-                                        <div className="voucher-badge" style={{ cursor: 'pointer' }} onClick={() => navigate(`/company/accounts/customers/${cust.id}`)}>
+                                        <div className="Customers-voucher-badge" style={{ cursor: 'pointer' }} onClick={() => navigate(`/company/accounts/customers/${cust.id}`)}>
                                             #{cust.voucherNo}
                                         </div>
                                     </td>
@@ -154,18 +154,18 @@ const Customers = () => {
                                     <td>{cust.email}</td>
                                     <td>{cust.accountType}</td>
                                     <td>{cust.accountName}</td>
-                                    <td className={cust.openingBalance.startsWith('-') ? 'text-danger' : 'text-success'}>
+                                    <td className={cust.openingBalance.startsWith('-') ? 'Customers-text-danger' : 'Customers-text-success'}>
                                         ${cust.openingBalance}
                                     </td>
                                     <td>
-                                        <div className="action-buttons">
-                                            <button className="action-btn btn-view" data-tooltip="View" onClick={() => navigate(`/company/accounts/customers/${cust.id}`)}>
+                                        <div className="Customers-action-buttons">
+                                            <button className="Customers-action-btn Customers-btn-view" data-tooltip="View" onClick={() => navigate(`/company/accounts/customers/${cust.id}`)}>
                                                 <Eye size={18} />
                                             </button>
-                                            <button className="action-btn btn-edit" data-tooltip="Edit" onClick={() => handleEdit(cust)}>
+                                            <button className="Customers-action-btn Customers-btn-edit" data-tooltip="Edit" onClick={() => handleEdit(cust)}>
                                                 <Pencil size={18} />
                                             </button>
-                                            <button className="action-btn btn-delete" data-tooltip="Delete" onClick={() => handleDelete(cust)}>
+                                            <button className="Customers-action-btn Customers-btn-delete" data-tooltip="Delete" onClick={() => handleDelete(cust)}>
                                                 <Trash2 size={16} />
                                             </button>
                                         </div>
@@ -176,211 +176,211 @@ const Customers = () => {
                     </table>
                 </div>
 
-                <div className="pagination-row">
-                    <p className="pagination-info">Showing 1 to {customers.length} of {customers.length} entries</p>
-                    <div className="pagination-controls">
-                        <button className="pagination-btn disabled">Previous</button>
-                        <button className="pagination-btn active">1</button>
-                        <button className="pagination-btn disabled">Next</button>
+                <div className="Customers-pagination-row">
+                    <p className="Customers-pagination-info">Showing 1 to {customers.length} of {customers.length} entries</p>
+                    <div className="Customers-pagination-controls">
+                        <button className="Customers-pagination-btn Customers-disabled">Previous</button>
+                        <button className="Customers-pagination-btn Customers-active">1</button>
+                        <button className="Customers-pagination-btn Customers-disabled">Next</button>
                     </div>
                 </div>
             </div>
 
             {/* Add Modal */}
             {showAddModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-large">
-                        <div className="modal-header">
-                            <h2 className="modal-title">Add Customer</h2>
-                            <button className="close-btn" onClick={() => setShowAddModal(false)}>×</button>
+                <div className="Customers-modal-overlay">
+                    <div className="Customers-modal-content Customers-modal-large">
+                        <div className="Customers-modal-header">
+                            <h2 className="Customers-modal-title">Add Customer</h2>
+                            <button className="Customers-close-btn" onClick={() => setShowAddModal(false)}>×</button>
                         </div>
-                        <div className="modal-body">
+                        <div className="Customers-modal-body">
                             {/* Previous fields... */}
-                            <div className="form-row three-col">
-                                <div className="form-group">
-                                    <label className="form-label">Name (English) <span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" placeholder="Enter Name (English)" />
+                            <div className="Customers-form-row Customers-three-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Name (English) <span className="Customers-text-red">*</span></label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter Name (English)" />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Name (Arabic)</label>
-                                    <input type="text" className="form-input" placeholder="Enter Name (Arabic)" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Name (Arabic)</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter Name (Arabic)" />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Company Name</label>
-                                    <input type="text" className="form-input" placeholder="Enter company name" />
-                                </div>
-                            </div>
-
-                            <div className="form-row mixed-col">
-                                <div className="form-group google-loc">
-                                    <label className="form-label">Company Google Location</label>
-                                    <input type="text" className="form-input" placeholder="Enter Google Maps link" />
-                                </div>
-                                <div className="form-group profile-img">
-                                    <label className="form-label">Profile Image</label>
-                                    <div className="file-input-wrapper">
-                                        <input type="file" id="profileImg" className="file-input" />
-                                        <label htmlFor="profileImg" className="file-label">
-                                            <span className="file-btn">Choose File</span>
-                                            <span className="file-name">No file chosen</span>
-                                        </label>
-                                    </div>
-                                    <small className="file-note">JPEG, PNG or JPG (max 5MB)</small>
-                                </div>
-                                <div className="form-group any-file">
-                                    <label className="form-label">Any File</label>
-                                    <div className="file-input-wrapper">
-                                        <input type="file" id="anyFile" className="file-input" />
-                                        <label htmlFor="anyFile" className="file-label">
-                                            <span className="file-btn">Choose File</span>
-                                            <span className="file-name">No file chosen</span>
-                                        </label>
-                                    </div>
-                                    <small className="file-note">Any file type. If image, max 5MB</small>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Company Name</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter company name" />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Account Type <span className="text-red">*</span></label>
-                                    <select className="form-select">
+                            <div className="Customers-form-row Customers-mixed-col">
+                                <div className="Customers-form-group Customers-google-loc">
+                                    <label className="Customers-form-label">Company Google Location</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter Google Maps link" />
+                                </div>
+                                <div className="Customers-form-group Customers-profile-img">
+                                    <label className="Customers-form-label">Profile Image</label>
+                                    <div className="Customers-file-input-wrapper">
+                                        <input type="file" id="profileImg" className="Customers-file-input" />
+                                        <label htmlFor="profileImg" className="Customers-file-label">
+                                            <span className="Customers-file-btn">Choose File</span>
+                                            <span className="Customers-file-name">No file chosen</span>
+                                        </label>
+                                    </div>
+                                    <small className="Customers-file-note">JPEG, PNG or JPG (max 5MB)</small>
+                                </div>
+                                <div className="Customers-form-group Customers-any-file">
+                                    <label className="Customers-form-label">Any File</label>
+                                    <div className="Customers-file-input-wrapper">
+                                        <input type="file" id="anyFile" className="Customers-file-input" />
+                                        <label htmlFor="anyFile" className="Customers-file-label">
+                                            <span className="Customers-file-btn">Choose File</span>
+                                            <span className="Customers-file-name">No file chosen</span>
+                                        </label>
+                                    </div>
+                                    <small className="Customers-file-note">Any file type. If image, max 5MB</small>
+                                </div>
+                            </div>
+
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Account Type <span className="Customers-text-red">*</span></label>
+                                    <select className="Customers-form-select">
                                         <option value="">-- Select Account --</option>
                                         <option value="debtors">Debtors</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Balance Type</label>
-                                    <select className="form-select">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Balance Type</label>
+                                    <select className="Customers-form-select">
                                         <option value="debit">Debit</option>
                                         <option value="credit">Credit</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Account Name <span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" placeholder="This will auto-fill from selection above" readOnly />
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Account Name <span className="Customers-text-red">*</span></label>
+                                    <input type="text" className="Customers-form-input" placeholder="This will auto-fill from selection above" readOnly />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Account Balance <span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" defaultValue="0.00" />
-                                </div>
-                            </div>
-
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Creation Date <span className="text-red">*</span></label>
-                                    <input type="date" className="form-input" defaultValue="2026-01-13" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">Bank Account Number</label>
-                                    <input type="text" className="form-input" placeholder="Enter bank account number" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Account Balance <span className="Customers-text-red">*</span></label>
+                                    <input type="text" className="Customers-form-input" defaultValue="0.00" />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Bank IFSC</label>
-                                    <input type="text" className="form-input" placeholder="Enter bank IFSC" />
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Creation Date <span className="Customers-text-red">*</span></label>
+                                    <input type="date" className="Customers-form-input" defaultValue="2026-01-13" />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Bank Name & Branch</label>
-                                    <input type="text" className="form-input" placeholder="Enter bank name & branch" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Bank Account Number</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter bank account number" />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Phone <span className="text-red">*</span></label>
-                                    <div className="input-with-note">
-                                        <input type="text" className="form-input" placeholder="Enter Phone" />
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Bank IFSC</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter bank IFSC" />
+                                </div>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Bank Name & Branch</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter bank name & branch" />
+                                </div>
+                            </div>
+
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Phone <span className="Customers-text-red">*</span></label>
+                                    <div className="Customers-input-with-note">
+                                        <input type="text" className="Customers-form-input" placeholder="Enter Phone" />
 
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Email <span className="text-red">*</span></label>
-                                    <input type="email" className="form-input" placeholder="Enter Email" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Email <span className="Customers-text-red">*</span></label>
+                                    <input type="email" className="Customers-form-input" placeholder="Enter Email" />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col" style={{ alignItems: 'flex-start' }}>
-                                <div className="form-group">
-                                    <label className="form-label">Credit Period (days)</label>
-                                    <input type="text" className="form-input" placeholder="Enter credit period" />
+                            <div className="Customers-form-row Customers-two-col" style={{ alignItems: 'flex-start' }}>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Credit Period (days)</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter credit period" />
                                 </div>
-                                <div className="form-group">
+                                <div className="Customers-form-group">
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                        <label className="form-label" style={{ marginBottom: 0 }}>GSTIN <span className="text-red">*</span></label>
+                                        <label className="Customers-form-label" style={{ marginBottom: 0 }}>GSTIN <span className="Customers-text-red">*</span></label>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Enable GST</span>
-                                            <label className="switch">
+                                            <label className="Customers-switch">
                                                 <input type="checkbox" checked={enableGst} onChange={(e) => setEnableGst(e.target.checked)} />
-                                                <span className="slider round"></span>
+                                                <span className="Customers-slider Customers-round"></span>
                                             </label>
                                         </div>
                                     </div>
-                                    <input type="text" className="form-input" placeholder="Enter GSTIN" disabled={!enableGst} />
+                                    <input type="text" className="Customers-form-input" placeholder="Enter GSTIN" disabled={!enableGst} />
                                 </div>
                             </div>
 
                             {/* Billing Address Section */}
-                            <div className="form-section">
-                                <h3 className="section-subtitle">Billing Address</h3>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">Name</label>
+                            <div className="Customers-form-section">
+                                <h3 className="Customers-section-subtitle">Billing Address</h3>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Name</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Name"
+                                            type="text" className="Customers-form-input" placeholder="Enter Name"
                                             name="name" value={billingData.name} onChange={handleBillingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Phone</label>
-                                        <div className="input-with-note">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Phone</label>
+                                        <div className="Customers-input-with-note">
                                             <input
-                                                type="text" className="form-input" placeholder="Enter Phone"
+                                                type="text" className="Customers-form-input" placeholder="Enter Phone"
                                                 name="phone" value={billingData.phone} onChange={handleBillingChange}
                                             />
 
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Address</label>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Address</label>
                                     <textarea
-                                        className="form-textarea" placeholder="Enter Address" rows="2"
+                                        className="Customers-form-textarea" placeholder="Enter Address" rows="2"
                                         name="address" value={billingData.address} onChange={handleBillingChange}
                                     ></textarea>
                                 </div>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">City</label>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">City</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter City"
+                                            type="text" className="Customers-form-input" placeholder="Enter City"
                                             name="city" value={billingData.city} onChange={handleBillingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">State</label>
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">State</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter State"
+                                            type="text" className="Customers-form-input" placeholder="Enter State"
                                             name="state" value={billingData.state} onChange={handleBillingChange}
                                         />
                                     </div>
                                 </div>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">Country</label>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Country</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Country"
+                                            type="text" className="Customers-form-input" placeholder="Enter Country"
                                             name="country" value={billingData.country} onChange={handleBillingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Zip Code</label>
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Zip Code</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Zip Code"
+                                            type="text" className="Customers-form-input" placeholder="Enter Zip Code"
                                             name="zip" value={billingData.zip} onChange={handleBillingChange}
                                         />
                                     </div>
@@ -388,42 +388,42 @@ const Customers = () => {
                             </div>
 
                             {/* Shipping Address Section */}
-                            <div className="form-section">
+                            <div className="Customers-form-section">
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                    <h3 className="section-subtitle" style={{ marginBottom: 0 }}>Shipping Address</h3>
-                                    <button className="btn-action-small" onClick={handleSameAsBilling}>Shipping Same As Billing</button>
+                                    <h3 className="Customers-section-subtitle" style={{ marginBottom: 0 }}>Shipping Address</h3>
+                                    <button className="Customers-btn-action-small" onClick={handleSameAsBilling}>Shipping Same As Billing</button>
                                 </div>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">Name</label>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Name</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Name"
+                                            type="text" className="Customers-form-input" placeholder="Enter Name"
                                             name="name" value={shippingData.name} onChange={handleShippingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Phone</label>
-                                        <div className="input-with-note">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Phone</label>
+                                        <div className="Customers-input-with-note">
                                             <input
-                                                type="text" className="form-input" placeholder="Enter Phone"
+                                                type="text" className="Customers-form-input" placeholder="Enter Phone"
                                                 name="phone" value={shippingData.phone} onChange={handleShippingChange}
                                             />
 
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Address</label>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Address</label>
                                     <textarea
-                                        className="form-textarea" placeholder="Enter Address" rows="2"
+                                        className="Customers-form-textarea" placeholder="Enter Address" rows="2"
                                         name="address" value={shippingData.address} onChange={handleShippingChange}
                                     ></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" onClick={() => setShowAddModal(false)}>Cancel</button>
-                            <button className="btn-save" style={{ backgroundColor: '#8ce043' }}>Save Customer</button>
+                        <div className="Customers-modal-footer">
+                            <button className="Customers-btn-cancel" onClick={() => setShowAddModal(false)}>Cancel</button>
+                            <button className="Customers-btn-save" style={{ backgroundColor: '#8ce043' }}>Save Customer</button>
                         </div>
                     </div>
                 </div>
@@ -432,196 +432,196 @@ const Customers = () => {
 
             {/* Edit Modal */}
             {showEditModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-large">
-                        <div className="modal-header">
-                            <h2 className="modal-title">Edit Customer</h2>
-                            <button className="close-btn" onClick={() => setShowEditModal(false)}>×</button>
+                <div className="Customers-modal-overlay">
+                    <div className="Customers-modal-content Customers-modal-large">
+                        <div className="Customers-modal-header">
+                            <h2 className="Customers-modal-title">Edit Customer</h2>
+                            <button className="Customers-close-btn" onClick={() => setShowEditModal(false)}>×</button>
                         </div>
-                        <div className="modal-body">
-                            <div className="form-row three-col">
-                                <div className="form-group">
-                                    <label className="form-label">Name (English) <span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" defaultValue={selectedCustomer?.nameEnglish} placeholder="Enter Name (English)" />
+                        <div className="Customers-modal-body">
+                            <div className="Customers-form-row Customers-three-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Name (English) <span className="Customers-text-red">*</span></label>
+                                    <input type="text" className="Customers-form-input" defaultValue={selectedCustomer?.nameEnglish} placeholder="Enter Name (English)" />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Name (Arabic)</label>
-                                    <input type="text" className="form-input" defaultValue={selectedCustomer?.nameArabic} placeholder="Enter Name (Arabic)" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Name (Arabic)</label>
+                                    <input type="text" className="Customers-form-input" defaultValue={selectedCustomer?.nameArabic} placeholder="Enter Name (Arabic)" />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Company Name</label>
-                                    <input type="text" className="form-input" placeholder="Enter company name" />
-                                </div>
-                            </div>
-
-                            <div className="form-row mixed-col">
-                                <div className="form-group google-loc">
-                                    <label className="form-label">Company Google Location</label>
-                                    <input type="text" className="form-input" placeholder="Enter Google Maps link" />
-                                </div>
-                                <div className="form-group profile-img">
-                                    <label className="form-label">Profile Image</label>
-                                    <div className="file-input-wrapper">
-                                        <input type="file" id="editProfileImg" className="file-input" />
-                                        <label htmlFor="editProfileImg" className="file-label">
-                                            <span className="file-btn">Choose File</span>
-                                            <span className="file-name">No file chosen</span>
-                                        </label>
-                                    </div>
-                                    <small className="file-note">JPEG, PNG or JPG (max 5MB)</small>
-                                </div>
-                                <div className="form-group any-file">
-                                    <label className="form-label">Any File</label>
-                                    <div className="file-input-wrapper">
-                                        <input type="file" id="editAnyFile" className="file-input" />
-                                        <label htmlFor="editAnyFile" className="file-label">
-                                            <span className="file-btn">Choose File</span>
-                                            <span className="file-name">No file chosen</span>
-                                        </label>
-                                    </div>
-                                    <small className="file-note">Any file type. If image, max 5MB</small>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Company Name</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter company name" />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Account Type <span className="text-red">*</span></label>
-                                    <select className="form-select" defaultValue={selectedCustomer?.accountType.toLowerCase()}>
+                            <div className="Customers-form-row Customers-mixed-col">
+                                <div className="Customers-form-group Customers-google-loc">
+                                    <label className="Customers-form-label">Company Google Location</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter Google Maps link" />
+                                </div>
+                                <div className="Customers-form-group Customers-profile-img">
+                                    <label className="Customers-form-label">Profile Image</label>
+                                    <div className="Customers-file-input-wrapper">
+                                        <input type="file" id="editProfileImg" className="Customers-file-input" />
+                                        <label htmlFor="editProfileImg" className="Customers-file-label">
+                                            <span className="Customers-file-btn">Choose File</span>
+                                            <span className="Customers-file-name">No file chosen</span>
+                                        </label>
+                                    </div>
+                                    <small className="Customers-file-note">JPEG, PNG or JPG (max 5MB)</small>
+                                </div>
+                                <div className="Customers-form-group Customers-any-file">
+                                    <label className="Customers-form-label">Any File</label>
+                                    <div className="Customers-file-input-wrapper">
+                                        <input type="file" id="editAnyFile" className="Customers-file-input" />
+                                        <label htmlFor="editAnyFile" className="Customers-file-label">
+                                            <span className="Customers-file-btn">Choose File</span>
+                                            <span className="Customers-file-name">No file chosen</span>
+                                        </label>
+                                    </div>
+                                    <small className="Customers-file-note">Any file type. If image, max 5MB</small>
+                                </div>
+                            </div>
+
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Account Type <span className="Customers-text-red">*</span></label>
+                                    <select className="Customers-form-select" defaultValue={selectedCustomer?.accountType.toLowerCase()}>
                                         <option value="">-- Select Account --</option>
                                         <option value="debtors">Debtors</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Balance Type</label>
-                                    <select className="form-select" defaultValue="debit">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Balance Type</label>
+                                    <select className="Customers-form-select" defaultValue="debit">
                                         <option value="debit">Debit</option>
                                         <option value="credit">Credit</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Account Name <span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" defaultValue={selectedCustomer?.accountName} placeholder="This will auto-fill from selection above" readOnly />
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Account Name <span className="Customers-text-red">*</span></label>
+                                    <input type="text" className="Customers-form-input" defaultValue={selectedCustomer?.accountName} placeholder="This will auto-fill from selection above" readOnly />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Account Balance <span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" defaultValue={selectedCustomer?.openingBalance.replace('$', '')} />
-                                </div>
-                            </div>
-
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Creation Date <span className="text-red">*</span></label>
-                                    <input type="date" className="form-input" defaultValue="2026-01-13" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">Bank Account Number</label>
-                                    <input type="text" className="form-input" placeholder="Enter bank account number" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Account Balance <span className="Customers-text-red">*</span></label>
+                                    <input type="text" className="Customers-form-input" defaultValue={selectedCustomer?.openingBalance.replace('$', '')} />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Bank IFSC</label>
-                                    <input type="text" className="form-input" placeholder="Enter bank IFSC" />
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Creation Date <span className="Customers-text-red">*</span></label>
+                                    <input type="date" className="Customers-form-input" defaultValue="2026-01-13" />
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Bank Name & Branch</label>
-                                    <input type="text" className="form-input" placeholder="Enter bank name & branch" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Bank Account Number</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter bank account number" />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col">
-                                <div className="form-group">
-                                    <label className="form-label">Phone <span className="text-red">*</span></label>
-                                    <div className="input-with-note">
-                                        <input type="text" className="form-input" defaultValue={selectedCustomer?.contact} placeholder="Enter Phone" />
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Bank IFSC</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter bank IFSC" />
+                                </div>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Bank Name & Branch</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter bank name & branch" />
+                                </div>
+                            </div>
+
+                            <div className="Customers-form-row Customers-two-col">
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Phone <span className="Customers-text-red">*</span></label>
+                                    <div className="Customers-input-with-note">
+                                        <input type="text" className="Customers-form-input" defaultValue={selectedCustomer?.contact} placeholder="Enter Phone" />
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Email <span className="text-red">*</span></label>
-                                    <input type="email" className="form-input" defaultValue={selectedCustomer?.email} placeholder="Enter Email" />
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Email <span className="Customers-text-red">*</span></label>
+                                    <input type="email" className="Customers-form-input" defaultValue={selectedCustomer?.email} placeholder="Enter Email" />
                                 </div>
                             </div>
 
-                            <div className="form-row two-col" style={{ alignItems: 'flex-start' }}>
-                                <div className="form-group">
-                                    <label className="form-label">Credit Period (days)</label>
-                                    <input type="text" className="form-input" placeholder="Enter credit period" />
+                            <div className="Customers-form-row Customers-two-col" style={{ alignItems: 'flex-start' }}>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Credit Period (days)</label>
+                                    <input type="text" className="Customers-form-input" placeholder="Enter credit period" />
                                 </div>
-                                <div className="form-group">
+                                <div className="Customers-form-group">
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                        <label className="form-label" style={{ marginBottom: 0 }}>GSTIN <span className="text-red">*</span></label>
+                                        <label className="Customers-form-label" style={{ marginBottom: 0 }}>GSTIN <span className="Customers-text-red">*</span></label>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Enable GST</span>
-                                            <label className="switch">
+                                            <label className="Customers-switch">
                                                 <input type="checkbox" checked={enableGst} onChange={(e) => setEnableGst(e.target.checked)} />
-                                                <span className="slider round"></span>
+                                                <span className="Customers-slider Customers-round"></span>
                                             </label>
                                         </div>
                                     </div>
-                                    <input type="text" className="form-input" placeholder="Enter GSTIN" disabled={!enableGst} />
+                                    <input type="text" className="Customers-form-input" placeholder="Enter GSTIN" disabled={!enableGst} />
                                 </div>
                             </div>
 
                             {/* Billing Address Section */}
-                            <div className="form-section">
-                                <h3 className="section-subtitle">Billing Address</h3>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">Name</label>
+                            <div className="Customers-form-section">
+                                <h3 className="Customers-section-subtitle">Billing Address</h3>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Name</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Name"
+                                            type="text" className="Customers-form-input" placeholder="Enter Name"
                                             name="name" value={billingData.name} onChange={handleBillingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Phone</label>
-                                        <div className="input-with-note">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Phone</label>
+                                        <div className="Customers-input-with-note">
                                             <input
-                                                type="text" className="form-input" placeholder="Enter Phone"
+                                                type="text" className="Customers-form-input" placeholder="Enter Phone"
                                                 name="phone" value={billingData.phone} onChange={handleBillingChange}
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Address</label>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Address</label>
                                     <textarea
-                                        className="form-textarea" placeholder="Enter Address" rows="2"
+                                        className="Customers-form-textarea" placeholder="Enter Address" rows="2"
                                         name="address" value={billingData.address} onChange={handleBillingChange}
                                     ></textarea>
                                 </div>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">City</label>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">City</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter City"
+                                            type="text" className="Customers-form-input" placeholder="Enter City"
                                             name="city" value={billingData.city} onChange={handleBillingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">State</label>
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">State</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter State"
+                                            type="text" className="Customers-form-input" placeholder="Enter State"
                                             name="state" value={billingData.state} onChange={handleBillingChange}
                                         />
                                     </div>
                                 </div>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">Country</label>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Country</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Country"
+                                            type="text" className="Customers-form-input" placeholder="Enter Country"
                                             name="country" value={billingData.country} onChange={handleBillingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Zip Code</label>
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Zip Code</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Zip Code"
+                                            type="text" className="Customers-form-input" placeholder="Enter Zip Code"
                                             name="zip" value={billingData.zip} onChange={handleBillingChange}
                                         />
                                     </div>
@@ -629,41 +629,41 @@ const Customers = () => {
                             </div>
 
                             {/* Shipping Address Section */}
-                            <div className="form-section">
+                            <div className="Customers-form-section">
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                    <h3 className="section-subtitle" style={{ marginBottom: 0 }}>Shipping Address</h3>
-                                    <button className="btn-action-small" onClick={handleSameAsBilling}>Shipping Same As Billing</button>
+                                    <h3 className="Customers-section-subtitle" style={{ marginBottom: 0 }}>Shipping Address</h3>
+                                    <button className="Customers-btn-action-small" onClick={handleSameAsBilling}>Shipping Same As Billing</button>
                                 </div>
-                                <div className="form-row two-col">
-                                    <div className="form-group">
-                                        <label className="form-label">Name</label>
+                                <div className="Customers-form-row Customers-two-col">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Name</label>
                                         <input
-                                            type="text" className="form-input" placeholder="Enter Name"
+                                            type="text" className="Customers-form-input" placeholder="Enter Name"
                                             name="name" value={shippingData.name} onChange={handleShippingChange}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Phone</label>
-                                        <div className="input-with-note">
+                                    <div className="Customers-form-group">
+                                        <label className="Customers-form-label">Phone</label>
+                                        <div className="Customers-input-with-note">
                                             <input
-                                                type="text" className="form-input" placeholder="Enter Phone"
+                                                type="text" className="Customers-form-input" placeholder="Enter Phone"
                                                 name="phone" value={shippingData.phone} onChange={handleShippingChange}
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="form-label">Address</label>
+                                <div className="Customers-form-group">
+                                    <label className="Customers-form-label">Address</label>
                                     <textarea
-                                        className="form-textarea" placeholder="Enter Address" rows="2"
+                                        className="Customers-form-textarea" placeholder="Enter Address" rows="2"
                                         name="address" value={shippingData.address} onChange={handleShippingChange}
                                     ></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" onClick={() => setShowEditModal(false)}>Cancel</button>
-                            <button className="btn-save" style={{ backgroundColor: '#8ce043' }}>Update Customer</button>
+                        <div className="Customers-modal-footer">
+                            <button className="Customers-btn-cancel" onClick={() => setShowEditModal(false)}>Cancel</button>
+                            <button className="Customers-btn-save" style={{ backgroundColor: '#8ce043' }}>Update Customer</button>
                         </div>
                     </div>
                 </div>
@@ -671,18 +671,18 @@ const Customers = () => {
 
             {/* Delete Modal */}
             {showDeleteModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content" style={{ maxWidth: '400px' }}>
-                        <div className="modal-header">
-                            <h2 className="modal-title">Delete Customer</h2>
-                            <button className="close-btn" onClick={() => setShowDeleteModal(false)}>×</button>
+                <div className="Customers-modal-overlay">
+                    <div className="Customers-modal-content" style={{ maxWidth: '400px' }}>
+                        <div className="Customers-modal-header">
+                            <h2 className="Customers-modal-title">Delete Customer</h2>
+                            <button className="Customers-close-btn" onClick={() => setShowDeleteModal(false)}>×</button>
                         </div>
-                        <div className="modal-body">
+                        <div className="Customers-modal-body">
                             <p>Are you sure you want to delete customer <strong>{selectedCustomer?.nameEnglish}</strong>?</p>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                            <button className="btn-save btn-danger-action" style={{ backgroundColor: '#ff5252' }}>Delete</button>
+                        <div className="Customers-modal-footer">
+                            <button className="Customers-btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                            <button className="Customers-btn-save Customers-btn-danger-action" style={{ backgroundColor: '#ff5252' }}>Delete</button>
                         </div>
                     </div>
                 </div>

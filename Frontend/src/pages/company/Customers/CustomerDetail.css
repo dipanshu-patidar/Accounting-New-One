@@ -1,24 +1,24 @@
-.customer-detail-page {
+.CustomerDetail-customer-detail-page {
     padding: 1.5rem;
     overflow-y: auto;
     height: 100%;
 }
 
-.detail-header {
+.CustomerDetail-detail-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 2rem;
 }
 
-.page-title {
+.CustomerDetail-page-title {
     font-size: 1.4rem;
     font-weight: 700;
     color: #1f2937;
     margin-bottom: 0.25rem;
 }
 
-.breadcrumb {
+.CustomerDetail-breadcrumb {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -26,18 +26,18 @@
     color: #64748b;
 }
 
-.breadcrumb span.active {
+.CustomerDetail-breadcrumb span.CustomerDetail-active {
     color: #8ce043;
     font-weight: 600;
 }
 
-.header-actions {
+.CustomerDetail-header-actions {
     display: flex;
     gap: 0.75rem;
     align-items: center;
 }
 
-.btn-action {
+.CustomerDetail-btn-action {
     border: none;
     padding: 0.6rem 1rem;
     border-radius: 6px;
@@ -48,7 +48,7 @@
     transition: opacity 0.2s;
 }
 
-.btn-icon {
+.CustomerDetail-btn-icon {
     border: none;
     width: 38px;
     height: 38px;
@@ -61,7 +61,7 @@
     transition: opacity 0.2s;
 }
 
-.btn-back {
+.CustomerDetail-btn-back {
     background: #f1f5f9;
     color: #475569;
     border: 1px solid #e2e8f0;
@@ -73,49 +73,49 @@
     margin-left: 0.5rem;
 }
 
-.bg-green {
+.CustomerDetail-bg-green {
     background-color: #8ce043;
 }
 
-.bg-cyan {
+.CustomerDetail-bg-cyan {
     background-color: #00bcd4;
 }
 
-.bg-red {
+.CustomerDetail-bg-red {
     background-color: #f53d5d;
 }
 
-.bg-blue {
+.CustomerDetail-bg-blue {
     background-color: #2196f3;
 }
 
-.bg-orange {
+.CustomerDetail-bg-orange {
     background-color: #ff9800;
 }
 
-.bg-gray {
+.CustomerDetail-bg-gray {
     background-color: #607d8b;
 }
 
-.bg-pink {
+.CustomerDetail-bg-pink {
     background-color: #f48fb1;
 }
 
-.info-cards-grid {
+.CustomerDetail-info-cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
-.info-card {
+.CustomerDetail-info-card {
     background: white;
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.card-title {
+.CustomerDetail-card-title {
     font-size: 1rem;
     font-weight: 700;
     color: #374151;
@@ -124,26 +124,26 @@
     padding-bottom: 0.75rem;
 }
 
-.card-content .primary-text {
+.CustomerDetail-card-content .CustomerDetail-primary-text {
     font-weight: 700;
     font-size: 1rem;
     margin-bottom: 0.5rem;
     color: #4b5563;
 }
 
-.card-content .secondary-text {
+.CustomerDetail-card-content .CustomerDetail-secondary-text {
     font-size: 0.85rem;
     color: #6b7280;
     margin-bottom: 0.4rem;
     line-height: 1.4;
 }
 
-.address-text {
+.CustomerDetail-address-text {
     max-width: 250px;
 }
 
 /* Company Info Card */
-.company-info-card {
+.CustomerDetail-company-info-card {
     background: white;
     border-radius: 8px;
     padding: 1.5rem;
@@ -151,43 +151,43 @@
     margin-bottom: 2rem;
 }
 
-.info-row {
+.CustomerDetail-info-row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1.5rem;
 }
 
-.info-row:last-child {
+.CustomerDetail-info-row:last-child {
     margin-bottom: 0;
 }
 
-.info-item {
+.CustomerDetail-info-item {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
     flex: 1;
 }
 
-.item-label {
+.CustomerDetail-item-label {
     font-size: 0.8rem;
     color: #9ca3af;
 }
 
-.item-value {
+.CustomerDetail-item-value {
     font-size: 0.9rem;
     color: #374151;
 }
 
-.text-bold {
+.CustomerDetail-text-bold {
     font-weight: 700;
 }
 
-.text-red {
+.CustomerDetail-text-red {
     color: #f53d5d;
 }
 
 /* Detail Sections */
-.detail-section {
+.CustomerDetail-detail-section {
     background: white;
     border-radius: 8px;
     padding: 1.5rem;
@@ -195,23 +195,23 @@
     margin-bottom: 2rem;
 }
 
-.section-title {
+.CustomerDetail-section-title {
     font-size: 1.1rem;
     font-weight: 700;
     color: #374151;
     margin-bottom: 1.5rem;
 }
 
-.table-responsive {
+.CustomerDetail-table-responsive {
     overflow-x: auto;
 }
 
-.detail-table {
+.CustomerDetail-detail-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.detail-table th {
+.CustomerDetail-detail-table th {
     text-align: left;
     padding: 1rem;
     background-color: #f8fafc;
@@ -222,14 +222,14 @@
     border-bottom: 1px solid #e2e8f0;
 }
 
-.detail-table td {
+.CustomerDetail-detail-table td {
     padding: 1.25rem 1rem;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.85rem;
     color: #4b5563;
 }
 
-.id-badge {
+.CustomerDetail-id-badge {
     padding: 0.4rem 0.75rem;
     border: 1px solid #8ce043;
     color: #8ce043;
@@ -238,7 +238,7 @@
     font-weight: 600;
 }
 
-.status-badge {
+.CustomerDetail-status-badge {
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -246,20 +246,20 @@
     color: white;
 }
 
-.status-badge.orange {
+.CustomerDetail-status-badge.CustomerDetail-orange {
     background-color: #ffb822;
 }
 
-.status-badge.cyan {
+.CustomerDetail-status-badge.CustomerDetail-cyan {
     background-color: #00bcd4;
 }
 
-.table-actions {
+.CustomerDetail-table-actions {
     display: flex;
     gap: 0.4rem;
 }
 
-.table-icon-btn {
+.CustomerDetail-table-icon-btn {
     border: none;
     width: 28px;
     height: 28px;
@@ -272,8 +272,8 @@
     transition: opacity 0.2s;
 }
 
-.table-icon-btn:hover,
-.btn-action:hover,
-.btn-icon:hover {
+.CustomerDetail-table-icon-btn:hover,
+.CustomerDetail-btn-action:hover,
+.CustomerDetail-btn-icon:hover {
     opacity: 0.85;
 }
