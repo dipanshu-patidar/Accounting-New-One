@@ -125,7 +125,7 @@ const ContraVoucher = () => {
                                             </button>
                                         </div>
                                     </td>
-                                </tr>
+                                </tr> 
                             ))}
                         </tbody>
                     </table>
