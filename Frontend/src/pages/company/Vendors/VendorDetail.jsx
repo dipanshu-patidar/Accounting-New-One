@@ -1,196 +1,189 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Eye, Pencil, Trash2, FileText, Printer, Search } from 'lucide-react';
+import { Eye, Pencil, Trash2, Download, ArrowLeft, RefreshCw } from 'lucide-react';
+import toast from 'react-hot-toast';
+import vendorService from '../../../services/vendorService';
 import './VendorDetail.css';
 
 const VendorDetail = () => {
-    const navigate = useNavigate();
     const { id } = useParams();
-    const [entriesPerPage, setEntriesPerPage] = useState(10);
-    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+    const [vendor, setVendor] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // Mock data based on the provided image
-    const vendor = {
-        name: 'Anthony B Renfroe',
-        email: 'anthony@dayrep.com',
-        phone: '+85967412345',
-        vendorId: '#VEND00001',
-        creationDate: 'Jul 8, 2020',
-        balance: '8,454.08',
-        overdue: '7,744.09',
-        totalBills: '8,294.09',
-        billQuantity: 3,
-        averageSales: '2,764.70',
-        paidAmount: '550.00',
-        billing: {
-            name: 'Anthony B Renfroe',
-            phone: '+15733533404',
-            address: 'ds 65109 Jefferson City, Missouri, United States'
-        },
-        shipping: {
-            name: 'Anthony B Renfroe',
-            phone: '+15733533404',
-            address: 'ds Jefferson City, Missouri, 65109 United States'
+    useEffect(() => {
+        fetchVendor();
+    }, [id]);
+
+    const fetchVendor = async () => {
+        try {
+            setLoading(true);
+            const data = await vendorService.getVendor(id);
+            setVendor(data);
+        } catch (error) {
+            console.error('Error fetching vendor:', error);
+            toast.error('Failed to fetch vendor details');
+        } finally {
+            setLoading(false);
         }
     };
 
-    const bills = [
-        { id: '#BILL00025', date: 'Apr 30, 2025', dueDate: 'Jul 31, 2025', amountDue: '$7,694.19', status: 'Partially Paid' },
-        { id: '#BILL00012', date: 'Apr 8, 2025', dueDate: 'May 10, 2025', amountDue: '$16.60', status: 'Partially Paid' },
-        { id: '#BILL00023', date: 'Apr 8, 2025', dueDate: 'May 10, 2025', amountDue: '$33.30', status: 'Sent' }
-    ];
+    const formatCurrency = (amount) => {
+        if (amount === null || amount === undefined) return '₹0.00';
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR'
+        }).format(amount);
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '-';
+        return new Date(dateString).toLocaleDateString('en-IN', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
+    if (loading) {
+        return (
+            <div className="VendorDetail-vendor-detail-page">
+                <div className="VendorDetail-loading">Loading vendor details...</div>
+            </div>
+        );
+    }
+
+    if (!vendor) {
+        return (
+            <div className="VendorDetail-vendor-detail-page">
+                <div className="VendorDetail-not-found">Vendor not found</div>
+            </div>
+        );
+    }
 
     return (
         <div className="VendorDetail-vendor-detail-page">
             <div className="VendorDetail-detail-header">
                 <div className="VendorDetail-header-left">
-                    <h1 className="VendorDetail-page-title">Manage Vendor-Detail</h1>
+                    <h1 className="VendorDetail-page-title">Vendor Details</h1>
                 </div>
                 <div className="VendorDetail-header-actions">
-                    <button className="VendorDetail-btn-action VendorDetail-bg-green" onClick={() => navigate('/company/purchases/bill')}>Create Bill</button>
-                    <button className="VendorDetail-btn-back" onClick={() => navigate('/company/accounts/vendors')}>Back</button>
+                    <button className="VendorDetail-btn-action VendorDetail-bg-green" onClick={() => navigate('/company/purchases/bill')}>
+                        Create Bill
+                    </button>
+                    <button className="VendorDetail-btn-back" onClick={() => navigate('/company/accounts/vendors')}>
+                        <ArrowLeft size={16} /> Back
+                    </button>
                 </div>
             </div>
 
             <div className="VendorDetail-info-cards-grid">
                 <div className="VendorDetail-info-card">
                     <h3 className="VendorDetail-card-title">Vendor Info</h3>
-                    <div className="VendorDetail-card-body">
-                        <p className="VendorDetail-info-text">{vendor.name}</p>
-                        <p className="VendorDetail-info-text">{vendor.email}</p>
-                        <p className="VendorDetail-info-text">{vendor.phone}</p>
-                        <p className="VendorDetail-info-subtext">560</p>
+                    <div className="VendorDetail-card-content">
+                        <p className="VendorDetail-primary-text">{vendor.name}</p>
+                        <p className="VendorDetail-secondary-text">{vendor.email || 'No email'}</p>
+                        <p className="VendorDetail-secondary-text">{vendor.phone || 'No phone'}</p>
+                        <p className="VendorDetail-secondary-text">GST: {vendor.gstNumber || 'Not provided'}</p>
                     </div>
                 </div>
                 <div className="VendorDetail-info-card">
-                    <h3 className="VendorDetail-card-title">Billing Info</h3>
-                    <div className="VendorDetail-card-body">
-                        <p className="VendorDetail-info-text">{vendor.billing.name}</p>
-                        <p className="VendorDetail-info-text">{vendor.billing.phone}</p>
-                        <p className="VendorDetail-info-text">{vendor.billing.address}</p>
+                    <h3 className="VendorDetail-card-title">Address</h3>
+                    <div className="VendorDetail-card-content">
+                        <p className="VendorDetail-secondary-text VendorDetail-address-text">
+                            {vendor.address || 'No address provided'}
+                        </p>
                     </div>
                 </div>
                 <div className="VendorDetail-info-card">
-                    <h3 className="VendorDetail-card-title">Shipping Info</h3>
-                    <div className="VendorDetail-card-body">
-                        <p className="VendorDetail-info-text">{vendor.shipping.name}</p>
-                        <p className="VendorDetail-info-text">ds</p>
-                        <p className="VendorDetail-info-text">{vendor.shipping.address}</p>
-                        <p className="VendorDetail-info-text">{vendor.shipping.phone}</p>
+                    <h3 className="VendorDetail-card-title">Credit Terms</h3>
+                    <div className="VendorDetail-card-content">
+                        <p className="VendorDetail-secondary-text">Credit Limit: {formatCurrency(vendor.creditLimit)}</p>
+                        <p className="VendorDetail-secondary-text">Credit Days: {vendor.creditDays || 0} days</p>
                     </div>
                 </div>
             </div>
 
             <div className="VendorDetail-company-info-card">
-                <h3 className="VendorDetail-card-title">Company Info</h3>
-                <div className="VendorDetail-metrics-grid">
-                    <div className="VendorDetail-metric-item">
-                        <label>Vendor Id</label>
-                        <p>{vendor.vendorId}</p>
+                <h3 className="VendorDetail-card-title">Account Summary</h3>
+                <div className="VendorDetail-info-row">
+                    <div className="VendorDetail-info-item">
+                        <span className="VendorDetail-item-label">Vendor ID</span>
+                        <span className="VendorDetail-item-value VendorDetail-text-bold">#{vendor.id}</span>
                     </div>
-                    <div className="VendorDetail-metric-item">
-                        <label>Date of Creation</label>
-                        <p>{vendor.creationDate}</p>
+                    <div className="VendorDetail-info-item">
+                        <span className="VendorDetail-item-label">Date Created</span>
+                        <span className="VendorDetail-item-value VendorDetail-text-bold">{formatDate(vendor.createdAt)}</span>
                     </div>
-                    <div className="VendorDetail-metric-item">
-                        <label>Balance</label>
-                        <p className="VendorDetail-text-bold">${vendor.balance}</p>
+                    <div className="VendorDetail-info-item">
+                        <span className="VendorDetail-item-label">Opening Balance</span>
+                        <span className="VendorDetail-item-value VendorDetail-text-bold">{formatCurrency(vendor.openingBalance)}</span>
                     </div>
-                    <div className="VendorDetail-metric-item">
-                        <label>Overdue</label>
-                        <p className="VendorDetail-text-bold VendorDetail-text-red">${vendor.overdue}</p>
+                    <div className="VendorDetail-info-item">
+                        <span className="VendorDetail-item-label">Current Balance</span>
+                        <span className={`VendorDetail-item-value VendorDetail-text-bold ${vendor.currentBalance < 0 ? 'VendorDetail-text-red' : 'VendorDetail-text-green'}`}>
+                            {formatCurrency(vendor.currentBalance)}
+                        </span>
                     </div>
-                    <div className="VendorDetail-metric-item">
-                        <label>Total Sum of Bills</label>
-                        <p className="VendorDetail-text-bold">${vendor.totalBills}</p>
+                </div>
+                <div className="VendorDetail-info-row">
+                    <div className="VendorDetail-info-item">
+                        <span className="VendorDetail-item-label">Status</span>
+                        <span className={`VendorDetail-status-badge ${vendor.isActive ? 'VendorDetail-status-active' : 'VendorDetail-status-inactive'}`}>
+                            {vendor.isActive ? 'Active' : 'Inactive'}
+                        </span>
                     </div>
-                    <div className="VendorDetail-metric-item">
-                        <label>Quantity of Bills</label>
-                        <p>{vendor.billQuantity}</p>
-                    </div>
-                    <div className="VendorDetail-metric-item">
-                        <label>Average Sales</label>
-                        <p className="VendorDetail-text-bold">${vendor.averageSales}</p>
-                    </div>
-                    <div className="VendorDetail-metric-item">
-                        <label>Paid Amount</label>
-                        <p className="VendorDetail-text-bold VendorDetail-text-green">${vendor.paidAmount}</p>
+                    <div className="VendorDetail-info-item">
+                        <span className="VendorDetail-item-label">Linked Ledger Account</span>
+                        <span className="VendorDetail-item-value VendorDetail-text-bold">
+                            {vendor.ledgerAccountId ? `Account #${vendor.ledgerAccountId}` : 'Not linked'}
+                        </span>
                     </div>
                 </div>
             </div>
 
             <section className="VendorDetail-detail-section">
-                <h2 className="VendorDetail-section-title">Bills</h2>
-
-                <div className="VendorDetail-bills-card">
-                    <div className="VendorDetail-controls-row">
-                        <div className="VendorDetail-entries-control">
-                            <select
-                                value={entriesPerPage}
-                                onChange={(e) => setEntriesPerPage(Number(e.target.value))}
-                                className="VendorDetail-entries-select"
-                            >
-                                <option value={10}>10</option>
-                                <option value={25}>25</option>
-                                <option value={50}>50</option>
-                            </select>
-                            <span className="VendorDetail-entries-text">entries per page</span>
-                        </div>
-                        <div className="VendorDetail-search-control">
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="VendorDetail-search-input"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="VendorDetail-table-responsive">
-                        <table className="VendorDetail-detail-table">
-                            <thead>
+                <div className="VendorDetail-section-header">
+                    <h2 className="VendorDetail-section-title">Ledger Entries</h2>
+                    <button className="VendorDetail-btn-refresh" onClick={fetchVendor}>
+                        <RefreshCw size={16} />
+                    </button>
+                </div>
+                <div className="VendorDetail-table-responsive">
+                    <table className="VendorDetail-detail-table">
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>VOUCHER NO</th>
+                                <th>TYPE</th>
+                                <th>NARRATION</th>
+                                <th>DEBIT</th>
+                                <th>CREDIT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {(!vendor.ledgerEntries || vendor.ledgerEntries.length === 0) ? (
                                 <tr>
-                                    <th>BILL</th>
-                                    <th>BILL DATE</th>
-                                    <th>DUE DATE</th>
-                                    <th>AMOUNT DUE</th>
-                                    <th>STATUS</th>
-                                    <th>ACTION</th>
+                                    <td colSpan="6" className="text-center">No ledger entries found</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {bills.map(bill => (
-                                    <tr key={bill.id}>
-                                        <td>
-                                            <div className="VendorDetail-voucher-badge-small">
-                                                {bill.id}
-                                            </div>
+                            ) : (
+                                vendor.ledgerEntries.map((entry, index) => (
+                                    <tr key={entry.id || index}>
+                                        <td>{formatDate(entry.date)}</td>
+                                        <td><span className="VendorDetail-id-badge">{entry.voucherNumber || '-'}</span></td>
+                                        <td>{entry.referenceType || 'Journal'}</td>
+                                        <td>{entry.narration || '-'}</td>
+                                        <td className="VendorDetail-text-red">
+                                            {entry.entryType === 'DEBIT' ? formatCurrency(entry.amount) : '-'}
                                         </td>
-                                        <td>{bill.date}</td>
-                                        <td className="VendorDetail-text-red">{bill.dueDate}</td>
-                                        <td>{bill.amountDue}</td>
-                                        <td>
-                                            <span className={`VendorDetail-status-badge-modern ${bill.status.toLowerCase().replace(' ', '-')}`}>
-                                                {bill.status}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div className="VendorDetail-table-actions">
-                                                <button className="VendorDetail-table-icon-btn VendorDetail-bg-gray"><FileText size={14} /></button>
-                                                <button className="VendorDetail-table-icon-btn VendorDetail-bg-orange"><Eye size={14} /></button>
-                                                <button className="VendorDetail-table-icon-btn VendorDetail-bg-cyan"><Pencil size={14} /></button>
-                                                <button className="VendorDetail-table-icon-btn VendorDetail-bg-pink"><Trash2 size={14} /></button>
-                                            </div>
+                                        <td className="VendorDetail-text-green">
+                                            {entry.entryType === 'CREDIT' ? formatCurrency(entry.amount) : '-'}
                                         </td>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="VendorDetail-pagination-info">
-                        Showing 1 to {bills.length} of {bills.length} entries
-                    </div>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             </section>
         </div>

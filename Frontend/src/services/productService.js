@@ -26,12 +26,18 @@ const deleteProduct = async (id) => {
     return response.data;
 };
 
+const updateStock = async (productId, warehouseId, stockData) => {
+    const response = await api.put(`/products/${productId}/stock/${warehouseId}`, stockData);
+    return response.data;
+};
+
 const productService = {
     createProduct,
     getProducts,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    updateStock
 };
 
 export default productService;

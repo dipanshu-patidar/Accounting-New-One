@@ -1,52 +1,79 @@
-import React from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Eye, Pencil, Trash2, Plus, Download } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Eye, Pencil, Trash2, Download, ArrowLeft, RefreshCw } from 'lucide-react';
+import toast from 'react-hot-toast';
+import customerService from '../../../services/customerService';
 import './CustomerDetail.css';
 
 const CustomerDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [customer, setCustomer] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // Mock data for the demonstration
-    const customer = {
-        name: 'Keir',
-        email: 'IsidroTJohnson@armyspy.com',
-        phone: '+8596741234',
-        id: '#CUST00001',
-        creationDate: 'Jul 8, 2020',
-        balance: '$-39,202.45',
-        overdue: '$40,352.00',
-        totalInvoices: '$42,472.00',
-        invoiceCount: 3,
-        averageSales: '$14,157.33',
-        paidAmount: '$2,110.00',
-        billing: {
-            name: 'Keir',
-            address: '198 , Bombay Talkies Compd, Himanshurai Road, Malad (west) Mumbai, Maharashtra, 400064 India',
-            phone: '+02228896140'
-        },
-        shipping: {
-            name: 'Keir',
-            address: '198 , Bombay Talkies Compd, Himanshurai Road, Malad (west) Mumbai, Maharashtra, 400064 India',
-            phone: '+02228896140'
+    useEffect(() => {
+        fetchCustomer();
+    }, [id]);
+
+    const fetchCustomer = async () => {
+        try {
+            setLoading(true);
+            const data = await customerService.getCustomer(id);
+            setCustomer(data);
+        } catch (error) {
+            console.error('Error fetching customer:', error);
+            toast.error('Failed to fetch customer details');
+        } finally {
+            setLoading(false);
         }
     };
 
-    const invoices = [
-        { id: '#INVO00001', issueDate: 'Apr 8, 2025', dueDate: 'Jun 12, 2025', amount: '$56.50', status: 'Partially Paid' },
-        { id: '#INVO00003', issueDate: 'Apr 8, 2025', dueDate: 'Apr 30, 2025', amount: '$40,200.00', status: 'Partially Paid' },
-        { id: '#INVO00004', issueDate: 'Apr 8, 2025', dueDate: 'May 14, 2025', amount: '$95.50', status: 'Sent' },
-    ];
+    const formatCurrency = (amount) => {
+        if (amount === null || amount === undefined) return '₹0.00';
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR'
+        }).format(amount);
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '-';
+        return new Date(dateString).toLocaleDateString('en-IN', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
+    if (loading) {
+        return (
+            <div className="CustomerDetail-customer-detail-page">
+                <div className="CustomerDetail-loading">Loading customer details...</div>
+            </div>
+        );
+    }
+
+    if (!customer) {
+        return (
+            <div className="CustomerDetail-customer-detail-page">
+                <div className="CustomerDetail-not-found">Customer not found</div>
+            </div>
+        );
+    }
 
     return (
         <div className="CustomerDetail-customer-detail-page">
             <div className="CustomerDetail-detail-header">
                 <div className="CustomerDetail-header-left">
-                    <h1 className="CustomerDetail-page-title">Manage Customer Detail</h1>
+                    <h1 className="CustomerDetail-page-title">Customer Details</h1>
                 </div>
                 <div className="CustomerDetail-header-actions">
-                    <button className="CustomerDetail-btn-action CustomerDetail-bg-green" onClick={() => navigate('/company/sales/invoice')}>Create Invoice</button>
-                    <button className="CustomerDetail-btn-back" onClick={() => navigate('/company/accounts/customers')}>Back</button>
+                    <button className="CustomerDetail-btn-action CustomerDetail-bg-green" onClick={() => navigate('/company/sales/invoice')}>
+                        Create Invoice
+                    </button>
+                    <button className="CustomerDetail-btn-back" onClick={() => navigate('/company/accounts/customers')}>
+                        <ArrowLeft size={16} /> Back
+                    </button>
                 </div>
             </div>
 
@@ -55,101 +82,106 @@ const CustomerDetail = () => {
                     <h3 className="CustomerDetail-card-title">Customer Info</h3>
                     <div className="CustomerDetail-card-content">
                         <p className="CustomerDetail-primary-text">{customer.name}</p>
-                        <p className="CustomerDetail-secondary-text">{customer.email}</p>
-                        <p className="CustomerDetail-secondary-text">{customer.phone}</p>
-                        <p className="CustomerDetail-secondary-text">560</p>
+                        <p className="CustomerDetail-secondary-text">{customer.email || 'No email'}</p>
+                        <p className="CustomerDetail-secondary-text">{customer.phone || 'No phone'}</p>
+                        <p className="CustomerDetail-secondary-text">GST: {customer.gstNumber || 'Not provided'}</p>
                     </div>
                 </div>
                 <div className="CustomerDetail-info-card">
-                    <h3 className="CustomerDetail-card-title">Billing Info</h3>
+                    <h3 className="CustomerDetail-card-title">Address</h3>
                     <div className="CustomerDetail-card-content">
-                        <p className="CustomerDetail-primary-text">{customer.billing.name}</p>
-                        <p className="CustomerDetail-secondary-text CustomerDetail-address-text">{customer.billing.address}</p>
-                        <p className="CustomerDetail-secondary-text">{customer.billing.phone}</p>
+                        <p className="CustomerDetail-secondary-text CustomerDetail-address-text">
+                            {customer.address || 'No address provided'}
+                        </p>
                     </div>
                 </div>
                 <div className="CustomerDetail-info-card">
-                    <h3 className="CustomerDetail-card-title">Shipping Info</h3>
+                    <h3 className="CustomerDetail-card-title">Credit Terms</h3>
                     <div className="CustomerDetail-card-content">
-                        <p className="CustomerDetail-primary-text">{customer.shipping.name}</p>
-                        <p className="CustomerDetail-secondary-text CustomerDetail-address-text">{customer.shipping.address}</p>
-                        <p className="CustomerDetail-secondary-text">{customer.shipping.phone}</p>
+                        <p className="CustomerDetail-secondary-text">Credit Limit: {formatCurrency(customer.creditLimit)}</p>
+                        <p className="CustomerDetail-secondary-text">Credit Days: {customer.creditDays || 0} days</p>
                     </div>
                 </div>
             </div>
 
             <div className="CustomerDetail-company-info-card">
-                <h3 className="CustomerDetail-card-title">Company Info</h3>
+                <h3 className="CustomerDetail-card-title">Account Summary</h3>
                 <div className="CustomerDetail-info-row">
                     <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Customer Id</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{customer.id}</span>
+                        <span className="CustomerDetail-item-label">Customer ID</span>
+                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">#{customer.id}</span>
                     </div>
                     <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Date of Creation</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{customer.creationDate}</span>
+                        <span className="CustomerDetail-item-label">Date Created</span>
+                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{formatDate(customer.createdAt)}</span>
                     </div>
                     <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Balance</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{customer.balance}</span>
+                        <span className="CustomerDetail-item-label">Opening Balance</span>
+                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{formatCurrency(customer.openingBalance)}</span>
                     </div>
                     <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Overdue</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold CustomerDetail-text-red">{customer.overdue}</span>
+                        <span className="CustomerDetail-item-label">Current Balance</span>
+                        <span className={`CustomerDetail-item-value CustomerDetail-text-bold ${customer.currentBalance < 0 ? 'CustomerDetail-text-red' : 'CustomerDetail-text-green'}`}>
+                            {formatCurrency(customer.currentBalance)}
+                        </span>
                     </div>
                 </div>
                 <div className="CustomerDetail-info-row">
                     <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Total Sum of Invoices</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{customer.totalInvoices}</span>
+                        <span className="CustomerDetail-item-label">Status</span>
+                        <span className={`CustomerDetail-status-badge ${customer.isActive ? 'CustomerDetail-status-active' : 'CustomerDetail-status-inactive'}`}>
+                            {customer.isActive ? 'Active' : 'Inactive'}
+                        </span>
                     </div>
                     <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Quantity of Invoice</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{customer.invoiceCount}</span>
-                    </div>
-                    <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Average Sales</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{customer.averageSales}</span>
-                    </div>
-                    <div className="CustomerDetail-info-item">
-                        <span className="CustomerDetail-item-label">Paid Amount</span>
-                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">{customer.paidAmount}</span>
+                        <span className="CustomerDetail-item-label">Linked Ledger Account</span>
+                        <span className="CustomerDetail-item-value CustomerDetail-text-bold">
+                            {customer.ledgerAccountId ? `Account #${customer.ledgerAccountId}` : 'Not linked'}
+                        </span>
                     </div>
                 </div>
             </div>
 
             <section className="CustomerDetail-detail-section">
-                <h2 className="CustomerDetail-section-title">Invoice</h2>
+                <div className="CustomerDetail-section-header">
+                    <h2 className="CustomerDetail-section-title">Ledger Entries</h2>
+                    <button className="CustomerDetail-btn-refresh" onClick={fetchCustomer}>
+                        <RefreshCw size={16} />
+                    </button>
+                </div>
                 <div className="CustomerDetail-table-responsive">
                     <table className="CustomerDetail-detail-table">
                         <thead>
                             <tr>
-                                <th>INVOICE</th>
-                                <th>ISSUE DATE</th>
-                                <th>DUE DATE</th>
-                                <th>AMOUNT DUE</th>
-                                <th>STATUS</th>
-                                <th>ACTION</th>
+                                <th>DATE</th>
+                                <th>VOUCHER NO</th>
+                                <th>TYPE</th>
+                                <th>NARRATION</th>
+                                <th>DEBIT</th>
+                                <th>CREDIT</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {invoices.map(inv => (
-                                <tr key={inv.id}>
-                                    <td><span className="CustomerDetail-id-badge">{inv.id}</span></td>
-                                    <td>{inv.issueDate}</td>
-                                    <td><span className="CustomerDetail-text-red">{inv.dueDate}</span></td>
-                                    <td>{inv.amountDue}</td>
-                                    <td><span className={`CustomerDetail-status-badge ${inv.status === 'Sent' ? 'CustomerDetail-orange' : 'CustomerDetail-cyan'}`}>{inv.status}</span></td>
-                                    <td>
-                                        <div className="CustomerDetail-table-actions">
-                                            <button className="CustomerDetail-table-icon-btn CustomerDetail-bg-gray"><Download size={14} /></button>
-                                            <button className="CustomerDetail-table-icon-btn CustomerDetail-bg-orange"><Eye size={14} /></button>
-                                            <button className="CustomerDetail-table-icon-btn CustomerDetail-bg-cyan"><Pencil size={14} /></button>
-                                            <button className="CustomerDetail-table-icon-btn CustomerDetail-bg-pink"><Trash2 size={14} /></button>
-                                        </div>
-                                    </td>
+                            {(!customer.ledgerEntries || customer.ledgerEntries.length === 0) ? (
+                                <tr>
+                                    <td colSpan="6" className="text-center">No ledger entries found</td>
                                 </tr>
-                            ))}
+                            ) : (
+                                customer.ledgerEntries.map((entry, index) => (
+                                    <tr key={entry.id || index}>
+                                        <td>{formatDate(entry.date)}</td>
+                                        <td><span className="CustomerDetail-id-badge">{entry.voucherNumber || '-'}</span></td>
+                                        <td>{entry.referenceType || 'Journal'}</td>
+                                        <td>{entry.narration || '-'}</td>
+                                        <td className="CustomerDetail-text-red">
+                                            {entry.entryType === 'DEBIT' ? formatCurrency(entry.amount) : '-'}
+                                        </td>
+                                        <td className="CustomerDetail-text-green">
+                                            {entry.entryType === 'CREDIT' ? formatCurrency(entry.amount) : '-'}
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>

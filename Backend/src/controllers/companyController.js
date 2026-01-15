@@ -2,6 +2,9 @@ const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 const { isCloudinaryConfigured } = require('../utils/cloudinaryConfig');
+const { createDefaultCOA } = require('./coaController');
+const { createDefaultUnits } = require('./uomController');
+const { createDefaultWarehouse } = require('./warehouseController');
 
 const createCompany = async (req, res) => {
     try {
@@ -54,6 +57,15 @@ const createCompany = async (req, res) => {
                     companyId: company.id
                 }
             });
+
+            // Create default Chart of Accounts for the company
+            await createDefaultCOA(company.id, tx);
+
+            // Create default Units of Measure
+            await createDefaultUnits(company.id, tx);
+
+            // Create default Warehouse
+            await createDefaultWarehouse(company.id, company.name, tx);
 
             return { company, user };
         });

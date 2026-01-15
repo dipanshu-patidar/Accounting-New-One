@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Plus, Pencil, Trash2, X } from 'lucide-react';
+import toast from 'react-hot-toast';
+import uomService from '../../../../services/uomService';
 import './UOM.css';
 
 const UOM = () => {
@@ -9,44 +11,72 @@ const UOM = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedUnit, setSelectedUnit] = useState(null);
+    const [uoms, setUoms] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const categories = ['Weight', 'Area', 'Volume', 'Length', 'Count'];
-    const unitsByCategory = {
-        'Weight': ['KG', 'Gram', 'Milligram', 'Pound', 'Ounce'],
-        'Area': ['Square Meter', 'Square Foot', 'Acre', 'Hectare'],
-        'Volume': ['Litre', 'Millilitre', 'Cubic Meter', 'Gallon'],
-        'Length': ['Meter', 'Centimeter', 'Millimeter', 'Inch', 'Foot'],
-        'Count': ['Piece', 'Dozen', 'Box', 'Packet']
-    };
-
-    const [uoms, setUoms] = useState([
-        { id: 1, name: 'Kilogram', category: 'Weight', weightPerUnit: '1 KG' },
-        { id: 2, name: 'Litre', category: 'Volume', weightPerUnit: '1 LTR' },
-        { id: 3, name: 'Meter', category: 'Length', weightPerUnit: '1 MTR' }
-    ]);
 
     const [formData, setFormData] = useState({
         category: '',
-        unit: '',
+        name: '',
         weightPerUnit: ''
     });
+
+    useEffect(() => {
+        fetchUnits();
+    }, []);
+
+    const fetchUnits = async () => {
+        try {
+            setLoading(true);
+            const data = await uomService.getUnits();
+            setUoms(data);
+        } catch (error) {
+            console.error('Error fetching units:', error);
+            toast.error('Failed to fetch units');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: value,
-            // Reset unit if category changes
-            ...(name === 'category' ? { unit: '' } : {})
+            [name]: value
         }));
+    };
+
+    const handleSubmit = async () => {
+        if (!formData.name || !formData.category) {
+            toast.error('Please fill in all required fields');
+            return;
+        }
+
+        try {
+            if (showEditModal && selectedUnit) {
+                await uomService.updateUnit(selectedUnit.id, formData);
+                toast.success('Unit updated successfully');
+            } else {
+                await uomService.createUnit(formData);
+                toast.success('Unit created successfully');
+            }
+            fetchUnits();
+            setShowAddModal(false);
+            setShowEditModal(false);
+            setFormData({ category: '', name: '', weightPerUnit: '' });
+        } catch (error) {
+            console.error('Error saving unit:', error);
+            toast.error(error.response?.data?.message || 'Failed to save unit');
+        }
     };
 
     const handleEdit = (unit) => {
         setSelectedUnit(unit);
         setFormData({
             category: unit.category,
-            unit: unit.name,
-            weightPerUnit: unit.weightPerUnit
+            name: unit.name,
+            weightPerUnit: unit.weightPerUnit || ''
         });
         setShowEditModal(true);
     };
@@ -56,12 +86,37 @@ const UOM = () => {
         setShowDeleteModal(true);
     };
 
+    const confirmDelete = async () => {
+        try {
+            await uomService.deleteUnit(selectedUnit.id);
+            toast.success('Unit deleted successfully');
+            fetchUnits();
+            setShowDeleteModal(false);
+        } catch (error) {
+            console.error('Error deleting unit:', error);
+            toast.error(error.response?.data?.message || 'Failed to delete unit');
+        }
+    };
+
+    const filteredUoms = uoms.filter(unit =>
+        unit.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        unit.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (loading) {
+        return (
+            <div className="uom-page">
+                <div className="loading">Loading units...</div>
+            </div>
+        );
+    }
+
     return (
         <div className="uom-page">
             <div className="page-header">
                 <h1 className="page-title">Unit of Measure</h1>
                 <button className="btn-add" onClick={() => {
-                    setFormData({ category: '', unit: '', weightPerUnit: '' });
+                    setFormData({ category: '', name: '', weightPerUnit: '' });
                     setShowAddModal(true);
                 }}>
                     <Plus size={18} />
@@ -106,32 +161,38 @@ const UOM = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {uoms.map((unit, index) => (
-                                <tr key={unit.id}>
-                                    <td>{index + 1}</td>
-                                    <td>{unit.name}</td>
-                                    <td>
-                                        <span className="category-badge">{unit.category}</span>
-                                    </td>
-                                    <td>{unit.weightPerUnit}</td>
-                                    <td>
-                                        <div className="action-buttons">
-                                            <button className="action-btn btn-edit" data-tooltip="Edit" onClick={() => handleEdit(unit)}>
-                                                <Pencil size={16} />
-                                            </button>
-                                            <button className="action-btn btn-delete" data-tooltip="Delete" onClick={() => handleDelete(unit)}>
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
+                            {filteredUoms.length === 0 ? (
+                                <tr>
+                                    <td colSpan="5" className="text-center">No units found</td>
                                 </tr>
-                            ))}
+                            ) : (
+                                filteredUoms.slice(0, entriesPerPage).map((unit, index) => (
+                                    <tr key={unit.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{unit.name}</td>
+                                        <td>
+                                            <span className="category-badge">{unit.category}</span>
+                                        </td>
+                                        <td>{unit.weightPerUnit || '-'}</td>
+                                        <td>
+                                            <div className="action-buttons">
+                                                <button className="action-btn btn-edit" data-tooltip="Edit" onClick={() => handleEdit(unit)}>
+                                                    <Pencil size={16} />
+                                                </button>
+                                                <button className="action-btn btn-delete" data-tooltip="Delete" onClick={() => handleDelete(unit)}>
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
 
                 <div className="pagination-row">
-                    <p className="pagination-info">Showing 1 to {uoms.length} of {uoms.length} entries</p>
+                    <p className="pagination-info">Showing 1 to {Math.min(entriesPerPage, filteredUoms.length)} of {filteredUoms.length} entries</p>
                     <div className="pagination-controls">
                         <button className="pagination-btn disabled">Previous</button>
                         <button className="pagination-btn active">1</button>
@@ -167,28 +228,24 @@ const UOM = () => {
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Unit of Measurement (UOM) <span className="text-red">*</span></label>
-                                <select
-                                    name="unit"
+                                <label className="form-label">Unit Name <span className="text-red">*</span></label>
+                                <input
+                                    type="text"
+                                    name="name"
                                     className="form-input"
-                                    value={formData.unit}
+                                    placeholder="e.g. Kilogram, Meter, Piece"
+                                    value={formData.name}
                                     onChange={handleInputChange}
-                                    disabled={!formData.category}
-                                >
-                                    <option value="">Select Unit</option>
-                                    {formData.category && unitsByCategory[formData.category].map(u => (
-                                        <option key={u} value={u}>{u}</option>
-                                    ))}
-                                </select>
+                                />
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Weight per Unit <span className="text-red">*</span></label>
+                                <label className="form-label">Weight per Unit</label>
                                 <input
                                     type="text"
                                     name="weightPerUnit"
                                     className="form-input"
-                                    placeholder="e.g. 0.5 KG"
+                                    placeholder="e.g. 1 KG"
                                     value={formData.weightPerUnit}
                                     onChange={handleInputChange}
                                 />
@@ -196,7 +253,7 @@ const UOM = () => {
                         </div>
                         <div className="modal-footer">
                             <button className="btn-close-modal" onClick={() => { setShowAddModal(false); setShowEditModal(false); }}>Close</button>
-                            <button className="btn-save-modal">{showEditModal ? 'Update' : 'Save'}</button>
+                            <button className="btn-save-modal" onClick={handleSubmit}>{showEditModal ? 'Update' : 'Save'}</button>
                         </div>
                     </div>
                 </div>
@@ -217,7 +274,7 @@ const UOM = () => {
                         </div>
                         <div className="modal-footer">
                             <button className="btn-close-modal" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                            <button className="btn-save-modal" style={{ backgroundColor: '#f06292' }}>Delete</button>
+                            <button className="btn-save-modal" style={{ backgroundColor: '#f06292' }} onClick={confirmDelete}>Delete</button>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Search, Plus, Pencil, Trash2, X, ChevronDown,
     FileText, ShoppingCart, Truck, Receipt, CreditCard,
@@ -6,15 +6,21 @@ import {
     Eye, Copy, ArrowLeft, AlertTriangle
 } from 'lucide-react';
 import './Invoice.css';
+import salesInvoiceService from '../../../../services/salesInvoiceService';
+import customerService from '../../../../services/customerService';
+import productService from '../../../../services/productService';
+import serviceService from '../../../../services/serviceService';
+import warehouseService from '../../../../services/warehouseService';
 
 const Invoice = () => {
     // --- State Management ---
-    const [invoices, setInvoices] = useState([
-        { id: 1, invoiceNo: '#INVO00001', customer: 'Keir', issueDate: 'Apr 8, 2025', dueDate: 'Jun 12, 2025', amount: 56.50, status: 'Partially Paid' },
-        { id: 2, invoiceNo: '#INVO00002', customer: 'Ida F. Mullen', issueDate: 'Apr 8, 2025', dueDate: 'Apr 17, 2025', amount: 454.93, status: 'Partially Paid' },
-        { id: 3, invoiceNo: '#INVO00003', customer: 'Keir', issueDate: 'Apr 8, 2025', dueDate: 'Apr 30, 2025', amount: 40200.00, status: 'Partially Paid' },
-        { id: 4, invoiceNo: '#INVO00004', customer: 'Keir', issueDate: 'Apr 8, 2025', dueDate: 'May 14, 2025', amount: 95.50, status: 'Sent' },
-    ]);
+    const [invoices, setInvoices] = useState([]);
+    const [customers, setCustomers] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [services, setServices] = useState([]);
+    const [warehouses, setWarehouses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -62,6 +68,34 @@ const Invoice = () => {
 
     const [notes, setNotes] = useState('');
     const [terms, setTerms] = useState('"Payment is due within 15 days.",\n"Late payments are subject to interest."');
+
+    // Fetch data on component mount
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const [invoicesRes, customersRes, productsRes, servicesRes, warehousesRes] = await Promise.all([
+                salesInvoiceService.getInvoices(),
+                customerService.getCustomers(),
+                productService.getProducts(),
+                serviceService.getServices(),
+                warehouseService.getWarehouses()
+            ]);
+            setInvoices(invoicesRes);
+            setCustomers(customersRes);
+            setProducts(productsRes);
+            setServices(servicesRes);
+            setWarehouses(warehousesRes);
+        } catch (err) {
+            setError('Failed to load data');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const salesProcess = [
         { id: 'quotation', label: 'Quotation', icon: FileText, status: 'completed' },
@@ -123,50 +157,37 @@ const Invoice = () => {
     // Helper to get status class
     const getStatusClass = (status) => {
         switch (status) {
-            case 'Partially Paid': return 'partial';
-            case 'Paid': return 'paid';
-            case 'Sent': return 'sent';
-            case 'Overdue': return 'overdue';
+            case 'PARTIALLY_PAID': return 'partial';
+            case 'PAID': return 'paid';
+            case 'SENT': return 'sent';
+            case 'OVERDUE': return 'overdue';
+            case 'DRAFT': return 'draft';
+            case 'CANCELLED': return 'cancelled';
             default: return 'pending';
         }
     };
 
+    const formatStatus = (status) => {
+        return status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric'
+        });
+    };
+
     // --- Actions Handlers ---
 
-    const handleView = (invoice) => {
-        const fullDetails = {
-            ...invoice,
-            billedTo: {
-                name: 'Keir',
-                address: '198, Bombay Talkies Compd, Himanshurai Road, Malad (west)',
-                city: 'Mumbai, Maharashtra 400064',
-                country: 'India',
-                phone: '+02228806140',
-                taxNo: '560',
-                gstNo: 'GS1456'
-            },
-            shippedTo: {
-                name: 'Keir',
-                address: '198, Bombay Talkies Compd, Himanshurai Road, Malad (west)',
-                city: 'Mumbai, Maharashtra 400064',
-                country: 'India',
-                phone: '+02228806140',
-                taxNo: '560'
-            },
-            items: [
-                { id: 1, name: 'Bicycle parts', qty: 1, unit: 'Inch', rate: 150.00, discount: 0.00, tax: 16.50, description: '-', total: 150.00 }
-            ],
-            subTotal: 150.00,
-            discountTotal: 0.00,
-            cgst: 8.25,
-            sgst: 8.25,
-            totalAmount: 166.50,
-            paidAmount: 100.00,
-            creditNote: 10.00,
-            dueAmount: 56.50
-        };
-        setSelectedInvoice(fullDetails);
-        setViewMode(true);
+    const handleView = async (invoice) => {
+        try {
+            const fullDetails = await salesInvoiceService.getInvoice(invoice.id);
+            setSelectedInvoice(fullDetails);
+            setViewMode(true);
+        } catch (err) {
+            console.error('Error fetching invoice details:', err);
+            setError('Failed to load invoice details');
+        }
     };
 
     const handleDelete = (invoice) => {
@@ -174,13 +195,69 @@ const Invoice = () => {
         setShowDeleteModal(true);
     };
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
         if (invoiceToDelete) {
-            setInvoices(invoices.filter(inv => inv.id !== invoiceToDelete.id));
-            setShowDeleteModal(false);
-            setInvoiceToDelete(null);
-            if (viewMode) setViewMode(false); // Close full view if deleted
+            try {
+                await salesInvoiceService.deleteInvoice(invoiceToDelete.id);
+                setInvoices(invoices.filter(inv => inv.id !== invoiceToDelete.id));
+                setShowDeleteModal(false);
+                setInvoiceToDelete(null);
+                if (viewMode) setViewMode(false);
+            } catch (err) {
+                console.error('Error deleting invoice:', err);
+                setError(err.response?.data?.message || 'Failed to delete invoice');
+            }
         }
+    };
+
+    const handleCreateInvoice = async () => {
+        try {
+            const invoiceData = {
+                customerId: parseInt(customer),
+                invoiceDate: invoiceMeta.date,
+                dueDate: invoiceMeta.dueDate,
+                referenceNumber: invoiceMeta.manualNo,
+                billingAddress: customerDetails.address,
+                notes,
+                terms,
+                items: items.map(item => ({
+                    productId: item.productId || null,
+                    serviceId: item.serviceId || null,
+                    warehouseId: item.warehouseId || null,
+                    description: item.name,
+                    quantity: parseFloat(item.qty) || 1,
+                    unitPrice: parseFloat(item.rate) || 0,
+                    taxPercent: parseFloat(item.tax) || 0,
+                    discountPercent: parseFloat(item.discount) || 0
+                }))
+            };
+            await salesInvoiceService.createInvoice(invoiceData);
+            setShowAddModal(false);
+            fetchData();
+            resetForm();
+        } catch (err) {
+            console.error('Error creating invoice:', err);
+            setError(err.response?.data?.message || 'Failed to create invoice');
+        }
+    };
+
+    const handleSendInvoice = async (invoiceId) => {
+        try {
+            await salesInvoiceService.sendInvoice(invoiceId);
+            fetchData();
+        } catch (err) {
+            console.error('Error sending invoice:', err);
+            setError(err.response?.data?.message || 'Failed to send invoice');
+        }
+    };
+
+    const resetForm = () => {
+        setCustomer('');
+        setCustomerDetails({ address: '', email: '', phone: '' });
+        setItems([{ id: 1, name: '', warehouse: '', qty: 1, rate: 0, tax: 0, discount: 0, total: 0 }]);
+        setInvoiceMeta({ manualNo: '', date: new Date().toISOString().split('T')[0], dueDate: '' });
+        setNotes('');
+        setTerms('"Payment is due within 15 days.",\n"Late payments are subject to interest."');
     };
 
     const handleEdit = (invoice) => {
@@ -475,27 +552,36 @@ const Invoice = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {invoices.map(inv => (
+                            {loading ? (
+                                <tr><td colSpan="7" className="text-center py-4">Loading...</td></tr>
+                            ) : invoices.length === 0 ? (
+                                <tr><td colSpan="7" className="text-center py-4">No invoices found</td></tr>
+                            ) : invoices.map(inv => (
                                 <tr key={inv.id}>
                                     <td>
-                                        <span className="invoice-badge cursor-pointer" onClick={() => handleView(inv)}>{inv.invoiceNo}</span>
+                                        <span className="invoice-badge cursor-pointer" onClick={() => handleView(inv)}>{inv.invoiceNumber}</span>
                                     </td>
-                                    <td className="font-medium">{inv.customer}</td>
-                                    <td>{inv.issueDate}</td>
+                                    <td className="font-medium">{inv.customer?.name || 'N/A'}</td>
+                                    <td>{formatDate(inv.invoiceDate)}</td>
                                     <td>
-                                        <span className="text-red-highlight">{inv.dueDate}</span>
+                                        <span className="text-red-highlight">{formatDate(inv.dueDate)}</span>
                                     </td>
                                     <td>
-                                        <span className="text-amount-bold">${inv.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                        <span className="text-amount-bold">${inv.dueAmount?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '0.00'}</span>
                                     </td>
                                     <td>
                                         <span className={`status-pill ${getStatusClass(inv.status)}`}>
-                                            {inv.status}
+                                            {formatStatus(inv.status)}
                                         </span>
                                     </td>
                                     <td className="text-right">
                                         <div className="action-buttons">
                                             <button className="btn-icon-view" title="View" onClick={() => handleView(inv)}><Eye size={16} /></button>
+                                            {inv.status === 'DRAFT' && (
+                                                <button className="btn-action-header send" title="Send Invoice" onClick={() => handleSendInvoice(inv.id)}>
+                                                    <Send size={18} />
+                                                </button>
+                                            )}
                                             <button className="btn-action-header edit" title="Edit Invoice" onClick={() => handleEdit(inv)}>
                                                 <Pencil size={18} />
                                             </button>
@@ -573,10 +659,21 @@ const Invoice = () => {
                             <div className="customer-section">
                                 <div className="form-group mb-2">
                                     <label className="form-label-sm">Bill To</label>
-                                    <select className="form-select-large" value={customer} onChange={(e) => setCustomer(e.target.value)}>
+                                    <select className="form-select-large" value={customer} onChange={(e) => {
+                                        setCustomer(e.target.value);
+                                        const selectedCustomer = customers.find(c => c.id === parseInt(e.target.value));
+                                        if (selectedCustomer) {
+                                            setCustomerDetails({
+                                                address: selectedCustomer.address || '',
+                                                email: selectedCustomer.email || '',
+                                                phone: selectedCustomer.phone || ''
+                                            });
+                                        }
+                                    }}>
                                         <option value="">Select Customer...</option>
-                                        <option value="Acme Corp">Acme Corp</option>
-                                        <option value="Global Tech">Global Tech</option>
+                                        {customers.map(c => (
+                                            <option key={c.id} value={c.id}>{c.name}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="customer-details-grid">
@@ -707,7 +804,7 @@ const Invoice = () => {
                         </div>
                         <div className="modal-footer-simple">
                             <button className="btn-plain" onClick={() => setShowAddModal(false)}>Cancel</button>
-                            <button className="btn-primary-green">Generate Invoice</button>
+                            <button className="btn-primary-green" onClick={handleCreateInvoice}>Generate Invoice</button>
                         </div>
                     </div>
                 </div>

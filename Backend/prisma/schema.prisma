@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -27,21 +28,148 @@ enum Role {
 }
 
 model Company {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String   @unique
-  logo        String?  @db.LongText
-  startDate   DateTime?
-  endDate     DateTime?
-  planName    String?
-  planId      Int?
-  plan        Plan?    @relation(fields: [planId], references: [id])
-  planType    String?
-  phone       String?
-  address     String?
-  users       User[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              Int               @id @default(autoincrement())
+  name            String
+  email           String            @unique
+  logo            String?           @db.LongText
+  startDate       DateTime?
+  endDate         DateTime?
+  planName        String?
+  planId          Int?
+  plan            Plan?             @relation(fields: [planId], references: [id])
+  planType        String?
+  phone           String?
+  address         String?
+  gstNumber       String?
+  vatNumber       String?
+  bankName        String?
+  bankAccountNo   String?
+  bankIfsc        String?
+  users           User[]
+  chartOfAccounts ChartOfAccounts[]
+  ledgerEntries   LedgerEntry[]
+  customers       Customer[]
+  vendors         Vendor[]
+  categories      Category[]
+  unitsOfMeasure  UnitOfMeasure[]
+  warehouses      Warehouse[]
+  products        Product[]
+  services        Service[]
+  salesInvoices   SalesInvoice[]
+  paymentReceipts PaymentReceipt[]
+  creditNotes     CreditNote[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+// ==================== CHART OF ACCOUNTS ====================
+
+enum AccountGroup {
+  ASSET
+  LIABILITY
+  EQUITY
+  INCOME
+  EXPENSE
+}
+
+model ChartOfAccounts {
+  id            Int               @id @default(autoincrement())
+  code          String
+  name          String
+  accountGroup  AccountGroup
+  accountType   String            // Current Asset, Inventory Asset, etc.
+  description   String?           @db.Text
+  parentId      Int?
+  parent        ChartOfAccounts?  @relation("AccountHierarchy", fields: [parentId], references: [id])
+  children      ChartOfAccounts[] @relation("AccountHierarchy")
+  isEnabled     Boolean           @default(true)
+  isSystemAccount Boolean         @default(false) // Cannot be deleted
+  openingBalance Float            @default(0)
+  currentBalance Float            @default(0)
+  companyId     Int
+  company       Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  ledgerEntries LedgerEntry[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@unique([code, companyId])
+  @@index([companyId])
+  @@index([accountGroup])
+}
+
+// ==================== LEDGER ENTRIES ====================
+
+enum EntryType {
+  DEBIT
+  CREDIT
+}
+
+model LedgerEntry {
+  id              Int             @id @default(autoincrement())
+  date            DateTime        @default(now())
+  accountId       Int
+  account         ChartOfAccounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  entryType       EntryType
+  amount          Float
+  narration       String?         @db.Text
+  referenceType   String?         // INVOICE, PAYMENT, JOURNAL, etc.
+  referenceId     Int?
+  voucherNumber   String?
+  companyId       Int
+  company         Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([companyId])
+  @@index([accountId])
+  @@index([date])
+}
+
+// ==================== CUSTOMERS & VENDORS ====================
+
+model Customer {
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String?
+  phone           String?
+  address         String?          @db.Text
+  gstNumber       String?
+  creditLimit     Float            @default(0)
+  creditDays      Int              @default(0)
+  openingBalance  Float            @default(0)
+  currentBalance  Float            @default(0)
+  ledgerAccountId Int?             // Link to AR ledger in COA
+  companyId       Int
+  company         Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  isActive        Boolean          @default(true)
+  invoices        SalesInvoice[]
+  payments        PaymentReceipt[]
+  creditNotes     CreditNote[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([companyId])
+}
+
+model Vendor {
+  id              Int       @id @default(autoincrement())
+  name            String
+  email           String?
+  phone           String?
+  address         String?   @db.Text
+  gstNumber       String?
+  creditLimit     Float     @default(0)
+  creditDays      Int       @default(0)
+  openingBalance  Float     @default(0)
+  currentBalance  Float     @default(0)
+  ledgerAccountId Int?      // Link to AP ledger in COA
+  companyId       Int
+  company         Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([companyId])
 }
 
 model Plan {
@@ -97,4 +225,258 @@ model DashboardAnnouncement {
   status    String   @default("Active")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ==================== INVENTORY MANAGEMENT ====================
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?   @db.Text
+  companyId   Int
+  company     Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  products    Product[]
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([name, companyId])
+  @@index([companyId])
+}
+
+model UnitOfMeasure {
+  id            Int       @id @default(autoincrement())
+  name          String
+  category      String    // Weight, Area, Volume, Length, Count
+  weightPerUnit String?
+  companyId     Int
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  products      Product[]
+  services      Service[]
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([name, companyId])
+  @@index([companyId])
+}
+
+model Warehouse {
+  id           Int                @id @default(autoincrement())
+  name         String
+  location     String?
+  address1     String?
+  address2     String?
+  city         String?
+  state        String?
+  pincode      String?
+  country      String?
+  companyId    Int
+  company      Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  productStock ProductStock[]
+  invoiceItems SalesInvoiceItem[]
+  isActive     Boolean            @default(true)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  @@unique([name, companyId])
+  @@index([companyId])
+}
+
+enum ProductType {
+  PRODUCT
+  SERVICE
+}
+
+model Product {
+  id              Int                @id @default(autoincrement())
+  name            String
+  sku             String
+  hsn             String?
+  barcode         String?
+  image           String?            @db.LongText
+  description     String?            @db.Text
+  remarks         String?            @db.Text
+  categoryId      Int?
+  category        Category?          @relation(fields: [categoryId], references: [id])
+  unitId          Int?
+  unit            UnitOfMeasure?     @relation(fields: [unitId], references: [id])
+  salePrice       Float              @default(0)
+  purchasePrice   Float              @default(0)
+  taxPercent      Float              @default(0)
+  discountPercent Float              @default(0)
+  asOfDate        DateTime?
+  productType     ProductType        @default(PRODUCT)
+  companyId       Int
+  company         Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  productStock    ProductStock[]
+  invoiceItems    SalesInvoiceItem[]
+  ledgerAccountId Int?               // Link to Inventory ledger in COA
+  isActive        Boolean            @default(true)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@unique([sku, companyId])
+  @@index([companyId])
+  @@index([categoryId])
+}
+
+model ProductStock {
+  id          Int       @id @default(autoincrement())
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouseId Int
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  quantity    Float     @default(0)
+  minOrderQty Float     @default(0)
+  initialQty  Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([productId, warehouseId])
+  @@index([productId])
+  @@index([warehouseId])
+}
+
+model Service {
+  id              Int                @id @default(autoincrement())
+  name            String
+  sku             String?
+  description     String?            @db.Text
+  remarks         String?            @db.Text
+  unitId          Int?
+  unit            UnitOfMeasure?     @relation(fields: [unitId], references: [id])
+  price           Float              @default(0)
+  taxPercent      Float              @default(0)
+  allowInInvoices Boolean            @default(true)
+  companyId       Int
+  company         Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  isActive        Boolean            @default(true)
+  invoiceItems    SalesInvoiceItem[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@unique([name, companyId])
+  @@index([companyId])
+}
+
+// ==================== SALES MODULE ====================
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+model SalesInvoice {
+  id                Int                 @id @default(autoincrement())
+  invoiceNumber     String
+  customerId        Int
+  customer          Customer            @relation(fields: [customerId], references: [id])
+  invoiceDate       DateTime            @default(now())
+  dueDate           DateTime
+  referenceNumber   String?
+  billingAddress    String?             @db.Text
+  shippingAddress   String?             @db.Text
+  subTotal          Float               @default(0)
+  discountAmount    Float               @default(0)
+  taxAmount         Float               @default(0)
+  totalAmount       Float               @default(0)
+  paidAmount        Float               @default(0)
+  dueAmount         Float               @default(0)
+  status            InvoiceStatus       @default(DRAFT)
+  notes             String?             @db.Text
+  terms             String?             @db.Text
+  companyId         Int
+  company           Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  items             SalesInvoiceItem[]
+  payments          PaymentReceipt[]
+  creditNotes       CreditNote[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@unique([invoiceNumber, companyId])
+  @@index([companyId])
+  @@index([customerId])
+}
+
+model SalesInvoiceItem {
+  id              Int           @id @default(autoincrement())
+  invoiceId       Int
+  invoice         SalesInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  productId       Int?
+  product         Product?      @relation(fields: [productId], references: [id])
+  serviceId       Int?
+  service         Service?      @relation(fields: [serviceId], references: [id])
+  warehouseId     Int?
+  warehouse       Warehouse?    @relation(fields: [warehouseId], references: [id])
+  description     String?
+  quantity        Float         @default(1)
+  unitPrice       Float         @default(0)
+  discountPercent Float         @default(0)
+  discountAmount  Float         @default(0)
+  taxPercent      Float         @default(0)
+  taxAmount       Float         @default(0)
+  totalAmount     Float         @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([invoiceId])
+  @@index([productId])
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  CHEQUE
+  CREDIT_CARD
+  DEBIT_CARD
+  UPI
+  OTHER
+}
+
+model PaymentReceipt {
+  id              Int           @id @default(autoincrement())
+  receiptNumber   String
+  invoiceId       Int
+  invoice         SalesInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  customerId      Int
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  paymentDate     DateTime      @default(now())
+  amount          Float
+  paymentMethod   PaymentMethod @default(BANK_TRANSFER)
+  referenceNumber String?
+  notes           String?       @db.Text
+  companyId       Int
+  company         Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([receiptNumber, companyId])
+  @@index([companyId])
+  @@index([invoiceId])
+  @@index([customerId])
+}
+
+model CreditNote {
+  id               Int           @id @default(autoincrement())
+  creditNoteNumber String
+  invoiceId        Int
+  invoice          SalesInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  customerId       Int
+  customer         Customer      @relation(fields: [customerId], references: [id])
+  creditDate       DateTime      @default(now())
+  amount           Float
+  reason           String?       @db.Text
+  companyId        Int
+  company          Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@unique([creditNoteNumber, companyId])
+  @@index([companyId])
+  @@index([invoiceId])
 }

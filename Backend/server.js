@@ -8,6 +8,17 @@ const planRequestRoutes = require('./src/routes/planRequestRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
 const dashboardRoutes = require('./src/routes/dashboardRoutes');
 const profileRoutes = require('./src/routes/profileRoutes');
+const coaRoutes = require('./src/routes/coaRoutes');
+const customerRoutes = require('./src/routes/customerRoutes');
+const vendorRoutes = require('./src/routes/vendorRoutes');
+const ledgerRoutes = require('./src/routes/ledgerRoutes');
+const categoryRoutes = require('./src/routes/categoryRoutes');
+const uomRoutes = require('./src/routes/uomRoutes');
+const warehouseRoutes = require('./src/routes/warehouseRoutes');
+const productRoutes = require('./src/routes/productRoutes');
+const serviceRoutes = require('./src/routes/serviceRoutes');
+const salesInvoiceRoutes = require('./src/routes/salesInvoiceRoutes');
+const paymentReceiptRoutes = require('./src/routes/paymentReceiptRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +35,23 @@ app.use('/api/plan-requests', planRequestRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/superadmin/dashboard', dashboardRoutes);
 app.use('/api/profile', profileRoutes);
+
+// Accounting Module Routes
+app.use('/api/coa', coaRoutes);
+app.use('/api/customers', customerRoutes);
+app.use('/api/vendors', vendorRoutes);
+app.use('/api/ledgers', ledgerRoutes);
+
+// Inventory Module Routes
+app.use('/api/categories', categoryRoutes);
+app.use('/api/uom', uomRoutes);
+app.use('/api/warehouses', warehouseRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/services', serviceRoutes);
+
+// Sales Module Routes
+app.use('/api/sales/invoices', salesInvoiceRoutes);
+app.use('/api/sales/payments', paymentReceiptRoutes);
 
 // Health Check
 app.get('/', (req, res) => {
