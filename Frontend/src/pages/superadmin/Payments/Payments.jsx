@@ -116,10 +116,10 @@ const Payments = () => {
 
     const getStatusBadgeClass = (status) => {
         const s = status?.toString().toLowerCase();
-        if (s === 'success' || s === 'completed' || s === 'paid') return 'badge-success';
-        if (s === 'failed' || s === 'cancelled' || s === 'rejected') return 'badge-danger';
-        if (s === 'pending') return 'badge-warning';
-        return 'badge-secondary';
+        if (s === 'success' || s === 'completed' || s === 'paid') return 'superPayments-badge-success';
+        if (s === 'failed' || s === 'cancelled' || s === 'rejected') return 'superPayments-badge-danger';
+        if (s === 'pending') return 'superPayments-badge-warning';
+        return 'superPayments-badge-secondary';
     };
 
     const getStatusLabel = (status) => {
@@ -140,29 +140,29 @@ const Payments = () => {
     });
 
     return (
-        <div className="payments-page">
-            <div className="page-header">
-                <div className="page-title">
+        <div className="superPayments-page">
+            <div className="superPayments-page-header">
+                <div className="superPayments-page-title">
                     <Wallet size={24} className="text-blue-500" />
                     <span>Transaction Payments</span>
                 </div>
             </div>
 
-            <div className="filters-bar">
-                <div className="search-input-wrapper">
-                    <Search className="search-icon" size={18} />
+            <div className="superPayments-filters-bar">
+                <div className="superPayments-search-input-wrapper">
+                    <Search className="superPayments-search-icon" size={18} />
                     <input
                         type="text"
-                        className="form-control"
+                        className="superPayments-form-control"
                         placeholder="Search by ID or customer..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
                 <div className="filter-group flex items-center gap-2">
-                    
+
                     <select
-                        className="form-control"
+                        className="superPayments-form-control"
                         style={{ width: '200px' }}
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
@@ -175,8 +175,8 @@ const Payments = () => {
                 </div>
             </div>
 
-            <div className="table-container">
-                <table className="custom-table">
+            <div className="superPayments-table-container">
+                <table className="superPayments-custom-table">
                     <thead>
                         <tr>
                             <th>Transaction ID</th>
@@ -200,7 +200,7 @@ const Payments = () => {
                                     <td>{new Date(payment.date).toLocaleDateString()}</td>
                                     <td>
                                         <div className="flex items-center gap-2">
-                                            <div className="company-icon-sm">
+                                            <div className="superPayments-company-icon-sm">
                                                 <Building2 size={16} />
                                             </div>
                                             <span className="font-semibold">{payment.customer}</span>
@@ -209,21 +209,21 @@ const Payments = () => {
                                     <td>{payment.paymentMethod}</td>
                                     <td className="font-bold">${payment.amount.toLocaleString()}</td>
                                     <td>
-                                        <span className={`status-badge ${getStatusBadgeClass(payment.status)}`}>
+                                        <span className={`superPayments-status-badge ${getStatusBadgeClass(payment.status)}`}>
                                             {getStatusLabel(payment.status)}
                                         </span>
                                     </td>
                                     <td>
-                                        <div className="action-btns-wrapper">
+                                        <div className="superPayments-action-btns-wrapper">
                                             <button
-                                                className="btn-action-sm btn-edit-sm"
+                                                className="superPayments-btn-action-sm superPayments-btn-edit-sm"
                                                 onClick={() => openViewModal(payment)}
                                                 title="View Details"
                                             >
                                                 <Eye size={14} />
                                             </button>
                                             <button
-                                                className="btn-action-sm btn-delete-sm"
+                                                className="superPayments-btn-action-sm superPayments-btn-delete-sm"
                                                 onClick={() => { setPaymentToDelete(payment); setShowDeleteModal(true); }}
                                                 title="Delete"
                                             >
@@ -240,24 +240,24 @@ const Payments = () => {
 
             {/* Create/Edit Modal */}
             {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-md">
-                        <div className="modal-header">
+                <div className="superPayments-modal-overlay">
+                    <div className="superPayments-modal-content modal-md">
+                        <div className="superPayments-modal-header">
                             <h2>{selectedPayment ? 'Update Payment Record' : 'Record New Payment'}</h2>
-                            <button className="close-btn" onClick={closeModal}><X size={20} /></button>
+                            <button className="superPayments-close-btn" onClick={closeModal}><X size={20} /></button>
                         </div>
                         <form onSubmit={handleSubmit}>
-                            <div className="modal-body">
+                            <div className="superPayments-modal-body">
                                 <div className="space-y-4">
-                                    <div className="form-grid">
+                                    <div className="superPayments-form-grid">
                                         <div className="form-group mb-4">
                                             <label className="required block mb-1 font-semibold text-slate-700">Transaction ID</label>
-                                            <div className="input-with-icon">
-                                                <Receipt size={16} className="input-icon" />
+                                            <div className="superPayments-input-with-icon">
+                                                <Receipt size={16} className="superPayments-input-icon" />
                                                 <input
                                                     type="text"
                                                     name="transactionId"
-                                                    className="form-control"
+                                                    className="superPayments-form-control"
                                                     value={formData.transactionId}
                                                     onChange={handleInputChange}
                                                     required
@@ -266,12 +266,12 @@ const Payments = () => {
                                         </div>
                                         <div className="form-group mb-4">
                                             <label className="required block mb-1 font-semibold text-slate-700">Date</label>
-                                            <div className="input-with-icon">
-                                                <Calendar size={16} className="input-icon" />
+                                            <div className="superPayments-input-with-icon">
+                                                <Calendar size={16} className="superPayments-input-icon" />
                                                 <input
                                                     type="date"
                                                     name="date"
-                                                    className="form-control"
+                                                    className="superPayments-form-control"
                                                     value={formData.date}
                                                     onChange={handleInputChange}
                                                     required
@@ -282,12 +282,12 @@ const Payments = () => {
 
                                     <div className="form-group mb-4">
                                         <label className="required block mb-1 font-semibold text-slate-700">Customer / Company</label>
-                                        <div className="input-with-icon">
-                                            <Building2 size={16} className="input-icon" />
+                                        <div className="superPayments-input-with-icon">
+                                            <Building2 size={16} className="superPayments-input-icon" />
                                             <input
                                                 type="text"
                                                 name="customer"
-                                                className="form-control"
+                                                className="superPayments-form-control"
                                                 placeholder="Enter Customer Name"
                                                 value={formData.customer}
                                                 onChange={handleInputChange}
@@ -296,15 +296,15 @@ const Payments = () => {
                                         </div>
                                     </div>
 
-                                    <div className="form-grid">
+                                    <div className="superPayments-form-grid">
                                         <div className="form-group mb-4">
                                             <label className="required block mb-1 font-semibold text-slate-700">Amount ($)</label>
-                                            <div className="input-with-icon">
-                                                <Wallet size={16} className="input-icon" />
+                                            <div className="superPayments-input-with-icon">
+                                                <Wallet size={16} className="superPayments-input-icon" />
                                                 <input
                                                     type="number"
                                                     name="amount"
-                                                    className="form-control"
+                                                    className="superPayments-form-control"
                                                     placeholder="0.00"
                                                     value={formData.amount}
                                                     onChange={handleInputChange}
@@ -316,7 +316,7 @@ const Payments = () => {
                                             <label className="required block mb-1 font-semibold text-slate-700">Payment Method</label>
                                             <select
                                                 name="paymentMethod"
-                                                className="form-control w-full"
+                                                className="superPayments-form-control w-full"
                                                 value={formData.paymentMethod}
                                                 onChange={handleInputChange}
                                                 required
@@ -333,7 +333,7 @@ const Payments = () => {
                                         <label className="block mb-1 font-semibold text-slate-700">Payment Status</label>
                                         <select
                                             name="status"
-                                            className="form-control w-full"
+                                            className="superPayments-form-control w-full"
                                             value={formData.status}
                                             onChange={handleInputChange}
                                         >
@@ -344,9 +344,9 @@ const Payments = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn-cancel" onClick={closeModal}>Cancel</button>
-                                <button type="submit" className="btn-save">
+                            <div className="superPayments-modal-footer">
+                                <button type="button" className="superPayments-btn-cancel" onClick={closeModal}>Cancel</button>
+                                <button type="submit" className="superPayments-btn-save">
                                     {selectedPayment ? 'Update Payment' : 'Save Transaction'}
                                 </button>
                             </div>
@@ -357,46 +357,46 @@ const Payments = () => {
 
             {/* View Modal */}
             {showViewModal && selectedPayment && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-md">
-                        <div className="modal-header">
+                <div className="superPayments-modal-overlay">
+                    <div className="superPayments-modal-content modal-md">
+                        <div className="superPayments-modal-header">
                             <h2>Transaction Receipt</h2>
-                            <button className="close-btn" onClick={closeModal}><X size={20} /></button>
+                            <button className="superPayments-close-btn" onClick={closeModal}><X size={20} /></button>
                         </div>
-                        <div className="modal-body">
-                            <div className="receipt-view">
-                                <div className="receipt-top">
-                                    <div className={`receipt-icon-circle ${selectedPayment.status?.toLowerCase() === 'success' ? 'success' : 'pending'}`}>
+                        <div className="superPayments-modal-body">
+                            <div className="superPayments-receipt-view">
+                                <div className="superPayments-receipt-top">
+                                    <div className={`superPayments-receipt-icon-circle ${selectedPayment.status?.toLowerCase() === 'success' ? 'success' : 'pending'}`}>
                                         {selectedPayment.status?.toLowerCase() === 'success' ? <CheckCircle2 size={40} /> : <AlertCircle size={40} />}
                                     </div>
-                                    <h3 className="receipt-amount">${selectedPayment.amount?.toLocaleString()}</h3>
-                                    <p className={`receipt-status-text ${selectedPayment.status?.toLowerCase() === 'success' ? 'text-success' : 'text-warning'}`}>
+                                    <h3 className="superPayments-receipt-amount">${selectedPayment.amount?.toLocaleString()}</h3>
+                                    <p className={`superPayments-receipt-status-text ${selectedPayment.status?.toLowerCase() === 'success' ? 'text-success' : 'text-warning'}`}>
                                         Transaction {getStatusLabel(selectedPayment.status)}
                                     </p>
                                 </div>
 
-                                <div className="receipt-items">
-                                    <div className="receipt-row">
-                                        <span className="receipt-label">Transaction ID</span>
-                                        <span className="receipt-value font-mono">{selectedPayment.transactionId}</span>
+                                <div className="superPayments-receipt-items">
+                                    <div className="superPayments-receipt-row">
+                                        <span className="superPayments-receipt-label">Transaction ID</span>
+                                        <span className="superPayments-receipt-value font-mono">{selectedPayment.transactionId}</span>
                                     </div>
-                                    <div className="receipt-row">
-                                        <span className="receipt-label">Date</span>
-                                        <span className="receipt-value">{new Date(selectedPayment.date).toLocaleString()}</span>
+                                    <div className="superPayments-receipt-row">
+                                        <span className="superPayments-receipt-label">Date</span>
+                                        <span className="superPayments-receipt-value">{new Date(selectedPayment.date).toLocaleString()}</span>
                                     </div>
-                                    <div className="receipt-row">
-                                        <span className="receipt-label">Customer</span>
-                                        <span className="receipt-value">{selectedPayment.customer}</span>
+                                    <div className="superPayments-receipt-row">
+                                        <span className="superPayments-receipt-label">Customer</span>
+                                        <span className="superPayments-receipt-value">{selectedPayment.customer}</span>
                                     </div>
-                                    <div className="receipt-row">
-                                        <span className="receipt-label">Payment Method</span>
-                                        <span className="receipt-value">{selectedPayment.paymentMethod}</span>
+                                    <div className="superPayments-receipt-row">
+                                        <span className="superPayments-receipt-label">Payment Method</span>
+                                        <span className="superPayments-receipt-value">{selectedPayment.paymentMethod}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="modal-footer border-t-0 bg-white">
-                            <button className="add-btn w-full justify-center" onClick={() => { setShowViewModal(false); openModal(selectedPayment); }}>
+                        <div className="superPayments-modal-footer superPayments-border-t-0 superPayments-bg-white">
+                            <button className="superPayments-add-btn w-full justify-center" onClick={() => { setShowViewModal(false); openModal(selectedPayment); }}>
                                 Edit Transaction Details
                             </button>
                         </div>
@@ -406,20 +406,20 @@ const Payments = () => {
 
             {/* Delete Modal */}
             {showDeleteModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-sm">
-                        <div className="delete-modal-body">
-                            <div className="delete-icon-wrapper">
+                <div className="superPayments-modal-overlay">
+                    <div className="superPayments-modal-content superPayments-modal-sm">
+                        <div className="superPayments-delete-modal-body">
+                            <div className="superPayments-delete-icon-wrapper">
                                 <AlertCircle size={40} />
                             </div>
-                            <h3 className="delete-modal-title">Delete Payment?</h3>
-                            <p className="delete-modal-text">
+                            <h3 className="superPayments-delete-modal-title">Delete Payment?</h3>
+                            <p className="superPayments-delete-modal-text">
                                 Are you sure you want to delete this transaction record?
                                 <br />This action cannot be undone.
                             </p>
                             <div className="flex justify-end gap-3 mt-4">
-                                <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                                <button className="btn-delete" onClick={handleDelete}>Delete Anyway</button>
+                                <button className="superPayments-btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                                <button className="superPayments-btn-delete" onClick={handleDelete}>Delete Anyway</button>
                             </div>
                         </div>
                     </div>

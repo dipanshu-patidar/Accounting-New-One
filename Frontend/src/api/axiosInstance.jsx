@@ -29,7 +29,6 @@ axiosInstance.interceptors.response.use(
             // Handle unauthorized access (e.g., redirect to login)
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = '/login';
         }
         return Promise.reject(error);
     }

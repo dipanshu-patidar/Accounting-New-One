@@ -14,6 +14,7 @@ const Plans = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showViewModal, setShowViewModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showModulesModal, setShowModulesModal] = useState(false); // New state for modules modal
 
     // For Edit Mode
     const [isEditMode, setIsEditMode] = useState(false);
@@ -140,6 +141,11 @@ const Plans = () => {
         setShowDeleteModal(true);
     };
 
+    const openModulesModal = (plan) => {
+        setSelectedPlan(plan);
+        setShowModulesModal(true);
+    };
+
     const handleSubmit = async () => {
         try {
             const payload = {
@@ -174,10 +180,36 @@ const Plans = () => {
         }
     };
 
+    // Render modules column cell
+    const renderModulesCell = (plan) => {
+        const enabledModules = plan.modules?.filter(m => m.enabled) || [];
+        const displayCount = 2;
+        const displayedModules = enabledModules.slice(0, displayCount);
+        const remainingCount = enabledModules.length - displayCount;
+
+        return (
+            <div className="superplan-modules-list">
+                {displayedModules.map((mod, idx) => (
+                    <div key={idx} className="superplan-module-pill">
+                        {mod.name} (${mod.price})
+                    </div>
+                ))}
+                {remainingCount > 0 && (
+                    <button
+                        className="superplan-btn-more-modules"
+                        onClick={() => openModulesModal(plan)}
+                    >
+                        + {remainingCount} more...
+                    </button>
+                )}
+            </div>
+        );
+    };
+
     return (
-        <div className="plans-page">
-            <div className="page-header">
-                <div className="page-title">
+        <div className="superplan-page">
+            <div className="superplan-page-header">
+                <div className="superplan-page-title">
                     <CreditCard size={24} className="text-orange-500" />
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                         <span>Plans & Pricing</span>
@@ -186,33 +218,33 @@ const Plans = () => {
                         </span>
                     </div>
                 </div>
-                <div className="header-actions">
-                    <button className="btn-add-plan" onClick={openCreateModal}>
+                <div className="superplan-header-actions">
+                    <button className="superplan-btn-add-plan" onClick={openCreateModal}>
                         <Plus size={18} />
                         Add Plan
                     </button>
                 </div>
             </div>
 
-            <div className="content-card">
+            <div className="superplan-content-card">
                 {/* Controls */}
-                <div className="table-controls">
-                    <div className="entries-control">
-                        <select className="entries-select">
+                <div className="superplan-table-controls">
+                    <div className="superplan-entries-control">
+                        <select className="superplan-entries-select">
                             <option>10</option>
                             <option>25</option>
                             <option>50</option>
                         </select>
                         <span>entries per page</span>
                     </div>
-                    <div className="search-control">
-                        <input className="search-input" placeholder="Search..." />
+                    <div className="superplan-search-control">
+                        <input className="superplan-search-input" placeholder="Search..." />
                     </div>
                 </div>
 
                 {/* Table */}
-                <div className="table-responsive">
-                    <table className="plans-table">
+                <div className="superplan-table-responsive">
+                    <table className="superplan-plans-table">
                         <thead>
                             <tr>
                                 <th>PLAN NAME</th>
@@ -243,7 +275,7 @@ const Plans = () => {
                                 plans.map(plan => (
                                     <tr key={plan.id}>
                                         <td>
-                                            <span className={`badge-plan bg-bronze`}>
+                                            <span className={`superplan-badge-plan superplan-bg-bronze`}>
                                                 {plan.name}
                                             </span>
                                         </td>
@@ -256,27 +288,21 @@ const Plans = () => {
                                         <td>{plan.storageCapacity}</td>
                                         <td>{plan.billingCycle}</td>
                                         <td>
-                                            <span className="status-badge">{plan.status}</span>
+                                            <span className="superplan-status-badge">{plan.status}</span>
                                         </td>
                                         <td>
-                                            <div className="modules-list">
-                                                {plan.modules?.filter(m => m.enabled).map((mod, idx) => (
-                                                    <div key={idx} className="module-pill">
-                                                        {mod.name} (${mod.price})
-                                                    </div>
-                                                ))}
-                                            </div>
+                                            {renderModulesCell(plan)}
                                         </td>
                                         <td>{plan._count?.companies || 0}</td>
                                         <td>
-                                            <div className="actions-cell">
-                                                <button className="action-icon-btn btn-edit" title="Edit" onClick={() => openEditModal(plan)}>
+                                            <div className="superplan-actions-cell">
+                                                <button className="superplan-action-icon-btn superplan-btn-edit" title="Edit" onClick={() => openEditModal(plan)}>
                                                     <Edit size={14} />
                                                 </button>
-                                                <button className="action-icon-btn btn-view" title="View" onClick={() => openViewModal(plan)}>
+                                                <button className="superplan-action-icon-btn superplan-btn-view" title="View" onClick={() => openViewModal(plan)}>
                                                     <Eye size={14} />
                                                 </button>
-                                                <button className="action-icon-btn btn-delete" title="Delete" onClick={() => openDeleteModal(plan)}>
+                                                <button className="superplan-action-icon-btn superplan-btn-delete" title="Delete" onClick={() => openDeleteModal(plan)}>
                                                     <Trash2 size={14} />
                                                 </button>
                                             </div>
@@ -289,32 +315,32 @@ const Plans = () => {
                 </div>
 
                 {/* Pagination */}
-                <div className="table-footer">
-                    <span className="showing-text">
+                <div className="superplan-table-footer">
+                    <span className="superplan-showing-text">
                         Showing 1 to {plans.length} of {plans.length} entries
                     </span>
-                    <div className="pagination">
-                        <button className="page-btn" disabled><ChevronLeft size={16} /></button>
-                        <button className="page-btn active">1</button>
-                        <button className="page-btn" disabled><ChevronRight size={16} /></button>
+                    <div className="superplan-pagination">
+                        <button className="superplan-page-btn" disabled><ChevronLeft size={16} /></button>
+                        <button className="superplan-page-btn active">1</button>
+                        <button className="superplan-page-btn" disabled><ChevronRight size={16} /></button>
                     </div>
                 </div>
             </div>
 
             {/* --- CREATE / EDIT MODAL --- */}
             {showCreateModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-lg">
-                        <div className="modal-header">
+                <div className="superplan-modal-overlay">
+                    <div className="superplan-modal-content superplan-modal-lg">
+                        <div className="superplan-modal-header">
                             <h3>{isEditMode ? 'Edit Plan' : 'Add New Plan (USD)'}</h3>
-                            <button className="close-btn" onClick={() => setShowCreateModal(false)}>
+                            <button className="superplan-close-btn" onClick={() => setShowCreateModal(false)}>
                                 <X size={20} />
                             </button>
                         </div>
-                        <div className="modal-body">
+                        <div className="superplan-modal-body">
                             {/* Row 1 */}
-                            <div className="form-row three-col">
-                                <div className="form-group">
+                            <div className="superplan-form-row three-col">
+                                <div className="superplan-form-group">
                                     <label>Plan Name</label>
                                     <input
                                         type="text"
@@ -324,7 +350,7 @@ const Plans = () => {
                                         placeholder="Enter Plan Name"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="superplan-form-group">
                                     <label>Base Price ($)</label>
                                     <input
                                         type="number"
@@ -333,7 +359,7 @@ const Plans = () => {
                                         onChange={handleInputChange}
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="superplan-form-group">
                                     <label>Currency</label>
                                     <select name="currency" value={formData.currency} onChange={handleInputChange}>
                                         <option value="USD">USD ($) - US Dollar</option>
@@ -343,8 +369,8 @@ const Plans = () => {
                             </div>
 
                             {/* Row 2 */}
-                            <div className="form-row three-col">
-                                <div className="form-group">
+                            <div className="superplan-form-row three-col">
+                                <div className="superplan-form-group">
                                     <label>Invoice Limit</label>
                                     <div className="input-group">
                                         <select name="invoiceLimit" value={formData.invoiceLimit} onChange={handleInputChange}>
@@ -354,7 +380,7 @@ const Plans = () => {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="form-group">
+                                <div className="superplan-form-group">
                                     <label>Additional Invoice Price ($)</label>
                                     <input
                                         type="number"
@@ -364,7 +390,7 @@ const Plans = () => {
                                         placeholder="Price beyond limit"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="superplan-form-group">
                                     <label>User Limit</label>
                                     <select name="userLimit" value={formData.userLimit} onChange={handleInputChange}>
                                         <option>1 user</option>
@@ -375,8 +401,8 @@ const Plans = () => {
                             </div>
 
                             {/* Row 3 */}
-                            <div className="form-row two-col">
-                                <div className="form-group">
+                            <div className="superplan-form-row two-col">
+                                <div className="superplan-form-group">
                                     <label>Storage Capacity</label>
                                     <select name="storageCapacity" value={formData.storageCapacity} onChange={handleInputChange}>
                                         <option>5 GB</option>
@@ -384,7 +410,7 @@ const Plans = () => {
                                         <option>100 GB</option>
                                     </select>
                                 </div>
-                                <div className="form-group">
+                                <div className="superplan-form-group">
                                     <label>Billing Cycle</label>
                                     <select name="billingCycle" value={formData.billingCycle} onChange={handleInputChange}>
                                         <option>Monthly</option>
@@ -394,8 +420,8 @@ const Plans = () => {
                             </div>
 
                             {/* Row 4 */}
-                            <div className="form-row">
-                                <div className="form-group">
+                            <div className="superplan-form-row">
+                                <div className="superplan-form-group">
                                     <label>Status</label>
                                     <select name="status" value={formData.status} onChange={handleInputChange}>
                                         <option>Active</option>
@@ -405,12 +431,12 @@ const Plans = () => {
                             </div>
 
                             {/* Modules */}
-                            <div className="form-group modules-section">
+                            <div className="superplan-form-group superplan-modules-section">
                                 <label>Modules</label>
-                                <div className="modules-grid">
+                                <div className="superplan-modules-grid">
                                     {formData.modules.map((mod, idx) => (
-                                        <div key={idx} className="module-item">
-                                            <div className="checkbox-wrapper">
+                                        <div key={idx} className="superplan-module-item">
+                                            <div className="superplan-checkbox-wrapper">
                                                 <input
                                                     type="checkbox"
                                                     checked={mod.enabled}
@@ -419,7 +445,7 @@ const Plans = () => {
                                                 <span>{mod.name}</span>
                                             </div>
                                             {mod.enabled && (
-                                                <div className="price-input-wrapper">
+                                                <div className="superplan-price-input-wrapper">
                                                     <span>$</span>
                                                     <input
                                                         type="number"
@@ -434,26 +460,26 @@ const Plans = () => {
                             </div>
 
                             {/* Total Price */}
-                            <div className="total-price-banner">
+                            <div className="superplan-total-price-banner">
                                 <span>Total Price: <strong>${calculateTotalPrice()}</strong> (Base Price + Selected Modules)</span>
                             </div>
 
                             {/* Descriptions */}
-                            <div className="form-group descriptions-section">
+                            <div className="superplan-form-group superplan-descriptions-section">
                                 <label>Descriptions</label>
                                 {formData.descriptions.map((desc, idx) => (
-                                    <div key={idx} className="description-row">
+                                    <div key={idx} className="superplan-description-row">
                                         <input
                                             type="text"
                                             value={desc}
                                             onChange={(e) => handleDescriptionChange(idx, e.target.value)}
                                             placeholder={`Description ${idx + 1}`}
                                         />
-                                        <button className="add-btn-small" onClick={addDescriptionField}>
+                                        <button className="superplan-add-btn-small" onClick={addDescriptionField}>
                                             <Plus size={16} />
                                         </button>
                                         {idx > 0 && (
-                                            <button className="remove-btn-small" onClick={() => removeDescriptionField(idx)}>
+                                            <button className="superplan-remove-btn-small" onClick={() => removeDescriptionField(idx)}>
                                                 <Trash2 size={16} />
                                             </button>
                                         )}
@@ -462,9 +488,9 @@ const Plans = () => {
                             </div>
 
                         </div>
-                        <div className="modal-footer">
-                            <button className="cancel-btn" onClick={() => setShowCreateModal(false)}>Close</button>
-                            <button className="submit-btn" onClick={handleSubmit}>
+                        <div className="superplan-modal-footer">
+                            <button className="superplan-cancel-btn" onClick={() => setShowCreateModal(false)}>Close</button>
+                            <button className="superplan-submit-btn" onClick={handleSubmit}>
                                 {isEditMode ? 'Update Plan' : 'Add Plan'}
                             </button>
                         </div>
@@ -474,15 +500,15 @@ const Plans = () => {
 
             {/* --- VIEW MODAL --- */}
             {showViewModal && selectedPlan && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
+                <div className="superplan-modal-overlay">
+                    <div className="superplan-modal-content">
+                        <div className="superplan-modal-header">
                             <h3>View Plan Details</h3>
-                            <button className="close-btn" onClick={() => setShowViewModal(false)}>
+                            <button className="superplan-close-btn" onClick={() => setShowViewModal(false)}>
                                 <X size={20} />
                             </button>
                         </div>
-                        <div className="modal-body view-body">
+                        <div className="superplan-modal-body view-body">
                             <div className="view-row"><strong>Name:</strong> <span>{selectedPlan.name}</span></div>
                             <div className="view-row"><strong>Total Price:</strong> <span>${selectedPlan.totalPrice}</span></div>
                             <div className="view-row"><strong>Billing:</strong> <span>{selectedPlan.billingCycle}</span></div>
@@ -498,20 +524,46 @@ const Plans = () => {
 
             {/* --- DELETE MODAL --- */}
             {showDeleteModal && selectedPlan && (
-                <div className="modal-overlay">
-                    <div className="modal-content modal-sm">
-                        <div className="modal-header">
+                <div className="superplan-modal-overlay">
+                    <div className="superplan-modal-content superplan-modal-sm">
+                        <div className="superplan-modal-header">
                             <h3>Delete Plan</h3>
-                            <button className="close-btn" onClick={() => setShowDeleteModal(false)}>
+                            <button className="superplan-close-btn" onClick={() => setShowDeleteModal(false)}>
                                 <X size={20} />
                             </button>
                         </div>
-                        <div className="modal-body">
+                        <div className="superplan-modal-body">
                             <p>Are you sure you want to delete <strong>{selectedPlan.name}</strong>? This action cannot be undone.</p>
                         </div>
-                        <div className="modal-footer">
-                            <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                            <button className="delete-confirm-btn" onClick={handleDelete}>Delete</button>
+                        <div className="superplan-modal-footer">
+                            <button className="superplan-cancel-btn" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                            <button className="superplan-delete-confirm-btn" onClick={handleDelete}>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* --- MODULES MODAL --- */}
+            {showModulesModal && selectedPlan && (
+                <div className="superplan-modal-overlay">
+                    <div className="superplan-modal-content superplan-modal-sm">
+                        <div className="superplan-modal-header">
+                            <h3>Included Modules ({selectedPlan.name})</h3>
+                            <button className="superplan-close-btn" onClick={() => setShowModulesModal(false)}>
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="superplan-modal-body">
+                            <div className="superplan-modules-list">
+                                {selectedPlan.modules?.filter(m => m.enabled).map((mod, idx) => (
+                                    <div key={idx} className="superplan-module-pill" style={{ marginBottom: '5px' }}>
+                                        {mod.name} (${mod.price})
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="superplan-modal-footer">
+                            <button className="superplan-cancel-btn" onClick={() => setShowModulesModal(false)}>Close</button>
                         </div>
                     </div>
                 </div>

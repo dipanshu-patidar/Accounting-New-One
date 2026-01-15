@@ -4,7 +4,6 @@ const profileController = require('../controllers/profileController');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 
 router.get('/', authenticateToken, profileController.getProfile);
-router.put('/update', authenticateToken, profileController.updateProfile);
-router.put('/change-password', authenticateToken, profileController.changePassword);
+router.put('/', authenticateToken, profileController.updateProfile);
 
 module.exports = router;
