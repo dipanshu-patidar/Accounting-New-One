@@ -19,8 +19,10 @@ import {
     Legend
 } from 'recharts';
 import './CompanyDashboard.css';
+import GetCompanyId from '../../../api/GetCompanyId';
 
 const CompanyDashboard = () => {
+    const companyId = GetCompanyId();
     // Mock Data from Image 1
     const reportData = [
         { name: 'Jan', Purchase: 0, Sales: 0 },
@@ -42,6 +44,8 @@ const CompanyDashboard = () => {
         { name: 'Feb', Revenue: 0, Expense: 0 },
         { name: 'Dec', Revenue: 0, Expense: 4490 },
     ];
+
+    console.log(" Comapny Id :", companyId)
 
     return (
         <div className="company-dashboard">
