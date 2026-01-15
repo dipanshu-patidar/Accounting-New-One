@@ -6,6 +6,10 @@ import {
     CheckCircle2, Clock, ArrowRight
 } from 'lucide-react';
 import '../Purchases.css';
+import purchaseInvoiceService from '../../../../services/purchaseInvoiceService';
+import vendorService from '../../../../services/vendorService';
+import productService from '../../../../services/productService';
+import warehouseService from '../../../../services/warehouseService';
 
 const PurchaseBill = () => {
     const location = useLocation();
@@ -13,9 +17,12 @@ const PurchaseBill = () => {
     const sourceData = location.state?.sourceData; // content from Quotation/PO/GRN
 
     // --- State Management ---
-    const [bills, setBills] = useState([
-        { id: 1, billNo: 'BILL-2024-001', vendor: 'Global Suppliers Ltd', date: '2024-01-22', dueDate: '2024-02-05', amount: 5000.00, status: 'Unpaid', items: [] },
-    ]);
+    const [bills, setBills] = useState([]);
+    const [vendors, setVendors] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [warehouses, setWarehouses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingId, setEditingId] = useState(null);
@@ -35,16 +42,50 @@ const PurchaseBill = () => {
     ]);
     const [notes, setNotes] = useState('');
 
+    // Fetch data on component mount
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const [billsRes, vendorsRes, productsRes, warehousesRes] = await Promise.all([
+                purchaseInvoiceService.getInvoices(),
+                vendorService.getVendors(),
+                productService.getProducts(),
+                warehouseService.getWarehouses()
+            ]);
+            setBills(billsRes);
+            setVendors(vendorsRes);
+            setProducts(productsRes);
+            setWarehouses(warehousesRes);
+        } catch (err) {
+            setError('Failed to load data');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric'
+        });
+    };
+
+    const formatStatus = (status) => {
+        return status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    };
+
     // Handle Source Data (Auto-fill)
     useEffect(() => {
         if (sourceData && !editingId) {
             setVendor(sourceData.vendor);
             if (sourceData.items) {
-                // Map items. For GRN, we might use receivedQty as qty
                 const billItems = sourceData.items.map(item => ({
                     ...item,
-                    qty: item.receivedQty || item.qty, // Prioritize receivedQty if from GRN
-                    // Recalculate total if needed ensuring data integrity
+                    qty: item.receivedQty || item.qty,
                 }));
                 setItems(billItems);
             }
@@ -81,13 +122,62 @@ const PurchaseBill = () => {
         setShowDeleteConfirm(true);
     };
 
-    const confirmDelete = () => {
-        setBills(bills.filter(b => b.id !== deleteId));
-        setShowDeleteConfirm(false);
-        setDeleteId(null);
+    const confirmDelete = async () => {
+        try {
+            await purchaseInvoiceService.deleteInvoice(deleteId);
+            setBills(bills.filter(b => b.id !== deleteId));
+            setShowDeleteConfirm(false);
+            setDeleteId(null);
+        } catch (err) {
+            console.error('Error deleting bill:', err);
+            setError(err.response?.data?.message || 'Failed to delete bill');
+        }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
+        try {
+            const invoiceData = {
+                vendorId: parseInt(vendor),
+                vendorInvoiceNo: billMeta.manualNo,
+                invoiceDate: billMeta.date,
+                dueDate: billMeta.dueDate,
+                notes,
+                items: items.map(item => ({
+                    productId: item.productId || null,
+                    warehouseId: item.warehouseId || null,
+                    description: item.name,
+                    quantity: parseFloat(item.qty) || 1,
+                    unitPrice: parseFloat(item.rate) || 0,
+                    taxPercent: parseFloat(item.tax) || 0,
+                    discountPercent: parseFloat(item.discount) || 0
+                }))
+            };
+
+            if (editingId) {
+                await purchaseInvoiceService.updateInvoice(editingId, invoiceData);
+            } else {
+                await purchaseInvoiceService.createInvoice(invoiceData);
+            }
+
+            fetchData();
+            resetForm();
+        } catch (err) {
+            console.error('Error saving bill:', err);
+            setError(err.response?.data?.message || 'Failed to save bill');
+        }
+    };
+
+    const handleReceive = async (id) => {
+        try {
+            await purchaseInvoiceService.receiveInvoice(id);
+            fetchData();
+        } catch (err) {
+            console.error('Error receiving bill:', err);
+            setError(err.response?.data?.message || 'Failed to receive bill');
+        }
+    };
+
+    const handleSaveLegacy = () => {
         const totals = calculateTotals();
         const newBill = {
             id: editingId || Date.now(),

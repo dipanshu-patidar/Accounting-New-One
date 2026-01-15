@@ -28,38 +28,41 @@ enum Role {
 }
 
 model Company {
-  id              Int               @id @default(autoincrement())
-  name            String
-  email           String            @unique
-  logo            String?           @db.LongText
-  startDate       DateTime?
-  endDate         DateTime?
-  planName        String?
-  planId          Int?
-  plan            Plan?             @relation(fields: [planId], references: [id])
-  planType        String?
-  phone           String?
-  address         String?
-  gstNumber       String?
-  vatNumber       String?
-  bankName        String?
-  bankAccountNo   String?
-  bankIfsc        String?
-  users           User[]
-  chartOfAccounts ChartOfAccounts[]
-  ledgerEntries   LedgerEntry[]
-  customers       Customer[]
-  vendors         Vendor[]
-  categories      Category[]
-  unitsOfMeasure  UnitOfMeasure[]
-  warehouses      Warehouse[]
-  products        Product[]
-  services        Service[]
-  salesInvoices   SalesInvoice[]
-  paymentReceipts PaymentReceipt[]
-  creditNotes     CreditNote[]
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id               Int               @id @default(autoincrement())
+  name             String
+  email            String            @unique
+  logo             String?           @db.LongText
+  startDate        DateTime?
+  endDate          DateTime?
+  planName         String?
+  planId           Int?
+  plan             Plan?             @relation(fields: [planId], references: [id])
+  planType         String?
+  phone            String?
+  address          String?
+  gstNumber        String?
+  vatNumber        String?
+  bankName         String?
+  bankAccountNo    String?
+  bankIfsc         String?
+  users            User[]
+  chartOfAccounts  ChartOfAccounts[]
+  ledgerEntries    LedgerEntry[]
+  customers        Customer[]
+  vendors          Vendor[]
+  categories       Category[]
+  unitsOfMeasure   UnitOfMeasure[]
+  warehouses       Warehouse[]
+  products         Product[]
+  services         Service[]
+  salesInvoices    SalesInvoice[]
+  paymentReceipts  PaymentReceipt[]
+  creditNotes      CreditNote[]
+  purchaseInvoices PurchaseInvoice[]
+  paymentVouchers  PaymentVoucher[]
+  debitNotes       DebitNote[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }
 
 // ==================== CHART OF ACCOUNTS ====================
@@ -152,22 +155,25 @@ model Customer {
 }
 
 model Vendor {
-  id              Int       @id @default(autoincrement())
+  id              Int               @id @default(autoincrement())
   name            String
   email           String?
   phone           String?
-  address         String?   @db.Text
+  address         String?           @db.Text
   gstNumber       String?
-  creditLimit     Float     @default(0)
-  creditDays      Int       @default(0)
-  openingBalance  Float     @default(0)
-  currentBalance  Float     @default(0)
-  ledgerAccountId Int?      // Link to AP ledger in COA
+  creditLimit     Float             @default(0)
+  creditDays      Int               @default(0)
+  openingBalance  Float             @default(0)
+  currentBalance  Float             @default(0)
+  ledgerAccountId Int?              // Link to AP ledger in COA
   companyId       Int
-  company         Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  isActive        Boolean   @default(true)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  company         Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  isActive        Boolean           @default(true)
+  invoices        PurchaseInvoice[]
+  payments        PaymentVoucher[]
+  debitNotes      DebitNote[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 
   @@index([companyId])
 }
@@ -262,22 +268,23 @@ model UnitOfMeasure {
 }
 
 model Warehouse {
-  id           Int                @id @default(autoincrement())
-  name         String
-  location     String?
-  address1     String?
-  address2     String?
-  city         String?
-  state        String?
-  pincode      String?
-  country      String?
-  companyId    Int
-  company      Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  productStock ProductStock[]
-  invoiceItems SalesInvoiceItem[]
-  isActive     Boolean            @default(true)
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+  id            Int                   @id @default(autoincrement())
+  name          String
+  location      String?
+  address1      String?
+  address2      String?
+  city          String?
+  state         String?
+  pincode       String?
+  country       String?
+  companyId     Int
+  company       Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  productStock  ProductStock[]
+  invoiceItems  SalesInvoiceItem[]
+  purchaseItems PurchaseInvoiceItem[]
+  isActive      Boolean               @default(true)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
 
   @@unique([name, companyId])
   @@index([companyId])
@@ -289,32 +296,33 @@ enum ProductType {
 }
 
 model Product {
-  id              Int                @id @default(autoincrement())
+  id              Int                   @id @default(autoincrement())
   name            String
   sku             String
   hsn             String?
   barcode         String?
-  image           String?            @db.LongText
-  description     String?            @db.Text
-  remarks         String?            @db.Text
+  image           String?               @db.LongText
+  description     String?               @db.Text
+  remarks         String?               @db.Text
   categoryId      Int?
-  category        Category?          @relation(fields: [categoryId], references: [id])
+  category        Category?             @relation(fields: [categoryId], references: [id])
   unitId          Int?
-  unit            UnitOfMeasure?     @relation(fields: [unitId], references: [id])
-  salePrice       Float              @default(0)
-  purchasePrice   Float              @default(0)
-  taxPercent      Float              @default(0)
-  discountPercent Float              @default(0)
+  unit            UnitOfMeasure?        @relation(fields: [unitId], references: [id])
+  salePrice       Float                 @default(0)
+  purchasePrice   Float                 @default(0)
+  taxPercent      Float                 @default(0)
+  discountPercent Float                 @default(0)
   asOfDate        DateTime?
-  productType     ProductType        @default(PRODUCT)
+  productType     ProductType           @default(PRODUCT)
   companyId       Int
-  company         Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company         Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
   productStock    ProductStock[]
   invoiceItems    SalesInvoiceItem[]
-  ledgerAccountId Int?               // Link to Inventory ledger in COA
-  isActive        Boolean            @default(true)
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  purchaseItems   PurchaseInvoiceItem[]
+  ledgerAccountId Int?                  // Link to Inventory ledger in COA
+  isActive        Boolean               @default(true)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
 
   @@unique([sku, companyId])
   @@index([companyId])
@@ -339,22 +347,23 @@ model ProductStock {
 }
 
 model Service {
-  id              Int                @id @default(autoincrement())
+  id              Int                   @id @default(autoincrement())
   name            String
   sku             String?
-  description     String?            @db.Text
-  remarks         String?            @db.Text
+  description     String?               @db.Text
+  remarks         String?               @db.Text
   unitId          Int?
-  unit            UnitOfMeasure?     @relation(fields: [unitId], references: [id])
-  price           Float              @default(0)
-  taxPercent      Float              @default(0)
-  allowInInvoices Boolean            @default(true)
+  unit            UnitOfMeasure?        @relation(fields: [unitId], references: [id])
+  price           Float                 @default(0)
+  taxPercent      Float                 @default(0)
+  allowInInvoices Boolean               @default(true)
   companyId       Int
-  company         Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  isActive        Boolean            @default(true)
+  company         Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  isActive        Boolean               @default(true)
   invoiceItems    SalesInvoiceItem[]
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  purchaseItems   PurchaseInvoiceItem[]
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
 
   @@unique([name, companyId])
   @@index([companyId])
@@ -477,6 +486,118 @@ model CreditNote {
   updatedAt        DateTime      @updatedAt
 
   @@unique([creditNoteNumber, companyId])
+  @@index([companyId])
+  @@index([invoiceId])
+}
+
+// ==================== PURCHASE MODULE ====================
+
+enum PurchaseInvoiceStatus {
+  DRAFT
+  RECEIVED
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+model PurchaseInvoice {
+  id                Int                   @id @default(autoincrement())
+  invoiceNumber     String
+  vendorId          Int
+  vendor            Vendor                @relation(fields: [vendorId], references: [id])
+  vendorInvoiceNo   String?               // Vendor's invoice number
+  invoiceDate       DateTime              @default(now())
+  dueDate           DateTime
+  referenceNumber   String?
+  billingAddress    String?               @db.Text
+  shippingAddress   String?               @db.Text
+  subTotal          Float                 @default(0)
+  discountAmount    Float                 @default(0)
+  taxAmount         Float                 @default(0)
+  totalAmount       Float                 @default(0)
+  paidAmount        Float                 @default(0)
+  dueAmount         Float                 @default(0)
+  status            PurchaseInvoiceStatus @default(DRAFT)
+  notes             String?               @db.Text
+  terms             String?               @db.Text
+  companyId         Int
+  company           Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  items             PurchaseInvoiceItem[]
+  payments          PaymentVoucher[]
+  debitNotes        DebitNote[]
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@unique([invoiceNumber, companyId])
+  @@index([companyId])
+  @@index([vendorId])
+}
+
+model PurchaseInvoiceItem {
+  id              Int              @id @default(autoincrement())
+  invoiceId       Int
+  invoice         PurchaseInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  productId       Int?
+  product         Product?         @relation(fields: [productId], references: [id])
+  serviceId       Int?
+  service         Service?         @relation(fields: [serviceId], references: [id])
+  warehouseId     Int?
+  warehouse       Warehouse?       @relation(fields: [warehouseId], references: [id])
+  description     String?
+  quantity        Float            @default(1)
+  unitPrice       Float            @default(0)
+  discountPercent Float            @default(0)
+  discountAmount  Float            @default(0)
+  taxPercent      Float            @default(0)
+  taxAmount       Float            @default(0)
+  totalAmount     Float            @default(0)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([invoiceId])
+  @@index([productId])
+}
+
+model PaymentVoucher {
+  id              Int              @id @default(autoincrement())
+  voucherNumber   String
+  invoiceId       Int
+  invoice         PurchaseInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  vendorId        Int
+  vendor          Vendor           @relation(fields: [vendorId], references: [id])
+  paymentDate     DateTime         @default(now())
+  amount          Float
+  paymentMethod   PaymentMethod    @default(BANK_TRANSFER)
+  referenceNumber String?
+  notes           String?          @db.Text
+  companyId       Int
+  company         Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([voucherNumber, companyId])
+  @@index([companyId])
+  @@index([invoiceId])
+  @@index([vendorId])
+}
+
+model DebitNote {
+  id              Int              @id @default(autoincrement())
+  debitNoteNumber String
+  invoiceId       Int
+  invoice         PurchaseInvoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  vendorId        Int
+  vendor          Vendor           @relation(fields: [vendorId], references: [id])
+  debitDate       DateTime         @default(now())
+  amount          Float
+  reason          String?          @db.Text
+  companyId       Int
+  company         Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([debitNoteNumber, companyId])
   @@index([companyId])
   @@index([invoiceId])
 }

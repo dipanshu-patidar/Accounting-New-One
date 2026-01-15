@@ -6,6 +6,7 @@ import {
     CheckCircle2, Clock, ArrowRight
 } from 'lucide-react';
 import '../Purchases.css';
+import paymentVoucherService from '../../../../services/paymentVoucherService';
 
 const Payment = () => {
     const location = useLocation();
@@ -13,9 +14,10 @@ const Payment = () => {
     const sourceData = location.state?.sourceData; // content from Bill
 
     // --- State Management ---
-    const [payments, setPayments] = useState([
-        { id: 1, paymentNo: 'PAY-2024-001', vendor: 'Global Suppliers Ltd', billNo: 'BILL-2024-001', date: '2024-01-25', amount: 5000.00, mode: 'Bank Transfer', status: 'Completed' },
-    ]);
+    const [payments, setPayments] = useState([]);
+    const [unpaidInvoices, setUnpaidInvoices] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingId, setEditingId] = useState(null);
@@ -33,6 +35,38 @@ const Payment = () => {
     const [billNo, setBillNo] = useState('');
     const [amount, setAmount] = useState(0);
     const [notes, setNotes] = useState('');
+
+    // Fetch data on component mount
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const [paymentsRes, invoicesRes] = await Promise.all([
+                paymentVoucherService.getPayments(),
+                paymentVoucherService.getInvoicesForPayment()
+            ]);
+            setPayments(paymentsRes);
+            setUnpaidInvoices(invoicesRes);
+        } catch (err) {
+            setError('Failed to load data');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric'
+        });
+    };
+
+    const formatPaymentMethod = (method) => {
+        return method.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    };
 
     // Handle Source Data (Auto-fill)
     useEffect(() => {
@@ -82,13 +116,38 @@ const Payment = () => {
         setShowDeleteConfirm(true);
     };
 
-    const confirmDelete = () => {
-        setPayments(payments.filter(p => p.id !== deleteId));
-        setShowDeleteConfirm(false);
-        setDeleteId(null);
+    const confirmDelete = async () => {
+        try {
+            await paymentVoucherService.deletePayment(deleteId);
+            setPayments(payments.filter(p => p.id !== deleteId));
+            setShowDeleteConfirm(false);
+            setDeleteId(null);
+            fetchData();
+        } catch (err) {
+            console.error('Error deleting payment:', err);
+            setError(err.response?.data?.message || 'Failed to delete payment');
+        }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
+        try {
+            const paymentData = {
+                invoiceId: parseInt(billNo),
+                paymentDate: paymentMeta.date,
+                amount: parseFloat(amount),
+                paymentMethod: paymentMeta.mode,
+                notes
+            };
+            await paymentVoucherService.createPayment(paymentData);
+            fetchData();
+            resetForm();
+        } catch (err) {
+            console.error('Error creating payment:', err);
+            setError(err.response?.data?.message || 'Failed to create payment');
+        }
+    };
+
+    const handleSaveLegacy = () => {
         const newPayment = {
             id: editingId || Date.now(),
             paymentNo: editingId ? payments.find(p => p.id === editingId).paymentNo : `PAY-2024-00${payments.length + 1}`,

@@ -19,6 +19,8 @@ const productRoutes = require('./src/routes/productRoutes');
 const serviceRoutes = require('./src/routes/serviceRoutes');
 const salesInvoiceRoutes = require('./src/routes/salesInvoiceRoutes');
 const paymentReceiptRoutes = require('./src/routes/paymentReceiptRoutes');
+const purchaseInvoiceRoutes = require('./src/routes/purchaseInvoiceRoutes');
+const paymentVoucherRoutes = require('./src/routes/paymentVoucherRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -52,6 +54,10 @@ app.use('/api/services', serviceRoutes);
 // Sales Module Routes
 app.use('/api/sales/invoices', salesInvoiceRoutes);
 app.use('/api/sales/payments', paymentReceiptRoutes);
+
+// Purchase Module Routes
+app.use('/api/purchases/invoices', purchaseInvoiceRoutes);
+app.use('/api/purchases/payments', paymentVoucherRoutes);
 
 // Health Check
 app.get('/', (req, res) => {
