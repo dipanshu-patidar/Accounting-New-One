@@ -1,29 +1,29 @@
-.settings-page {
+.companySetting-settings-page {
     padding: 2rem;
     background-color: #f8fafc;
     min-height: 100vh;
 }
 
-.page-header {
+.companySetting-page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
 }
 
-.page-title {
+.companySetting-page-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: #1e293b;
     margin-bottom: 0.25rem;
 }
 
-.page-subtitle {
+.companySetting-page-subtitle {
     color: #64748b;
     font-size: 0.9rem;
 }
 
-.btn-primary {
+.companySetting-btn-primary {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -37,7 +37,7 @@
 }
 
 /* Container */
-.settings-container {
+.companySetting-settings-container {
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -48,14 +48,14 @@
 }
 
 /* Tabs */
-.settings-tabs {
+.companySetting-settings-tabs {
     display: flex;
     border-bottom: 1px solid #e2e8f0;
     padding: 0 1.5rem;
     background: #f8fafc;
 }
 
-.tab-btn {
+.companySetting-tab-btn {
     padding: 1rem 1.5rem;
     background: transparent;
     border: none;
@@ -67,63 +67,63 @@
     transition: all 0.2s;
 }
 
-.tab-btn:hover {
+.companySetting-tab-btn:hover {
     color: #1e293b;
 }
 
-.tab-btn.active {
-    color: #2563eb;
-    border-bottom-color: #2563eb;
+.companySetting-tab-btn.active {
+    color: #8ce043;
+    border-bottom-color: #8ce043;
 }
 
 /* Content */
-.settings-content {
+.companySetting-settings-content {
     padding: 2rem;
     flex: 1;
 }
 
-.form-grid {
+.companySetting-form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
 
-.form-group {
+.companySetting-form-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.form-group.full-width {
+.companySetting-form-group.full-width {
     grid-column: span 2;
 }
 
-.form-group label {
+.companySetting-form-group label {
     font-size: 0.9rem;
     font-weight: 600;
     color: #475569;
 }
 
-.required {
+.companySetting-required {
     color: #ef4444;
 }
 
-.input-icon-wrapper {
+.companySetting-icon-wrapper {
     position: relative;
     width: 100%;
 }
 
-.input-icon {
+.companySetting-icon {
     position: absolute;
     left: 12px;
     top: 12px;
-    color: #94a3b8;
+    color: #8ce043;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.companySetting-form-group input,
+.companySetting-form-group select,
+.companySetting-form-group textarea {
     width: 100%;
     padding: 0.6rem 1rem;
     border: 1px solid #e2e8f0;
@@ -134,39 +134,39 @@
     background: #fff;
 }
 
-.input-icon-wrapper input,
-.input-icon-wrapper textarea {
+.companySetting-icon-wrapper input,
+.companySetting-icon-wrapper textarea {
     padding-left: 2.5rem;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.companySetting-form-group input:focus,
+.companySetting-form-group select:focus,
+.companySetting-form-group textarea:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Logo Upload */
-.logo-section {
+.companySetting-logo-section {
     border-top: 1px solid #e2e8f0;
     padding-top: 1.5rem;
     margin-top: 1rem;
 }
 
-.logo-section label {
+.companySetting-logo-section label {
     display: block;
     margin-bottom: 1rem;
     font-weight: 600;
     color: #475569;
 }
 
-.logo-uploader {
+.companySetting-logo-uploader {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
-.preview-box {
+.companySetting-preview-box {
     width: 100px;
     height: 100px;
     background: #f1f5f9;
@@ -179,19 +179,19 @@
     overflow: hidden;
 }
 
-.logo-preview-img {
+.companySetting-logo-preview-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.upload-controls {
+.companySetting-upload-controls {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.btn-upload {
+.companySetting-btn-upload {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -205,13 +205,21 @@
     width: fit-content;
 }
 
-.upload-hint {
+.companySetting-upload-hint {
     font-size: 0.8rem;
     color: #64748b;
     margin: 0;
 }
 
-.fade-in {
+.companySetting-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+}
+
+.companySetting-fade-in {
     animation: fadeIn 0.3s ease-in-out;
 }
 

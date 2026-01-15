@@ -62,7 +62,7 @@ const UserList = () => {
             <div className="page-header">
                 <h1 className="page-title">Users</h1>
 
-                <div className="add-icon-wrapper" onClick={() => setShowAddModal(true)}>
+                <div className="add-icon-wrapper" onClick={() => setShowAddModal(true)} style={{ cursor: 'pointer' }}>
                         <Plus size={24} color="white" fill="white" strokeWidth={3} />
                     </div>
 
@@ -100,7 +100,7 @@ const UserList = () => {
                         </div>
                         <div className="card-body">
                             <div className="avatar-wrapper">
-                                <img src={user.img} alt={user.name} className="user-avatar" />
+                                <img src={user.img} alt={user.name} className="user-avatar-image" />
                             </div>
                             <h3 className="user-name">{user.name}</h3>
                             <p className="user-email">{user.email}</p>

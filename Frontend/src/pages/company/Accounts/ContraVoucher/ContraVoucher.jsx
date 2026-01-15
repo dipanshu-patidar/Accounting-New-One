@@ -111,7 +111,7 @@ const ContraVoucher = () => {
                                     <td className="acc-to">{v.accountTo}</td>
                                     <td className="amount-cell">{v.amount}</td>
                                     <td className="narration-cell">{v.narration}</td>
-                                    <td><span className="status-badge completed">{v.status}</span></td>
+                                    <td><span className="contra-status-badge completed">{v.status}</span></td>
                                     <td>
                                         <div className="action-buttons">
                                             <button className="action-btn btn-view" onClick={() => { setSelectedVoucher(v); setShowViewModal(true); }}>
@@ -139,140 +139,146 @@ const ContraVoucher = () => {
                         <button className="pagination-btn disabled">Next</button>
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* Add Contra Voucher Modal */}
-            {(showAddModal || showEditModal) && (
-                <div className="modal-overlay">
-                    <div className="modal-content contra-modal">
-                        <div className="modal-header">
-                            <h2 className="modal-title">Add Contra Voucher</h2>
-                            <button className="close-btn" onClick={() => { setShowAddModal(false); setShowEditModal(false); }}>
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="form-grid-2">
-                                <div className="form-group">
-                                    <label className="form-label">Voucher No (Manual)</label>
-                                    <input type="text" className="form-input" placeholder="Optional" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">Voucher Date <span className="text-red-500">*</span></label>
-                                    <input type="date" className="form-input" defaultValue="2026-01-13" />
-                                </div>
+            {
+                (showAddModal || showEditModal) && (
+                    <div className="modal-overlay">
+                        <div className="modal-content contra-modal">
+                            <div className="modal-header">
+                                <h2 className="modal-title">Add Contra Voucher</h2>
+                                <button className="close-btn" onClick={() => { setShowAddModal(false); setShowEditModal(false); }}>
+                                    <X size={20} />
+                                </button>
                             </div>
-
-                            <div className="form-grid-2 mt-4">
-                                <div className="form-group">
-                                    <label className="form-label">Account From <span className="text-red-500">*</span></label>
-                                    <input type="text" className="form-input" placeholder="Accounts Payable (ABC Traders)" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">Account To <span className="text-red-500">*</span></label>
-                                    <input type="text" className="form-input" placeholder="Accounts Receivable (XYZ Pvt. Ltd)" />
-                                </div>
-                            </div>
-
-                            <div className="form-grid-2 mt-4">
-                                <div className="form-group">
-                                    <label className="form-label">Amount <span className="text-red-500">*</span></label>
-                                    <input type="number" className="form-input" placeholder="Enter amount" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="form-label">Upload Document (Optional)</label>
-                                    <div className="file-input-wrapper-inline">
-                                        <button className="btn-file" onClick={handleImageUpload}>Choose File</button>
-                                        <span className="file-status">{receiptImage ? 'Document uploaded' : 'No file chosen'}</span>
+                            <div className="modal-body">
+                                <div className="form-grid-2">
+                                    <div className="form-group">
+                                        <label className="form-label">Voucher No (Manual)</label>
+                                        <input type="text" className="form-input" placeholder="Optional" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Voucher Date <span className="text-red-500">*</span></label>
+                                        <input type="date" className="form-input" defaultValue="2026-01-13" />
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="form-group mt-4">
-                                <label className="form-label">Narration (Optional)</label>
-                                <textarea className="form-input textarea" rows={4} placeholder="Enter details..."></textarea>
+                                <div className="form-grid-2 mt-4">
+                                    <div className="form-group">
+                                        <label className="form-label">Account From <span className="text-red-500">*</span></label>
+                                        <input type="text" className="form-input" placeholder="Accounts Payable (ABC Traders)" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Account To <span className="text-red-500">*</span></label>
+                                        <input type="text" className="form-input" placeholder="Accounts Receivable (XYZ Pvt. Ltd)" />
+                                    </div>
+                                </div>
+
+                                <div className="form-grid-2 mt-4">
+                                    <div className="form-group">
+                                        <label className="form-label">Amount <span className="text-red-500">*</span></label>
+                                        <input type="number" className="form-input" placeholder="Enter amount" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Upload Document (Optional)</label>
+                                        <div className="file-input-wrapper-inline">
+                                            <button className="btn-file" onClick={handleImageUpload}>Choose File</button>
+                                            <span className="file-status">{receiptImage ? 'Document uploaded' : 'No file chosen'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="form-group mt-4">
+                                    <label className="form-label">Narration (Optional)</label>
+                                    <textarea className="form-input textarea" rows={4} placeholder="Enter details..."></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel-dark" onClick={() => { setShowAddModal(false); setShowEditModal(false); }}>Cancel</button>
-                            <button className="btn-submit" style={{ backgroundColor: '#4dbd9d' }}>Save</button>
+                            <div className="modal-footer">
+                                <button className="btn-cancel-dark" onClick={() => { setShowAddModal(false); setShowEditModal(false); }}>Cancel</button>
+                                <button className="btn-submit" style={{ backgroundColor: '#8ce043' }}>Save</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* View Modal */}
-            {showViewModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content contra-modal">
-                        <div className="modal-header">
-                            <h2 className="modal-title">Contra Voucher Details</h2>
-                            <button className="close-btn" onClick={() => setShowViewModal(false)}>
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="view-header-grid">
-                                <div className="view-group">
-                                    <label>DATE</label>
-                                    <p>{selectedVoucher?.date}</p>
-                                </div>
-                                <div className="view-group">
-                                    <label>VOUCHER NO</label>
-                                    <p className="voucher-no">{selectedVoucher?.voucherNo}</p>
-                                </div>
-                                <div className="view-group">
-                                    <label>AMOUNT</label>
-                                    <p className="amount-text">{selectedVoucher?.amount}</p>
-                                </div>
+            {
+                showViewModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content contra-modal">
+                            <div className="modal-header">
+                                <h2 className="modal-title">Contra Voucher Details</h2>
+                                <button className="close-btn" onClick={() => setShowViewModal(false)}>
+                                    <X size={20} />
+                                </button>
                             </div>
+                            <div className="modal-body">
+                                <div className="view-header-grid">
+                                    <div className="view-group">
+                                        <label>DATE</label>
+                                        <p>{selectedVoucher?.date}</p>
+                                    </div>
+                                    <div className="view-group">
+                                        <label>VOUCHER NO</label>
+                                        <p className="voucher-no">{selectedVoucher?.voucherNo}</p>
+                                    </div>
+                                    <div className="view-group">
+                                        <label>AMOUNT</label>
+                                        <p className="amount-text">{selectedVoucher?.amount}</p>
+                                    </div>
+                                </div>
 
-                            <div className="view-payment-grid mt-4">
-                                <div className="view-group">
-                                    <label>ACCOUNT FROM</label>
-                                    <p className="text-lg font-bold acc-from">{selectedVoucher?.accountFrom}</p>
+                                <div className="view-payment-grid mt-4">
+                                    <div className="view-group">
+                                        <label>ACCOUNT FROM</label>
+                                        <p className="text-lg font-bold acc-from">{selectedVoucher?.accountFrom}</p>
+                                    </div>
+                                    <div className="view-group">
+                                        <label>ACCOUNT TO</label>
+                                        <p className="text-lg font-bold acc-to">{selectedVoucher?.accountTo}</p>
+                                    </div>
                                 </div>
-                                <div className="view-group">
-                                    <label>ACCOUNT TO</label>
-                                    <p className="text-lg font-bold acc-to">{selectedVoucher?.accountTo}</p>
-                                </div>
-                            </div>
 
-                            <div className="view-narration-section mt-4">
-                                <label className="form-label text-xs uppercase font-bold text-gray-500">Narration</label>
-                                <p className="view-narration-box">{selectedVoucher?.narration}</p>
+                                <div className="view-narration-section mt-4">
+                                    <label className="form-label text-xs uppercase font-bold text-gray-500">Narration</label>
+                                    <p className="view-narration-box">{selectedVoucher?.narration}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" onClick={() => setShowViewModal(false)}>Close</button>
-                            <button className="btn-submit" style={{ backgroundColor: '#8ce043' }} onClick={() => { setShowViewModal(false); setShowEditModal(true); }}>Edit Voucher</button>
+                            <div className="modal-footer">
+                                <button className="btn-cancel" onClick={() => setShowViewModal(false)}>Close</button>
+                                <button className="btn-submit" style={{ backgroundColor: '#8ce043' }} onClick={() => { setShowViewModal(false); setShowEditModal(true); }}>Edit Voucher</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Delete Modal */}
-            {showDeleteModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content" style={{ maxWidth: '400px' }}>
-                        <div className="modal-header">
-                            <h2 className="modal-title">Delete Voucher</h2>
-                            <button className="close-btn" onClick={() => setShowDeleteModal(false)}>
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="modal-body text-center py-4">
-                            <Trash2 size={48} color="#ef4444" className="text-center mx-auto mb-3" />
-                            <p className="text-gray-600">Are you sure you want to delete contra voucher <strong>{selectedVoucher?.voucherNo}</strong>?</p>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                            <button className="btn-submit" style={{ backgroundColor: '#ef4444' }}>Delete</button>
+            {
+                showDeleteModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content" style={{ maxWidth: '400px' }}>
+                            <div className="modal-header">
+                                <h2 className="modal-title">Delete Voucher</h2>
+                                <button className="close-btn" onClick={() => setShowDeleteModal(false)}>
+                                    <X size={20} />
+                                </button>
+                            </div>
+                            <div className="modal-body text-center py-4">
+                                <Trash2 size={48} color="#ef4444" className="text-center mx-auto mb-3" />
+                                <p className="text-gray-600">Are you sure you want to delete contra voucher <strong>{selectedVoucher?.voucherNo}</strong>?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                                <button className="btn-submit" style={{ backgroundColor: '#ef4444' }}>Delete</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 

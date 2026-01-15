@@ -58,7 +58,7 @@
     color: #1e293b;
 }
 
-.status-badge.completed {
+.contra-status-badge.completed {
     background-color: #ecfdf5;
     color: #10b981;
     padding: 4px 10px;

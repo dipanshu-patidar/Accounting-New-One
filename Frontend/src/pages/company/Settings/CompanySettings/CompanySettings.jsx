@@ -27,34 +27,34 @@ const CompanySettings = () => {
     };
 
     return (
-        <div className="settings-page">
-            <div className="page-header">
+        <div className="companySetting-settings-page">
+            <div className="companySetting-page-header">
                 <div>
-                    <h1 className="page-title">Company Settings</h1>
-                    <p className="page-subtitle">Manage your company profile and preferences</p>
+                    <h1 className="companySetting-page-title">Company Settings</h1>
+                    <p className="companySetting-page-subtitle">Manage your company profile and preferences</p>
                 </div>
-                <button className="btn-primary">
+                <button className="companySetting-btn-primary">
                     <Save size={18} /> Save Changes
                 </button>
             </div>
 
-            <div className="settings-container">
+            <div className="companySetting-settings-container">
                 {/* Tabs */}
-                <div className="settings-tabs">
+                <div className="companySetting-settings-tabs">
                     <button
-                        className={`tab-btn ${activeTab === 'general' ? 'active' : ''}`}
+                        className={`companySetting-tab-btn ${activeTab === 'general' ? 'active' : ''}`}
                         onClick={() => setActiveTab('general')}
                     >
                         General Info
                     </button>
                     <button
-                        className={`tab-btn ${activeTab === 'address' ? 'active' : ''}`}
+                        className={`companySetting-tab-btn ${activeTab === 'address' ? 'active' : ''}`}
                         onClick={() => setActiveTab('address')}
                     >
                         Address
                     </button>
                     <button
-                        className={`tab-btn ${activeTab === 'business' ? 'active' : ''}`}
+                        className={`companySetting-tab-btn ${activeTab === 'business' ? 'active' : ''}`}
                         onClick={() => setActiveTab('business')}
                     >
                         Business Settings
@@ -62,51 +62,51 @@ const CompanySettings = () => {
                 </div>
 
                 {/* Content */}
-                <div className="settings-content">
+                <div className="companySetting-settings-content">
                     {activeTab === 'general' && (
-                        <div className="form-section fade-in">
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Company Name <span className="required">*</span></label>
-                                    <div className="input-icon-wrapper">
-                                        <Building2 size={18} className="input-icon" />
+                        <div className="companySetting-form-section companySetting-fade-in">
+                            <div className="companySetting-form-grid">
+                                <div className="companySetting-form-group">
+                                    <label>Company Name <span className="companySetting-required">*</span></label>
+                                    <div className="companySetting-icon-wrapper">
+                                        <Building2 size={18} className="companySetting-icon" />
                                         <input type="text" defaultValue="Kiaan Solutions" placeholder="Enter company name" />
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label>Company Email <span className="required">*</span></label>
-                                    <div className="input-icon-wrapper">
-                                        <Mail size={18} className="input-icon" />
+                                <div className="companySetting-form-group">
+                                    <label>Company Email <span className="companySetting-required">*</span></label>
+                                    <div className="companySetting-icon-wrapper">
+                                        <Mail size={18} className="companySetting-icon" />
                                         <input type="email" defaultValue="info@kiaan.com" placeholder="Enter company email" />
                                     </div>
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>Phone Number</label>
-                                    <div className="input-icon-wrapper">
-                                        <Phone size={18} className="input-icon" />
+                                    <div className="companySetting-icon-wrapper">
+                                        <Phone size={18} className="companySetting-icon" />
                                         <input type="tel" defaultValue="+1 234 567 890" placeholder="Enter phone number" />
                                     </div>
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>Website</label>
-                                    <div className="input-icon-wrapper">
-                                        <Globe size={18} className="input-icon" />
+                                    <div className="companySetting-icon-wrapper">
+                                        <Globe size={18} className="companySetting-icon" />
                                         <input type="url" placeholder="https://www.example.com" />
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="logo-section">
+                            <div className="companySetting-logo-section">
                                 <label>Company Logo</label>
-                                <div className="logo-uploader">
-                                    <div className="preview-box">
+                                <div className="companySetting-logo-uploader">
+                                    <div className="companySetting-preview-box">
                                         {logoPreview ? (
-                                            <img src={logoPreview} alt="Company Logo" className="logo-preview-img" />
+                                            <img src={logoPreview} alt="Company Logo" className="companySetting-logo-preview-img" />
                                         ) : (
                                             <ImageIcon size={32} />
                                         )}
                                     </div>
-                                    <div className="upload-controls">
+                                    <div className="companySetting-upload-controls">
                                         <input
                                             type="file"
                                             ref={fileInputRef}
@@ -114,10 +114,10 @@ const CompanySettings = () => {
                                             accept="image/jpeg, image/png, image/gif"
                                             style={{ display: 'none' }}
                                         />
-                                        <button className="btn-upload" onClick={handleUploadClick}>
+                                        <button className="companySetting-btn-upload" onClick={handleUploadClick}>
                                             <Upload size={16} /> Upload New Logo
                                         </button>
-                                        <p className="upload-hint">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                        <p className="companySetting-upload-hint">Allowed JPG, GIF or PNG. Max size of 800K</p>
                                     </div>
                                 </div>
                             </div>
@@ -125,28 +125,28 @@ const CompanySettings = () => {
                     )}
 
                     {activeTab === 'address' && (
-                        <div className="form-section fade-in">
-                            <div className="form-grid">
-                                <div className="form-group full-width">
+                        <div className="companySetting-form-section companySetting-fade-in">
+                            <div className="companySetting-form-grid">
+                                <div className="companySetting-form-group full-width">
                                     <label>Street Address</label>
-                                    <div className="input-icon-wrapper">
-                                        <MapPin size={18} className="input-icon" />
+                                    <div className="companySetting-icon-wrapper">
+                                        <MapPin size={18} className="companySetting-icon" />
                                         <textarea rows="3" placeholder="123 Business St, Tech Park"></textarea>
                                     </div>
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>City</label>
                                     <input type="text" placeholder="New York" />
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>State / Province</label>
                                     <input type="text" placeholder="NY" />
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>Postal Code</label>
                                     <input type="text" placeholder="10001" />
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>Country</label>
                                     <select>
                                         <option>United States</option>
@@ -160,9 +160,9 @@ const CompanySettings = () => {
                     )}
 
                     {activeTab === 'business' && (
-                        <div className="form-section fade-in">
-                            <div className="form-grid">
-                                <div className="form-group">
+                        <div className="companySetting-form-section companySetting-fade-in">
+                            <div className="companySetting-form-grid">
+                                <div className="companySetting-form-group">
                                     <label>Currency</label>
                                     <select defaultValue="USD">
                                         <option value="USD">USD ($)</option>
@@ -173,42 +173,42 @@ const CompanySettings = () => {
                                 </div>
                             </div>
 
-                            <h3 className="section-title">Bank Details</h3>
-                            <div className="form-grid">
-                                <div className="form-group">
+                            <h3 className="companySetting-section-title">Bank Details</h3>
+                            <div className="companySetting-form-grid">
+                                <div className="companySetting-form-group">
                                     <label>Bank Name</label>
-                                    <div className="input-icon-wrapper">
-                                        <Landmark size={18} className="input-icon" />
+                                    <div className="companySetting-icon-wrapper">
+                                        <Landmark size={18} className="companySetting-icon" />
                                         <input type="text" placeholder="e.g. Chase Bank" />
                                     </div>
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>Account Holder Name</label>
                                     <input type="text" placeholder="e.g. Kiaan Solutions LLC" />
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>Account Number</label>
                                     <input type="text" placeholder="XXXXXXXXXXXX" />
                                 </div>
-                                <div className="form-group">
+                                <div className="companySetting-form-group">
                                     <label>IFSC / Sort Code</label>
                                     <input type="text" placeholder="Code" />
                                 </div>
                             </div>
 
-                            <h3 className="section-title">Policies & Notes</h3>
-                            <div className="form-grid">
-                                <div className="form-group full-width">
+                            <h3 className="companySetting-section-title">Policies & Notes</h3>
+                            <div className="companySetting-form-grid">
+                                <div className="companySetting-form-group full-width">
                                     <label>Terms & Conditions</label>
-                                    <div className="input-icon-wrapper">
-                                        <FileText size={18} className="input-icon" />
+                                    <div className="companySetting-icon-wrapper">
+                                        <FileText size={18} className="companySetting-icon" />
                                         <textarea rows="4" placeholder="Enter default terms and conditions for invoices..."></textarea>
                                     </div>
                                 </div>
-                                <div className="form-group full-width">
+                                <div className="companySetting-form-group full-width">
                                     <label>Default Notes</label>
-                                    <div className="input-icon-wrapper">
-                                        <StickyNote size={18} className="input-icon" />
+                                    <div className="companySetting-icon-wrapper">
+                                        <StickyNote size={18} className="companySetting-icon" />
                                         <textarea rows="3" placeholder="Enter default notes for customers..."></textarea>
                                     </div>
                                 </div>
