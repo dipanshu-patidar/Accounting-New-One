@@ -1,24 +1,24 @@
-.chart-of-accounts-page {
+.Charts-of-Account-chart-of-accounts-page {
     padding: 1.5rem;
     background-color: #f8fafe;
     min-height: 100%;
 }
 
-.page-header {
+.Charts-of-Account-page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
 }
 
-.page-title {
+.Charts-of-Account-page-title {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-main);
     margin: 0;
 }
 
-.btn-add {
+.Charts-of-Account-btn-add {
     background-color: #8ce043;
     color: white;
     border: none;
@@ -33,12 +33,12 @@
     transition: background-color 0.2s;
 }
 
-.btn-add:hover {
+.Charts-of-Account-btn-add:hover {
     background-color: #61cf01;
 }
 
 /* Filter Card */
-.filter-card {
+.Charts-of-Account-filter-card {
     background: white;
     border-radius: 12px;
     padding: 1.5rem;
@@ -53,20 +53,20 @@
     gap: 1rem;
 }
 
-.filter-group {
+.Charts-of-Account-filter-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.filter-label {
+.Charts-of-Account-filter-label {
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-main);
     text-align: center;
 }
 
-.filter-input {
+.Charts-of-Account-filter-input {
     padding: 0.6rem 1rem;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -77,7 +77,7 @@
     min-width: 200px;
 }
 
-.filter-btn {
+.Charts-of-Account-filter-btn {
     width: 40px;
     height: 40px;
     border-radius: 6px;
@@ -90,12 +90,12 @@
     transition: opacity 0.2s;
 }
 
-.btn-search {
+.Charts-of-Account-btn-search {
     background-color: #8ce043;
     /* Green from Image 1 */
 }
 
-.btn-reset {
+.Charts-of-Account-btn-reset {
     background-color: #fca5a5;
     /* Reddish pink from Image 1 */
     background-color: #ef4444;
@@ -105,7 +105,7 @@
 }
 
 /* Account Section Card */
-.account-section-card {
+.Charts-of-Account-account-section-card {
     background: white;
     border-radius: 12px;
     padding: 0;
@@ -115,12 +115,12 @@
     overflow: hidden;
 }
 
-.section-header {
+.Charts-of-Account-section-header {
     padding: 1.25rem 1.5rem;
     border-bottom: 1px solid #f1f5f9;
 }
 
-.section-title {
+.Charts-of-Account-section-title {
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-main);
@@ -128,17 +128,17 @@
 }
 
 /* Table */
-.table-responsive {
+.Charts-of-Account-table-responsive {
     overflow-x: auto;
 }
 
-.accounts-table {
+.Charts-of-Account-accounts-table {
     width: 100%;
     border-collapse: collapse;
     min-width: 900px;
 }
 
-.accounts-table th {
+.Charts-of-Account-accounts-table th {
     text-align: left;
     padding: 1rem 1.5rem;
     font-size: 0.75rem;
@@ -149,7 +149,7 @@
     white-space: nowrap;
 }
 
-.accounts-table td {
+.Charts-of-Account-accounts-table td {
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.9rem;
@@ -157,23 +157,23 @@
     vertical-align: middle;
 }
 
-.accounts-table tr:nth-child(even) {
+.Charts-of-Account-accounts-table tr:nth-child(even) {
     background-color: #fcfcfc;
     /* Very light stripe */
 }
 
-.accounts-table tr:hover {
+.Charts-of-Account-accounts-table tr:hover {
     background-color: #f8fafc;
 }
 
 /* Specific Cell Styles */
-.text-green {
+.Charts-of-Account-text-green {
     color: #8ce043;
     font-weight: 500;
 }
 
 /* Status Badge */
-.status-badge {
+.Charts-of-Account-status-badge {
     padding: 4px 12px;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -182,21 +182,21 @@
     display: inline-block;
 }
 
-.status-enabled {
+.Charts-of-Account-status-enabled {
     background-color: #8ce043;
 }
 
-.status-disabled {
+.Charts-of-Account-status-disabled {
     background-color: #ef4444;
 }
 
 /* Action Buttons Grid */
-.actions-cell {
+.Charts-of-Account-actions-cell {
     display: flex;
     gap: 0.5rem;
 }
 
-.action-btn-small {
+.Charts-of-Account-action-btn-small {
     width: 32px;
     height: 32px;
     border-radius: 6px;
@@ -209,37 +209,37 @@
     transition: opacity 0.2s;
 }
 
-.btn-warning {
+.Charts-of-Account-btn-warning {
     background-color: #f59e0b;
 }
 
 /* Orange */
-.btn-info {
+.Charts-of-Account-btn-info {
     background-color: #22d3ee;
 }
 
 /* Cyan/Blue */
-.btn-danger {
+.Charts-of-Account-btn-danger {
     background-color: #ef4444;
 }
 
 /* Red */
 
-.action-btn-small:hover {
+.Charts-of-Account-action-btn-small:hover {
     opacity: 0.8;
 }
 
 /* Date Input Icons */
-input[type="date"]::-webkit-calendar-picker-indicator {
+.Charts-of-Account-filter-input::-webkit-calendar-picker-indicator {
     cursor: pointer;
 }
 
 /* Tooltip Styles */
-[data-tooltip] {
+.Charts-of-Account-chart-of-accounts-page [data-tooltip] {
     position: relative;
 }
 
-[data-tooltip]:before {
+.Charts-of-Account-chart-of-accounts-page [data-tooltip]:before {
     content: attr(data-tooltip);
     position: absolute;
     bottom: 125%;
@@ -262,7 +262,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-[data-tooltip]:after {
+.Charts-of-Account-chart-of-accounts-page [data-tooltip]:after {
     content: '';
     position: absolute;
     bottom: 115%;
@@ -279,20 +279,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     z-index: 100;
 }
 
-[data-tooltip]:hover:before,
-[data-tooltip]:hover:after {
+.Charts-of-Account-chart-of-accounts-page [data-tooltip]:hover:before,
+.Charts-of-Account-chart-of-accounts-page [data-tooltip]:hover:after {
     opacity: 1;
     visibility: visible;
     bottom: 120%;
     /* Slight animation up */
 }
 
-[data-tooltip]:hover:after {
+.Charts-of-Account-chart-of-accounts-page [data-tooltip]:hover:after {
     bottom: 110%;
 }
 
 /* Modal Styles */
-.modal-overlay {
+.Charts-of-Account-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -306,7 +306,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     z-index: 1000;
 }
 
-.modal-content {
+.Charts-of-Account-modal-content {
     background: white;
     border-radius: 12px;
     width: 600px;
@@ -316,7 +316,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.modal-header {
+.Charts-of-Account-modal-header {
     padding: 1.5rem;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
@@ -324,14 +324,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     align-items: center;
 }
 
-.modal-title {
+.Charts-of-Account-modal-title {
     font-size: 1.1rem;
     font-weight: 700;
     margin: 0;
     color: var(--text-main);
 }
 
-.close-btn {
+.Charts-of-Account-close-btn {
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -340,18 +340,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     line-height: 1;
 }
 
-.modal-body {
+.Charts-of-Account-modal-body {
     padding: 1.5rem;
 }
 
 /* AI Button */
-.ai-generate-wrapper {
+.Charts-of-Account-ai-generate-wrapper {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1rem;
 }
 
-.btn-ai-generate {
+.Charts-of-Account-btn-ai-generate {
     background-color: #8ce043;
     color: white;
     border: none;
@@ -365,16 +365,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
 }
 
-.ai-icon {
+.Charts-of-Account-ai-icon {
     font-size: 1rem;
 }
 
 /* Form Styles */
-.form-group {
+.Charts-of-Account-form-group {
     margin-bottom: 1.25rem;
 }
 
-.form-label {
+.Charts-of-Account-form-label {
     display: block;
     margin-bottom: 0.4rem;
     font-weight: 500;
@@ -382,13 +382,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: #374151;
 }
 
-.text-red {
+.Charts-of-Account-text-red {
     color: #ef4444;
 }
 
-.form-input,
-.form-select,
-.form-textarea {
+.Charts-of-Account-form-input,
+.Charts-of-Account-form-select,
+.Charts-of-Account-form-textarea {
     width: 100%;
     padding: 0.6rem 0.8rem;
     border: 1px solid #d1d5db;
@@ -398,37 +398,37 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     transition: border-color 0.2s;
 }
 
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
+.Charts-of-Account-form-input:focus,
+.Charts-of-Account-form-select:focus,
+.Charts-of-Account-form-textarea:focus {
     border-color: #8ce043;
     box-shadow: 0 0 0 3px rgba(140, 224, 67, 0.1);
 }
 
-.form-row {
+.Charts-of-Account-form-row {
     display: flex;
     gap: 1rem;
 }
 
-.half-width {
+.Charts-of-Account-half-width {
     flex: 1;
 }
 
 /* Toggle Switch */
-.switch {
+.Charts-of-Account-switch {
     position: relative;
     display: inline-block;
     width: 44px;
     height: 24px;
 }
 
-.switch input {
+.Charts-of-Account-switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-.slider {
+.Charts-of-Account-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -440,7 +440,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius: 24px;
 }
 
-.slider:before {
+.Charts-of-Account-slider:before {
     position: absolute;
     content: "";
     height: 18px;
@@ -452,17 +452,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius: 50%;
 }
 
-input:checked+.slider {
+.Charts-of-Account-switch input:checked+.Charts-of-Account-slider {
     background-color: #8ce043;
     /* Green active state */
 }
 
-input:checked+.slider:before {
+.Charts-of-Account-switch input:checked+.Charts-of-Account-slider:before {
     transform: translateX(20px);
 }
 
 /* Footer Buttons */
-.modal-footer {
+.Charts-of-Account-modal-footer {
     padding: 1rem 1.5rem;
     border-top: 1px solid #e5e7eb;
     display: flex;
@@ -470,7 +470,7 @@ input:checked+.slider:before {
     gap: 0.75rem;
 }
 
-.btn-save {
+.Charts-of-Account-btn-save {
     background-color: #8ce043;
     /* Dark button */
     color: white;
@@ -481,7 +481,7 @@ input:checked+.slider:before {
     cursor: pointer;
 }
 
-.btn-cancel {
+.Charts-of-Account-btn-cancel {
     background-color: #1f2937;
     color: #fff;
     border: 1px solid #d1d5db;
@@ -491,12 +491,12 @@ input:checked+.slider:before {
     cursor: pointer;
 }
 
-.btn-cancel:hover {
+.Charts-of-Account-btn-cancel:hover {
     background-color: #3a4451;
 }
 
 /* Custom Checkbox */
-.checkbox-container {
+.Charts-of-Account-checkbox-container {
     display: flex;
     align-items: center;
     position: relative;
@@ -509,7 +509,7 @@ input:checked+.slider:before {
     user-select: none;
 }
 
-.checkbox-container input {
+.Charts-of-Account-checkbox-container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -517,7 +517,7 @@ input:checked+.slider:before {
     width: 0;
 }
 
-.checkmark {
+.Charts-of-Account-checkmark {
     position: absolute;
     left: 0;
     height: 18px;
@@ -527,26 +527,26 @@ input:checked+.slider:before {
     transition: background-color 0.2s;
 }
 
-.checkbox-container:hover input~.checkmark {
+.Charts-of-Account-checkbox-container:hover input~.Charts-of-Account-checkmark {
     background-color: #ccc;
 }
 
-.checkbox-container input:checked~.checkmark {
+.Charts-of-Account-checkbox-container input:checked~.Charts-of-Account-checkmark {
     background-color: #8ce043;
     /* Green */
 }
 
-.checkmark:after {
+.Charts-of-Account-checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
 
-.checkbox-container input:checked~.checkmark:after {
+.Charts-of-Account-checkbox-container input:checked~.Charts-of-Account-checkmark:after {
     display: block;
 }
 
-.checkbox-container .checkmark:after {
+.Charts-of-Account-checkbox-container .Charts-of-Account-checkmark:after {
     left: 6px;
     top: 2px;
     width: 3px;

@@ -64,12 +64,12 @@ const ChartOfAccounts = () => {
     };
 
     const AccountTable = ({ title, data }) => (
-        <div className="account-section-card">
-            <div className="section-header">
-                <h3 className="section-title">{title}</h3>
+        <div className="Charts-of-Account-account-section-card">
+            <div className="Charts-of-Account-section-header">
+                <h3 className="Charts-of-Account-section-title">{title}</h3>
             </div>
-            <div className="table-responsive">
-                <table className="accounts-table">
+            <div className="Charts-of-Account-table-responsive">
+                <table className="Charts-of-Account-accounts-table">
                     <thead>
                         <tr>
                             <th>CODE</th>
@@ -85,22 +85,22 @@ const ChartOfAccounts = () => {
                         {data.map((account, index) => (
                             <tr key={index}>
                                 <td>{account.code}</td>
-                                <td className="text-green">{account.name}</td>
+                                <td className="Charts-of-Account-text-green">{account.name}</td>
                                 <td>{account.type}</td>
                                 <td>{account.parent}</td>
                                 <td>{account.balance}</td>
                                 <td>
-                                    <span className="status-badge status-enabled">{account.status}</span>
+                                    <span className="Charts-of-Account-status-badge Charts-of-Account-status-enabled">{account.status}</span>
                                 </td>
                                 <td>
-                                    <div className="actions-cell">
-                                        <button className="action-btn-small btn-warning" data-tooltip="Transaction Summary">
+                                    <div className="Charts-of-Account-actions-cell">
+                                        <button className="Charts-of-Account-action-btn-small Charts-of-Account-btn-warning" data-tooltip="Transaction Summary">
                                             <Activity size={16} />
                                         </button>
-                                        <button className="action-btn-small btn-info" data-tooltip="Edit" onClick={() => setShowEditModal(true)}>
+                                        <button className="Charts-of-Account-action-btn-small Charts-of-Account-btn-info" data-tooltip="Edit" onClick={() => setShowEditModal(true)}>
                                             <Edit2 size={16} />
                                         </button>
-                                        <button className="action-btn-small btn-danger" data-tooltip="Delete" onClick={() => setShowDeleteModal(true)}>
+                                        <button className="Charts-of-Account-action-btn-small Charts-of-Account-btn-danger" data-tooltip="Delete" onClick={() => setShowDeleteModal(true)}>
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
@@ -114,30 +114,30 @@ const ChartOfAccounts = () => {
     );
 
     return (
-        <div className="chart-of-accounts-page">
+        <div className="Charts-of-Account-chart-of-accounts-page">
             {/* Page Header */}
-            <div className="page-header">
-                <h1 className="page-title">Charts of Account</h1>
-                <button className="btn-add" onClick={() => setShowAddModal(true)}>
+            <div className="Charts-of-Account-page-header">
+                <h1 className="Charts-of-Account-page-title">Charts of Account</h1>
+                <button className="Charts-of-Account-btn-add" onClick={() => setShowAddModal(true)}>
                     <Plus size={18} />
                     Add new account
                 </button>
             </div>
 
             {/* Filter Section */}
-            <div className="filter-card">
-                <div className="filter-group">
-                    <label className="filter-label">Start Date</label>
-                    <input type="date" className="filter-input" placeholder="mm/dd/yyyy" />
+            <div className="Charts-of-Account-filter-card">
+                <div className="Charts-of-Account-filter-group">
+                    <label className="Charts-of-Account-filter-label">Start Date</label>
+                    <input type="date" className="Charts-of-Account-filter-input" placeholder="mm/dd/yyyy" />
                 </div>
-                <div className="filter-group">
-                    <label className="filter-label">End Date</label>
-                    <input type="date" className="filter-input" placeholder="mm/dd/yyyy" />
+                <div className="Charts-of-Account-filter-group">
+                    <label className="Charts-of-Account-filter-label">End Date</label>
+                    <input type="date" className="Charts-of-Account-filter-input" placeholder="mm/dd/yyyy" />
                 </div>
-                <button className="filter-btn btn-search" data-tooltip="Search">
+                <button className="Charts-of-Account-filter-btn Charts-of-Account-btn-search" data-tooltip="Search">
                     <Search size={20} />
                 </button>
-                <button className="filter-btn btn-reset" style={{ backgroundColor: '#ff5252' }} data-tooltip="Reset">
+                <button className="Charts-of-Account-filter-btn Charts-of-Account-btn-reset" style={{ backgroundColor: '#ff5252' }} data-tooltip="Reset">
                     <RotateCcw size={20} />
                 </button>
             </div>
@@ -151,27 +151,27 @@ const ChartOfAccounts = () => {
 
             {/* Create Account Modal */}
             {showAddModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h2 className="modal-title">Create New Account</h2>
-                            <button className="close-btn" onClick={() => setShowAddModal(false)}>×</button>
+                <div className="Charts-of-Account-modal-overlay">
+                    <div className="Charts-of-Account-modal-content">
+                        <div className="Charts-of-Account-modal-header">
+                            <h2 className="Charts-of-Account-modal-title">Create New Account</h2>
+                            <button className="Charts-of-Account-close-btn" onClick={() => setShowAddModal(false)}>×</button>
                         </div>
-                        <div className="modal-body">
-                            <div className="form-group">
-                                <label className="form-label">Name<span className="text-red">*</span></label>
-                                <input type="text" className="form-input" placeholder="Enter Name" />
+                        <div className="Charts-of-Account-modal-body">
+                            <div className="Charts-of-Account-form-group">
+                                <label className="Charts-of-Account-form-label">Name<span className="Charts-of-Account-text-red">*</span></label>
+                                <input type="text" className="Charts-of-Account-form-input" placeholder="Enter Name" />
                             </div>
 
-                            <div className="form-row">
-                                <div className="form-group half-width">
-                                    <label className="form-label">Code<span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" placeholder="Enter Code" />
+                            <div className="Charts-of-Account-form-row">
+                                <div className="Charts-of-Account-form-group Charts-of-Account-half-width">
+                                    <label className="Charts-of-Account-form-label">Code<span className="Charts-of-Account-text-red">*</span></label>
+                                    <input type="text" className="Charts-of-Account-form-input" placeholder="Enter Code" />
                                 </div>
-                                <div className="form-group half-width">
-                                    <label className="form-label">Account Type<span className="text-red">*</span></label>
+                                <div className="Charts-of-Account-form-group Charts-of-Account-half-width">
+                                    <label className="Charts-of-Account-form-label">Account Type<span className="Charts-of-Account-text-red">*</span></label>
                                     <select
-                                        className="form-select"
+                                        className="Charts-of-Account-form-select"
                                         value={accountType}
                                         onChange={(e) => setAccountType(e.target.value)}
                                     >
@@ -206,22 +206,22 @@ const ChartOfAccounts = () => {
                             </div>
 
                             {/* Sub-account Checkbox and Parent Selection */}
-                            <div className="form-row" style={{ alignItems: 'center', marginBottom: '1.25rem' }}>
-                                <div className="form-group half-width" style={{ marginBottom: 0 }}>
-                                    <label className="checkbox-container">
+                            <div className="Charts-of-Account-form-row" style={{ alignItems: 'center', marginBottom: '1.25rem' }}>
+                                <div className="Charts-of-Account-form-group Charts-of-Account-half-width" style={{ marginBottom: 0 }}>
+                                    <label className="Charts-of-Account-checkbox-container">
                                         <input
                                             type="checkbox"
                                             checked={isSubAccount}
                                             onChange={(e) => setIsSubAccount(e.target.checked)}
                                         />
-                                        <span className="checkmark"></span>
+                                        <span className="Charts-of-Account-checkmark"></span>
                                         Make this a sub-account
                                     </label>
                                 </div>
                                 {isSubAccount && (
-                                    <div className="form-group half-width" style={{ marginBottom: 0 }}>
-                                        <label className="form-label">Parent Account</label>
-                                        <select className="form-select">
+                                    <div className="Charts-of-Account-form-group Charts-of-Account-half-width" style={{ marginBottom: 0 }}>
+                                        <label className="Charts-of-Account-form-label">Parent Account</label>
+                                        <select className="Charts-of-Account-form-select">
                                             <option value="">Select Parent Account</option>
                                             {getParentAccountOptions().map((acc, i) => (
                                                 <option key={i} value={acc.code}>{acc.name}</option>
@@ -231,22 +231,22 @@ const ChartOfAccounts = () => {
                                 )}
                             </div>
 
-                            <div className="form-group">
-                                <label className="form-label">Is Enabled</label>
-                                <label className="switch">
+                            <div className="Charts-of-Account-form-group">
+                                <label className="Charts-of-Account-form-label">Is Enabled</label>
+                                <label className="Charts-of-Account-switch">
                                     <input type="checkbox" defaultChecked />
-                                    <span className="slider round"></span>
+                                    <span className="Charts-of-Account-slider Charts-of-Account-round"></span>
                                 </label>
                             </div>
 
-                            <div className="form-group">
-                                <label className="form-label">Description</label>
-                                <textarea className="form-textarea" placeholder="Enter Description" rows="3"></textarea>
+                            <div className="Charts-of-Account-form-group">
+                                <label className="Charts-of-Account-form-label">Description</label>
+                                <textarea className="Charts-of-Account-form-textarea" placeholder="Enter Description" rows="3"></textarea>
                             </div>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" onClick={() => setShowAddModal(false)}>Cancel</button>
-                            <button className="btn-save">Create</button>
+                        <div className="Charts-of-Account-modal-footer">
+                            <button className="Charts-of-Account-btn-cancel" onClick={() => setShowAddModal(false)}>Cancel</button>
+                            <button className="Charts-of-Account-btn-save">Create</button>
                         </div>
                     </div>
                 </div>
@@ -254,41 +254,41 @@ const ChartOfAccounts = () => {
 
             {/* Edit Account Modal */}
             {showEditModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h2 className="modal-title">Edit Account</h2>
-                            <button className="close-btn" onClick={() => setShowEditModal(false)}>×</button>
+                <div className="Charts-of-Account-modal-overlay">
+                    <div className="Charts-of-Account-modal-content">
+                        <div className="Charts-of-Account-modal-header">
+                            <h2 className="Charts-of-Account-modal-title">Edit Account</h2>
+                            <button className="Charts-of-Account-close-btn" onClick={() => setShowEditModal(false)}>×</button>
                         </div>
-                        <div className="modal-body">
-                            <div className="form-row">
-                                <div className="form-group half-width">
-                                    <label className="form-label">Name<span className="text-red">*</span></label>
+                        <div className="Charts-of-Account-modal-body">
+                            <div className="Charts-of-Account-form-row">
+                                <div className="Charts-of-Account-form-group Charts-of-Account-half-width">
+                                    <label className="Charts-of-Account-form-label">Name<span className="Charts-of-Account-text-red">*</span></label>
                                     {/* Pre-filled mock data */}
-                                    <input type="text" className="form-input" defaultValue="Checking Account" />
+                                    <input type="text" className="Charts-of-Account-form-input" defaultValue="Checking Account" />
                                 </div>
-                                <div className="form-group half-width">
-                                    <label className="form-label">Code<span className="text-red">*</span></label>
-                                    <input type="text" className="form-input" defaultValue="1060" />
+                                <div className="Charts-of-Account-form-group Charts-of-Account-half-width">
+                                    <label className="Charts-of-Account-form-label">Code<span className="Charts-of-Account-text-red">*</span></label>
+                                    <input type="text" className="Charts-of-Account-form-input" defaultValue="1060" />
                                 </div>
                             </div>
 
-                            <div className="form-group">
-                                <label className="form-label">Is Enabled</label>
-                                <label className="switch">
+                            <div className="Charts-of-Account-form-group">
+                                <label className="Charts-of-Account-form-label">Is Enabled</label>
+                                <label className="Charts-of-Account-switch">
                                     <input type="checkbox" defaultChecked />
-                                    <span className="slider round"></span>
+                                    <span className="Charts-of-Account-slider Charts-of-Account-round"></span>
                                 </label>
                             </div>
 
-                            <div className="form-group">
-                                <label className="form-label">Description</label>
-                                <textarea className="form-textarea" placeholder="Enter Description" rows="3"></textarea>
+                            <div className="Charts-of-Account-form-group">
+                                <label className="Charts-of-Account-form-label">Description</label>
+                                <textarea className="Charts-of-Account-form-textarea" placeholder="Enter Description" rows="3"></textarea>
                             </div>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" style={{ backgroundColor: '#6c757d', color: 'white' }} onClick={() => setShowEditModal(false)}>Cancel</button>
-                            <button className="btn-save">Update</button>
+                        <div className="Charts-of-Account-modal-footer">
+                            <button className="Charts-of-Account-btn-cancel" style={{ backgroundColor: '#6c757d', color: 'white' }} onClick={() => setShowEditModal(false)}>Cancel</button>
+                            <button className="Charts-of-Account-btn-save">Update</button>
                         </div>
                     </div>
                 </div>
@@ -296,18 +296,18 @@ const ChartOfAccounts = () => {
 
             {/* Delete Confirmation Modal */}
             {showDeleteModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content" style={{ maxWidth: '400px' }}>
-                        <div className="modal-header">
-                            <h2 className="modal-title">Delete Account</h2>
-                            <button className="close-btn" onClick={() => setShowDeleteModal(false)}>×</button>
+                <div className="Charts-of-Account-modal-overlay">
+                    <div className="Charts-of-Account-modal-content" style={{ maxWidth: '400px' }}>
+                        <div className="Charts-of-Account-modal-header">
+                            <h2 className="Charts-of-Account-modal-title">Delete Account</h2>
+                            <button className="Charts-of-Account-close-btn" onClick={() => setShowDeleteModal(false)}>×</button>
                         </div>
-                        <div className="modal-body">
+                        <div className="Charts-of-Account-modal-body">
                             <p>Are you sure you want to delete this account?</p>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                            <button className="btn-save" style={{ backgroundColor: '#ff5252' }}>Delete</button>
+                        <div className="Charts-of-Account-modal-footer">
+                            <button className="Charts-of-Account-btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                            <button className="Charts-of-Account-btn-save" style={{ backgroundColor: '#ff5252' }}>Delete</button>
                         </div>
                     </div>
                 </div>
